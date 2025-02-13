@@ -3,7 +3,6 @@
 const colors = require("tailwindcss/colors");
 
 module.exports = {
-	// this enables you to cancel out dark mode using the class "light" for specific sections if desired
 	darkMode: ["variant", "&:is(.dark *):not(.light *)"],
 
 	content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
@@ -18,8 +17,6 @@ module.exports = {
 		},
 		extend: {
 			colors: {
-				// use any standard tailwind colors from here https://tailwindcss.com/docs/customizing-colors
-				// or generate with https://uicolors.app/create
 				primary: {
 					DEFAULT: "#bfd630",
 					50: "#f0faea",
@@ -27,7 +24,7 @@ module.exports = {
 					200: "#c5ebb0",
 					300: "#a8e18b",
 					400: "#8bd766",
-					500: "#bfd630", // main color
+					500: "#bfd630",
 					600: "#96c225",
 					700: "#7ba31e",
 					800: "#618317",
@@ -39,7 +36,7 @@ module.exports = {
 					100: "#e0f7f9",
 					200: "#b8ecf1",
 					300: "#8fdee6",
-					400: "#66C4D0", // main color
+					400: "#66C4D0",
 					500: "#41a7b4",
 					600: "#318694",
 					700: "#266b77",
@@ -50,7 +47,7 @@ module.exports = {
 					DEFAULT: "#2f5a1e",
 					50: "#ecf8e5",
 					100: "#d9f1cc",
-					200: "#b4e399",	
+					200: "#b4e399",
 					300: "#8fd566",
 					400: "#6ac833",
 					500: "#2f5a1e", // main color
@@ -69,24 +66,24 @@ module.exports = {
 				"error-content": "#450a0a",
 			},
 			animation: {
-				marquee: "marquee 40s linear infinite",
+				marquee: "marquee 50s linear infinite",
 				marquee2: "marquee2 50s linear infinite",
 			},
 			keyframes: {
 				marquee: {
 					from: {
-						transform: "translateX(0)",
+						transform: "translateX(calc(-100% - 1.5rem))",
 					},
 					to: {
-						transform: "translateX(calc(-100% - 1.5rem))",
+						transform: "translateX(0)",
 					},
 				},
 				marquee2: {
 					from: {
-						transform: "translateX(0)",
+						transform: "translateX(calc(-100% - 8rem))",
 					},
 					to: {
-						transform: "translateX(calc(-100% - 8rem))",
+						transform: "translateX(0)",
 					},
 				},
 			},

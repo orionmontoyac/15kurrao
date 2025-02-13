@@ -1,91 +1,75 @@
 ---
+import Image from "astro/components/Image.astro";
 import { Icon } from "astro-icon/components";
 
-import Button from "@components/common/Button.astro";
+import RunningCloud from "@components/RunningCloud.astro";
+import ImageSlideBg from "@components/common/ImageSlideBg.astro";
+import Logo from "@images/logo.svg";
 ---
 
-<section
-    id="hero1"
-    class="relative flex w-full overflow-hidden pb-6 pt-32 md:pb-16 md:pt-40"
->
-    <!-- background glow -->
-    <div
-        class="absolute inset-0 bottom-1/2 -z-10 mx-auto aspect-square w-[65%] max-w-5xl -translate-y-2/3 rounded-full bg-secondary-500/50 blur-[100px]"
-        aria-hidden="true"
-    >
+<section class="h-screen relative">
+    <!-- Hero Background -->
+    <div class="absolute inset-0 -z-10 overflow-hidden">
+        <ImageSlideBg />
     </div>
 
-    <!-- background grid svg -->
-    <div class="absolute inset-0 -z-20 flex overflow-hidden">
-        <Icon
-            name="galaxy/grid-lg"
-            class="relative h-full w-full object-cover text-base-400/70 opacity-10 dark:text-base-500"
-            aria-hidden="true"
-        />
+    <!-- Hero Content -->
+    <div class="flex justify-end md:justify-center items-center h-full">
+        <div
+            class="w-full h-full md:w-6/12 flex flex-col justify-between md:justify-center items-center md:items-end text-white md:px-8"
+        >
+            <!-- Logo -->
+            <div
+                class="mt-8 md:mt-0 md:mb-6 flex justify-center md:justify-end w-full"
+            >
+                <Image src={Logo} alt="Logo" class="w-3/5 md:w-1/2" />
+            </div>
+
+            <!-- Bottom Container: Subtitle and Buttons -->
+            <div
+                class="w-full flex flex-col items-center md:items-end gap-4 mb-8 md:mb-0"
+            >
+                <!-- Subtitle -->
+                <div
+                    class="text-lg md:text-xl text-center md:text-right flex items-center justify-center md:justify-end gap-4"
+                >
+                    <div class="flex items-center">
+                        <Icon
+                            name="tabler/calendar-dots"
+                            class="mr-1 h-[1em] w-[1em] text-primary-600 transition-[transform] group-hover:-translate-x-1 dark:text-primary-300"
+                        />
+                        12 Octubre 2025
+                    </div>
+                    <div class="flex items-center">
+                        <Icon
+                            name="tabler/map-pin"
+                            class="mr-1 h-[1em] w-[1em] text-primary-600 transition-[transform] group-hover:-translate-x-1 dark:text-primary-300"
+                        />
+                        Urrao - Antioquia
+                    </div>
+                </div>
+
+                <!-- Buttons: Inscripciones and Mas Informacion -->
+                <div class="flex flex-row md:flex-row gap-4">
+                    <button
+                        class="before:ease relative h-12 w-40 rounded-md overflow-hidden border border-primary-700 bg-primary text-white font-bold transition-all before:absolute before:right-0 before:top-0 before:h-12 before:w-6 before:translate-x-12 before:rotate-6 before:bg-primary-700 before:opacity-10 before:duration-700 hover:shadow-green-500 hover:before:-translate-x-40"
+                    >
+                        <span class="relative z-10 text-xl">Inscribirse</span>
+                    </button>
+                    <button
+                        class="before:ease relative h-12 w-40 rounded-md overflow-hidden border border-white bg-white text-black transition-all before:absolute before:right-0 before:top-0 before:h-12 before:w-6 before:translate-x-12 before:rotate-6 before:bg-white before:opacity-10 before:duration-700 hover:shadow-green-500 hover:before:-translate-x-40"
+                    >
+                        <span class="relative z-10 text-lg"
+                            >Mas información</span
+                        >
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- hero items -->
-    <div class="site-container mx-auto max-w-4xl gap-8 text-center">
-        <!-- notification -->
-        <div
-            class="mb-4 flex w-full items-center justify-center"
-            data-aos="fade-up"
-            data-aos-trigger="#hero1"
-        >
-            <a
-                href="/blog/tsconfig-paths-setup/"
-                class="flex items-center rounded-full border border-primary-300 bg-base-100 px-4 py-1 text-sm text-base-800 ring-2 ring-primary-500 ring-opacity-20 transition hover:border-primary-400 dark:border-primary-300/20 dark:bg-base-800 dark:text-base-200 dark:hover:border-primary-400/90"
-            >
-                <span class="flex items-center gap-2">
-                    <Icon
-                        name="tabler/person-run"
-                        class="inline h-4 w-4 text-primary-600 dark:text-primary-300"
-                        aria-hidden="true"
-                    />¡Resultados Últimas Carreras!</span
-                ></a
-            >
-        </div>
-
-        <!-- Hero text -->
-        <h1
-            class="bg-gradient-to-r from-base-900 to-base-600/90 bg-clip-text pb-4 text-5xl font-medium text-transparent md:text-6xl dark:from-base-100 dark:to-base-400/90"
-            data-aos="fade-up"
-            data-aos-trigger="#hero1"
-        >
-            ¡Bienvenido A TIMEST Colombia!
-        </h1>
-        <p
-            class="description mx-auto mt-2 max-w-sm sm:max-w-md md:max-w-lg"
-            data-aos="fade-up"
-            data-aos-delay="0.2"
-            data-aos-trigger="#hero1"
-        >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae justo nec lorem feugiat tincidunt. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nulla facilisi. Maecenas fringilla gravida eros.
-        </p>
-
-        <!-- CTA -->
-        <div
-            class="mx-auto mt-8 flex max-w-sm flex-col justify-center gap-4 px-4 sm:flex-row"
-        >
-            <Button
-                variant="primary"
-                href="https://cosmicthemes.com/themes/galaxy/"
-                data-aos="fade-up"
-                data-aos-delay="0.8"
-                data-aos-trigger="#hero1"
-            >
-                Contactanos
-            </Button>
-            <Button
-                variant="outline"
-                href="/overview/"
-                arrow="right"
-                data-aos="fade-up"
-                data-aos-delay="1"
-                data-aos-trigger="#hero1"
-            >
-                Servicios
-            </Button>
-        </div>
+    <!-- Running Cloud -->
+    <div class="absolute bottom-0 w-full">
+        <RunningCloud />
     </div>
 </section>
