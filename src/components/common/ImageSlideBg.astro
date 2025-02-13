@@ -8,7 +8,7 @@ const images = await Astro.glob("src/assets/images/hero-banner/*").then(
 console.log("images");
 ---
 
-<section class="relative">
+<section class="relative overflow-y-hidden">
     <!-- right fade-out -->
     <div
         class="absolute -right-px top-0 z-10 h-screen w-[100%] bg-gradient-to-r from-transparent to-black to-80% hidden md:block"
