@@ -1,0 +1,81 @@
+---
+import Image from "astro/components/Image.astro";
+const images = await Astro.glob("src/assets/images/hero-banner2/*").then(
+    (files) => {
+        return files.map((file) => file.default);
+    },
+);
+---
+
+<section class="bg-black w-full h-full overflow-hidden">
+    <ul class="slideshow">
+        {
+            images.map((image) => (
+                <li>
+                    <span class="h-full w-full top-0 left-0 absolute">
+                        <Image
+                            width={1920}
+                            class="object-contain object-[left_50%] w-full h-full"
+                            src={image}
+                            alt=""
+                            loading="lazy"
+                        />
+                    </span>
+                </li>
+            ))
+        }
+    </ul>
+</section>
+
+<style></style>
+
+<script>
+    import { gsap } from "gsap";
+
+    let images = document.querySelectorAll("ul.slideshow span");
+    // Animate each image to enter, wait, animate out, then animate in the next image using gsap
+    let current = 0;
+    const duration = 0.8;
+    const wait = 1.5; // seconds to wait while image is visible
+
+    function showImage(index: number) {
+        const image = images[index];
+        // Animate in
+        gsap.fromTo(
+            image,
+            { y: -500, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: duration,
+                ease: "back.out(3)",
+                onComplete: () => {
+                    // Wait, then animate out
+                    setTimeout(() => {
+                        gsap.to(image, {
+                            y: 500,
+                            opacity: 0,
+                            duration: duration,
+                            ease: "back.in(3)",
+                            onComplete: () => {
+                                // Move to next image
+                                let next = (index + 1) % images.length;
+                                showImage(next);
+                            },
+                        });
+                    }, wait * 1000);
+                },
+            },
+        );
+    }
+
+    // Hide all images initially
+    images.forEach((img) => {
+        gsap.set(img, { opacity: 0, y: -500 });
+    });
+
+    // Start the slideshow
+    if (images.length > 0) {
+        showImage(0);
+    }
+</script>
