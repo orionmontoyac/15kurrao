@@ -13,10 +13,10 @@ const images = await Astro.glob("src/assets/images/hero-banner2/*").then(
         {
             images.map((image) => (
                 <li>
-                    <span class="h-full w-full top-0 left-0 absolute">
+                    <span class="h-full w-full bottom-0 left-0 absolute">
                         <Image
                             width={1920}
-                            class="object-contain object-[left_50%] w-full h-full"
+                            class="object-contain md:object-[left_70%] object-bottom w-full h-full"
                             src={image}
                             alt=""
                             loading="lazy"
@@ -37,7 +37,7 @@ const images = await Astro.glob("src/assets/images/hero-banner2/*").then(
     // Animate each image to enter, wait, animate out, then animate in the next image using gsap
     let current = 0;
     const duration = 0.8;
-    const wait = 2.5; // seconds to wait while image is visible
+    const wait = 5.5; // seconds to wait while image is visible
 
     function showImage(index: number) {
         const image = images[index];
