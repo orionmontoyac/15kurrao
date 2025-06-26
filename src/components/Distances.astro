@@ -24,11 +24,11 @@ import { Icon } from "astro-icon/components";
 
             <!-- Content -->
             <div class="relative z-10">
-                <h1 class="font-nova text-5xl md:text-6xl text-white mb-6">
+                <h1 class="font-nova text-5xl md:text-6xl text-white mb-6 text-center md:text-left">
                     10K
                 </h1>
                 <p
-                    class="text-white text-lg md:text-xl mb-8 leading-relaxed bg-black/10 p-3 rounded-md"
+                    class="text-white text-lg md:text-xl mb-4 md:mb-8 leading-relaxed bg-black/10 md:py-3 md:px-0 p-3 rounded-md"
                 >
                     ¿Estás listo para tu primera gran aventura? Los 10K son el
                     punto perfecto para desafiarte a ti mismo. No importa si
@@ -37,37 +37,39 @@ import { Icon } from "astro-icon/components";
                     conectas con la belleza natural de Urrao. ¡Da el primer paso
                     hacia tu meta!
                 </p>
-                <a
-                    href="https://www.strava.com/routes/3258282215372496568"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="inline-flex items-center px-5 py-3 bg-[#FC4C02] text-white font-semibold rounded-md hover:bg-[#E34100] transition-colors"
-                >
-                    <span class="mr-2">
-                        <Icon
-                            name="tabler/strava-icon"
-                            class="mr-1 h-[1.5em] w-[1.5em] text-white"
-                        />
-                    </span>
-                    Ver ruta en Strava
-                </a>
+                <div class="flex justify-center md:justify-start">
+                    <a
+                        href="https://www.strava.com/routes/3258282215372496568"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center px-5 py-3 bg-[#FC4C02] text-white font-semibold rounded-md hover:bg-[#E34100] transition-colors"
+                    >
+                        <span class="mr-2">
+                            <Icon
+                                name="tabler/strava-icon"
+                                class="mr-1 h-[1.5em] w-[1.5em] text-white"
+                            />
+                        </span>
+                        Ver ruta en Strava
+                    </a>
+                </div>
             </div>
         </div>
 
         <!-- 15K Section -->
         <div
-            class="w-full md:w-1/2 h-ful p-8 md:p-12 relative overflow-hidden"
+            class="w-full md:w-1/2 py-10 h-ful p-4 md:py-6 md:px-12 relative overflow-hidden"
         >
             <!-- Background Image -->
             <div class="absolute inset-0 bg-cover bg-center opacity-30"></div>
 
             <!-- Content -->
             <div class="relative z-10">
-                <h1 class="font-nova text-5xl md:text-6xl text-white mb-6">
+                <h1 class="font-nova text-5xl md:text-6xl text-white mb-6 text-center md:text-left">
                     15K
                 </h1>
                 <p
-                    class="text-white text-lg md:text-xl mb-8 leading-relaxed bg-black/10 p-3 rounded-md"
+                    class="text-white text-lg md:text-xl mb-4 md:mb-8 leading-relaxed bg-black/10 md:py-3 md:px-0 p-3 rounded-md"
                 >
                     ¿Listo para conquistar nuestra prueba reina? Los 15K te
                     llevan a una experiencia única. Esta distancia, diseñada
@@ -76,6 +78,7 @@ import { Icon } from "astro-icon/components";
                     ofrecer. ¡Atrévete a ser parte de esta aventura épica y
                     demuestra de qué estás hecho!
                 </p>
+                <div class="flex justify-center md:justify-start">
                 <a
                     href="https://www.strava.com/routes/3258238777102863098"
                     target="_blank"
@@ -87,9 +90,10 @@ import { Icon } from "astro-icon/components";
                             name="tabler/strava-icon"
                             class="mr-1 h-[1.5em] w-[1.5em] text-white"
                         />
-                    </span>
-                    Ver ruta en Strava
-                </a>
+                        </span>
+                        Ver ruta en Strava
+                    </a>
+                </div>
             </div>
         </div>
     </div>

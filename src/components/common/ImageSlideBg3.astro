@@ -7,9 +7,9 @@ const images = await Astro.glob("src/assets/images/hero-banner2/*").then(
 );
 ---
 
-<section class="bg-black w-full h-full overflow-hidden">
+<section class="bg-black w-full h-full">
     <canvas class="absolute top-0 left-0 w-full h-full"></canvas>
-    <ul class="slideshow">
+    <ul class="slideshow overflow-hidden">
         {
             images.map((image) => (
                 <li>
@@ -36,7 +36,7 @@ const images = await Astro.glob("src/assets/images/hero-banner2/*").then(
     let images = document.querySelectorAll("ul.slideshow span");
     // Animate each image to enter, wait, animate out, then animate in the next image using gsap
     let current = 0;
-    const duration = 0.8;
+    const duration = 0.7;
     const wait = 5.5; // seconds to wait while image is visible
 
     function showImage(index: number) {

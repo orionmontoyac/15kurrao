@@ -1,0 +1,396 @@
+---
+let registered_runneres = [
+    {
+        name: "John Doe",
+        distance: 10,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "Jakub Kowalski",
+        distance: 20,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "Kasia Kowalska",
+        distance: 10,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "Piotr Nowak",
+        distance: 20,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "John Doe",
+        distance: 10,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "Jakub Kowalski",
+        distance: 20,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "Kasia Kowalska",
+        distance: 10,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "Piotr Nowak",
+        distance: 20,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "John Doe",
+        distance: 10,
+    },
+    {
+        name: "Jakub Kowalski",
+        distance: 20,
+    },
+    {
+        name: "Kasia Kowalska",
+        distance: 10,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "Piotr Nowak",
+        distance: 20,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "John Doe",
+        distance: 10,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "Jakub Kowalski",
+        distance: 20,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "Kasia Kowalska",
+        distance: 10,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "Piotr Nowak",
+        distance: 20,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "John Doe",
+        distance: 10,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "Jakub Kowalski",
+        distance: 20,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "Kasia Kowalska",
+        distance: 10,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "Piotr Nowak",
+        distance: 20,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "John Doe",
+        distance: 10,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "Jakub Kowalski",
+        distance: 20,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "Kasia Kowalska",
+        distance: 10,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "Piotr Nowak",
+        distance: 20,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "John Doe",
+        distance: 10,
+    },
+    {
+        name: "Jakub Kowalski",
+        distance: 20,
+    },
+    {
+        name: "Kasia Kowalska",
+        distance: 10,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "Piotr Nowak",
+        distance: 20,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "John Doe",
+        distance: 10,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "Jakub Kowalski",
+        distance: 20,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "Kasia Kowalska",
+        distance: 10,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "Piotr Nowak",
+        distance: 20,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "John Doe",
+        distance: 10,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "Jakub Kowalski",
+        distance: 20,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "Kasia Kowalska",
+        distance: 10,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "Piotr Nowak",
+        distance: 20,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "John Doe",
+        distance: 10,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "Jakub Kowalski",
+        distance: 20,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "Kasia Kowalska",
+        distance: 10,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+    {
+        name: "Piotr Nowak",
+        distance: 20,
+        registered_datetime: "2025-06-26 10:00:00",
+    },
+];
+
+// Split runners into 3 rows
+const runnersPerRow = Math.ceil(registered_runneres.length / 3);
+const row1 = registered_runneres.slice(0, runnersPerRow);
+const row2 = registered_runneres.slice(runnersPerRow, runnersPerRow * 2);
+const row3 = registered_runneres.slice(runnersPerRow * 2);
+---
+
+<section id="registered" class="h-2/3 w-full my-28">
+    <h1 class="font-nova text-5xl text-center py-6 md:text-6xl text-white z-10">
+        Ultimos corredores registrados
+    </h1>
+    <div class="slides-container h-2/3 w-full">
+        <div class="slides-inner">
+            <div class="slide">
+                <div class="grid grid-rows-3 gap-4 h-full w-full">
+                    <!-- Row 1 -->
+                    <div class="row flex space-x-4">
+                        {
+                            row1.map((runner) => (
+                                <div class="runner-card bg-black/50 p-4 rounded-lg min-w-[200px] flex flex-col items-center justify-center">
+                                    <h3 class="text-white text-xl font-bold text-center">
+                                        {runner.name}
+                                    </h3>
+                                    <p class="text-white text-lg font-semibold">
+                                        {runner.distance} km
+                                    </p>
+                                    {runner.registered_datetime && (
+                                        <p class="text-white text-sm opacity-80">
+                                            {(() => {
+                                                const now = new Date();
+                                                const regDate = new Date(
+                                                    runner.registered_datetime.replace(
+                                                        " ",
+                                                        "T",
+                                                    ),
+                                                );
+                                                const diffMs =
+                                                    now.getTime() -
+                                                    regDate.getTime();
+                                                const diffSec = Math.floor(
+                                                    diffMs / 1000,
+                                                );
+                                                const diffMin = Math.floor(
+                                                    diffSec / 60,
+                                                );
+                                                const diffHr = Math.floor(
+                                                    diffMin / 60,
+                                                );
+                                                const diffDay = Math.floor(
+                                                    diffHr / 24,
+                                                );
+
+                                                if (diffDay > 0) {
+                                                    return `hace ${diffDay} día${diffDay > 1 ? "s" : ""}.`;
+                                                } else if (diffHr > 0) {
+                                                    return `hace ${diffHr} hora${diffHr > 1 ? "s" : ""}.`;
+                                                } else if (diffMin > 0) {
+                                                    return `hace ${diffMin} minuto${diffMin > 1 ? "s" : ""}.`;
+                                                } else {
+                                                    return `hace unos segundos.`;
+                                                }
+                                            })()}
+                                        </p>
+                                    )}
+                                </div>
+                            ))
+                        }
+                    </div>
+
+                    <!-- Row 2 -->
+                    <div class="row flex space-x-4">
+                        {
+                            row2.map((runner) => (
+                                <div class="runner-card bg-gray-800/50 p-4 rounded-lg min-w-[200px] flex flex-col items-center justify-center">
+                                    <h3 class="text-white text-xl font-bold text-center">
+                                        {runner.name}
+                                    </h3>
+                                    <p class="text-white text-lg font-semibold">
+                                        {runner.distance} km
+                                    </p>
+                                    {runner.registered_datetime && (
+                                        <p class="text-white text-sm opacity-80">
+                                            {runner.registered_datetime}
+                                        </p>
+                                    )}
+                                </div>
+                            ))
+                        }
+                    </div>
+
+                    <!-- Row 3 -->
+                    <div class="row flex space-x-4">
+                        {
+                            row3.map((runner) => (
+                                <div class="runner-card bg-black/50 p-4 rounded-lg min-w-[200px] flex flex-col items-center justify-center">
+                                    <h3 class="text-white text-xl font-bold text-center">
+                                        {runner.name}
+                                    </h3>
+                                    <p class="text-white text-lg font-semibold">
+                                        {runner.distance} km
+                                    </p>
+                                    {runner.registered_datetime && (
+                                        <p class="text-white text-sm opacity-80">
+                                            {runner.registered_datetime}
+                                        </p>
+                                    )}
+                                </div>
+                            ))
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    .slides-container {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex: 1;
+    }
+
+    .slide {
+        position: absolute;
+        font-size: 90px;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 100vw;
+    }
+
+    .slides-inner {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .runner-card {
+        transition: transform 0.3s ease;
+    }
+
+    .runner-card:hover {
+        transform: scale(1.05);
+    }
+</style>
+
+<script>
+    import gsap from "gsap";
+    import ScrollTrigger from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    console.clear();
+
+    var slidesContainer = document.querySelector(".slides-inner");
+    var slide = document.querySelector(".slide");
+
+    // Create horizontal scroll animation
+    var tl = gsap.timeline({
+        scrollTrigger: {
+            trigger: "#registered",
+            start: "bottom bottom",
+            end: "+=300%",
+            scrub: 1,
+            pin: true,
+            anticipatePin: 1,
+            onUpdate: (self) => {
+                console.log("Progress:", self.progress);
+            },
+        },
+    });
+
+    // Animate the slide horizontally
+    tl.to(slide, {
+        xPercent: -200,
+        ease: "none",
+        duration: 1,
+    });
+
+    // Optional: Add responsive handling
+    function resize() {
+        ScrollTrigger.refresh();
+    }
+
+    window.addEventListener("resize", resize);
+</script>
