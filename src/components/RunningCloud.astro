@@ -14,14 +14,15 @@ const racesLogos = import.meta.glob("/src/assets/races/*.{png,jpg,jpeg}", {
     eager: true,
 });
 
+// Adjust number of logos based on screen size
 const runningLogoNumber = 30;
 ---
 
 <section
     id="logocloud2"
-    class=" h-5 dark:border-base-600/60 bg-black"
+    class="h-8 sm:h-5 dark:border-base-600/60 bg-black"
 >
-    <div class="relative mx-auto max-w-[1800px] overflow-hidden px-4 h-full">
+    <div class="relative mx-auto max-w-[1800px] overflow-hidden px-2 sm:px-2 h-full">
         <!-- left fade-out -->
         <div
             class="absolute -left-px top-0 z-10 h-full w-[10%] bg-gradient-to-r from-black from-20% to-transparent"
@@ -34,11 +35,11 @@ const runningLogoNumber = 30;
         </div>
 
         <div
-            class="logo-marquee relative flex gap-12 overflow-hidden h-full justify-center"
+            class="logo-marquee relative flex gap-6 sm:gap-12 overflow-hidden h-full justify-center"
         >
             <!-- Each animate-marquee2 section needs to have the exact same icons. Just do one then copy / paste -->
             <div
-                class="flex min-w-full shrink-0 animate-marquee2 items-center justify-around gap-12"
+                class="flex min-w-full shrink-0 animate-marquee2-mobile sm:animate-marquee2 items-center justify-around gap-6 sm:gap-12"
             >
                 {
                     [...Array(runningLogoNumber)].map(() => (
@@ -46,7 +47,7 @@ const runningLogoNumber = 30;
                             src={RunningImage}
                             alt="Running logo"
                             loading="eager"
-                            class="h-full w-auto fill-current text-primary"
+                            class="h-full w-auto fill-current text-primary max-h-6 sm:max-h-5"
                             style="filter: brightness(0) invert(1);"
                             aria-hidden="true"
                             width={200}
@@ -59,7 +60,7 @@ const runningLogoNumber = 30;
             <!-- Each animate-marquee2 section needs to have the exact same icons. Just do one then copy / paste -->
             <div
                 aria-hidden="true"
-                class="flex min-w-full shrink-0 animate-marquee2 items-center justify-around gap-12"
+                class="flex min-w-full shrink-0 animate-marquee2-mobile sm:animate-marquee2 items-center justify-around gap-6 sm:gap-12"
             >
                 {
                     [...Array(runningLogoNumber)].map(() => (
@@ -67,7 +68,7 @@ const runningLogoNumber = 30;
                             src={RunningImage}
                             alt="Running logo"
                             loading="eager"
-                            class="h-full w-auto fill-current text-primary"
+                            class="h-full w-auto fill-current text-primary max-h-6 sm:max-h-5"
                             style="filter: brightness(0) invert(1);"
                             aria-hidden="true"
                             width={200}

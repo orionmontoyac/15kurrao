@@ -71,6 +71,7 @@ module.exports = {
 			animation: {
 				marquee: "marquee 50s linear infinite",
 				marquee2: "marquee2 50s linear infinite",
+				"marquee2-mobile": "marquee2 30s linear infinite",
 			},
 			keyframes: {
 				marquee: {
