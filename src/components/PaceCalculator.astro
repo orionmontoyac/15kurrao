@@ -1,0 +1,572 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface PaceResult {
+    minutes: number;
+    seconds: number;
+    pacePerKm: string;
+    pacePerMile: string;
+    timePerKm: string;
+    timePerMile: string;
+}
+
+const calculatePace = (distance: number, targetTime: number): PaceResult => {
+    const totalSeconds = targetTime * 60; // Convert minutes to seconds
+    const pacePerKmSeconds = totalSeconds / distance;
+    const pacePerMileSeconds = pacePerKmSeconds * 1.60934; // Convert km to miles
+    
+    const minutes = Math.floor(pacePerKmSeconds / 60);
+    const seconds = Math.floor(pacePerKmSeconds % 60);
+    
+    const timePerKm = `${Math.floor(pacePerKmSeconds / 60)}:${Math.floor(pacePerKmSeconds % 60).toString().padStart(2, '0')}`;
+    const timePerMile = `${Math.floor(pacePerMileSeconds / 60)}:${Math.floor(pacePerMileSeconds % 60).toString().padStart(2, '0')}`;
+    
+    return {
+        minutes,
+        seconds,
+        pacePerKm: `${minutes}:${seconds.toString().padStart(2, '0')}`,
+        pacePerMile: `${Math.floor(pacePerMileSeconds / 60)}:${Math.floor(pacePerMileSeconds % 60).toString().padStart(2, '0')}`,
+        timePerKm,
+        timePerMile
+    };
+};
+
+const distances = [
+    { value: 10, label: "10K", description: "10 kilómetros" },
+    { value: 15, label: "15K", description: "15 kilómetros" }
+];
+---
+
+<section
+    id="pace-calculator"
+    class="relative min-h-screen py-6 sm:py-10 overflow-hidden"
+>
+    <!-- Grid pattern overlay -->
+    <div
+        class="absolute inset-0 opacity-5"
+        style="background-image: radial-gradient(circle, #ffffff 1px, transparent 1px); background-size: 30px 30px; sm:background-size: 50px 50px;"
+    >
+    </div>
+
+    <div class="relative z-10 max-w-6xl mx-auto px-3 sm:px-4 lg:px-8">
+        <!-- Header Section -->
+        <div class="text-center mb-3 mt-5 sm:mb-12">
+            <div
+                class="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-secondary-500/10 border border-secondary-500/20 mb-4 sm:mb-6"
+            >
+                <Icon
+                    name="tabler/clock"
+                    class="w-4 h-4 sm:w-5 sm:h-5 text-secondary-400 mr-1.5 sm:mr-2"
+                />
+                <span class="text-secondary-400 text-xs sm:text-sm font-medium"
+                    >Calculadora de Ritmo</span
+                >
+            </div>
+        </div>
+
+        <!-- Calculator Interface -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            <!-- Input Section -->
+            <div class="space-y-6">
+                <div class="bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 p-6">
+                    <h3 class="text-white text-xl font-semibold mb-6 flex items-center">
+                        <Icon name="tabler/math-operations" class="w-5 h-5 mr-2 text-secondary-400" />
+                        Configura tu objetivo
+                    </h3>
+                    
+                    <!-- Distance Selection -->
+                    <div class="mb-6">
+                        <label class="block text-white text-sm font-medium mb-3">Distancia</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            {distances.map((distance) => (
+                                <button
+                                    class="distance-btn bg-white/10 hover:bg-white/20 border border-white/20 hover:border-secondary-500/50 rounded-xl p-4 text-left transition-all duration-300 group"
+                                    data-distance={distance.value}
+                                >
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <div class="text-white font-semibold text-lg">{distance.label}</div>
+                                            <div class="text-white/70 text-sm">{distance.description}</div>
+                                        </div>
+                                        <div class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-secondary-500/40 transition-colors duration-300">
+                                            <Icon name="tabler/check" class="w-4 h-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                        </div>
+                                    </div>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                    
+                    <!-- Time Selection Methods -->
+                    <div class="mb-6">
+                        <label class="block text-white text-sm font-medium mb-3">Tiempo objetivo</label>
+                        
+
+                        
+                        <!-- Time Display -->
+                        <div class="text-center mb-4">
+                            <div id="selected-time-display" class="text-white font-bold text-4xl sm:text-5xl">60</div>
+                            <div class="text-white/70 text-sm">minutos</div>
+                        </div>
+                        
+                        
+                        <!-- Slider Selector -->
+                        <div id="slider-selector" class="time-selector-content">
+                            <div class="space-y-4">
+                                <div class="relative">
+                                    <input
+                                        type="range"
+                                        id="time-slider"
+                                        min="30"
+                                        max="120"
+                                        step="5"
+                                        value="60"
+                                        class="w-full h-3 bg-white/10 rounded-lg appearance-none cursor-pointer slider"
+                                    />
+                                    <div class="flex justify-between text-xs text-white/60 mt-2">
+                                        <span>30m</span>
+                                        <span>60m</span>
+                                        <span>90m</span>
+                                        <span>120m</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Plus/Minus Controls -->
+                                <div class="flex items-center justify-center space-x-4">
+                                    <button
+                                        id="time-minus"
+                                        class="w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors duration-200"
+                                    >
+                                        <Icon name="tabler/minus" class="w-5 h-5 text-white" />
+                                    </button>
+                                    <div class="px-4 py-2 bg-white/10 rounded-lg min-w-[80px] text-center">
+                                        <span id="slider-time-display" class="text-white font-semibold">60m</span>
+                                    </div>
+                                    <button
+                                        id="time-plus"
+                                        class="w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors duration-200"
+                                    >
+                                        <Icon name="tabler/plus" class="w-5 h-5 text-white" />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                    <!-- Custom Input -->
+                    <!-- <div class="space-y-4">
+                        <div>
+                            <label class="block text-white text-sm font-medium mb-2">O personaliza tu objetivo</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-white/80 text-xs mb-1">Distancia (km)</label>
+                                    <input
+                                        type="number"
+                                        id="custom-distance"
+                                        class="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-white/50 focus:border-secondary-500 focus:outline-none transition-colors duration-300"
+                                        placeholder="10"
+                                        min="1"
+                                        max="42"
+                                        step="0.1"
+                                    />
+                                </div>
+                                <div>
+                                    <label class="block text-white/80 text-xs mb-1">Tiempo (min)</label>
+                                    <input
+                                        type="number"
+                                        id="custom-time"
+                                        class="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-white/50 focus:border-secondary-500 focus:outline-none transition-colors duration-300"
+                                        placeholder="60"
+                                        min="30"
+                                        max="300"
+                                        step="5"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <button
+                            id="calculate-btn"
+                            class="w-full bg-gradient-to-r from-secondary-500 to-secondary-600 hover:from-secondary-600 hover:to-secondary-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-secondary-500/25 touch-manipulation"
+                        >
+                            Calcular Ritmo
+                        </button>
+                    </div> -->
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="space-y-6">
+                <div class="bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 p-6">
+                    <h3 class="text-white text-xl font-semibold mb-6 flex items-center">
+                        <Icon name="tabler/star" class="w-5 h-5 mr-2 text-secondary-400" />
+                        Tu ritmo objetivo
+                    </h3>
+                    
+                    <!-- Default Result -->
+                    <div id="pace-results" class="space-y-6">
+                        <div class="pace-result bg-gradient-to-br from-secondary-500/20 to-secondary-600/20 border border-secondary-500/30 rounded-xl p-6">
+                            <div class="text-center mb-4">
+                                <div class="text-white/80 text-sm mb-1">Para terminar</div>
+                                <div class="text-white font-bold text-2xl mb-1">10K en 1 hora</div>
+                                <div class="text-secondary-400 text-sm">Tu ritmo objetivo</div>
+                            </div>
+                            
+                            <div class="text-center">
+                                <!-- <div class="text-white/60 text-sm mb-2">Por kilómetro</div> -->
+                                <div class="text-white font-bold text-6xl">6:00</div>
+                                <div class="text-white/60 text-lg">min/km</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Reference -->
+                    <div class="mt-6">
+                        <h4 class="text-white font-semibold mb-4 flex items-center">
+                            <Icon name="tabler/clock" class="w-4 h-4 mr-2 text-secondary-400" />
+                            Referencia rápida
+                        </h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div class="bg-white/5 rounded-lg p-3">
+                                <div class="text-white/80 text-xs mb-1">10K en 1h</div>
+                                <div class="text-white font-semibold">6:00 min/km</div>
+                            </div>
+                            <div class="bg-white/5 rounded-lg p-3">
+                                <div class="text-white/80 text-xs mb-1">15K en 1h</div>
+                                <div class="text-white font-semibold">4:00 min/km</div>
+                            </div>
+                            <div class="bg-white/5 rounded-lg p-3">
+                                <div class="text-white/80 text-xs mb-1">10K en 1:30h</div>
+                                <div class="text-white font-semibold">9:00 min/km</div>
+                            </div>
+                            <div class="bg-white/5 rounded-lg p-3">
+                                <div class="text-white/80 text-xs mb-1">15K en 1:15h</div>
+                                <div class="text-white font-semibold">5:00 min/km</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 p-6 mb-5">
+            <h3 class="text-white text-xl font-semibold mb-6 flex items-center">
+                <Icon name="tabler/bulb" class="w-5 h-5 mr-2 text-secondary-400" />
+                Consejos para mantener tu ritmo
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="flex items-start space-x-3">
+                    <div class="w-8 h-8 bg-secondary-500/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <Icon name="tabler/player-play" class="w-4 h-4 text-secondary-400" />
+                    </div>
+                    <div>
+                        <h4 class="text-white font-semibold mb-2">Comienza conservador</h4>
+                        <p class="text-white/70 text-sm">Los primeros kilómetros deben ser ligeramente más lentos que tu ritmo objetivo.</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-3">
+                    <div class="w-8 h-8 bg-secondary-500/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <Icon name="tabler/heart" class="w-4 h-4 text-secondary-400" />
+                    </div>
+                    <div>
+                        <h4 class="text-white font-semibold mb-2">Escucha tu cuerpo</h4>
+                        <p class="text-white/70 text-sm">Ajusta el ritmo según cómo te sientas, especialmente en las subidas.</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-3">
+                    <div class="w-8 h-8 bg-secondary-500/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <Icon name="tabler/flame" class="w-4 h-4 text-secondary-400" />
+                    </div>
+                    <div>
+                        <h4 class="text-white font-semibold mb-2">Reserva energía</h4>
+                        <p class="text-white/70 text-sm">Guarda algo de energía para el final y poder acelerar en los últimos kilómetros.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Enhanced glassmorphism effects */
+    .backdrop-blur-lg {
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+
+    /* Mobile optimizations */
+    .touch-manipulation {
+        touch-action: manipulation;
+    }
+
+    /* Active states for buttons */
+    .distance-btn.active {
+        background-color: rgba(34, 197, 94, 0.2);
+        border-color: rgba(34, 197, 94, 0.5);
+    }
+
+    .distance-btn.active .tabler-check {
+        opacity: 1 !important;
+    }
+
+
+
+    /* Slider customization */
+    .slider {
+        -webkit-appearance: none;
+        background: linear-gradient(to right, rgb(34 197 94) 0%, rgb(34 197 94) 33%, rgba(255,255,255,0.1) 33%, rgba(255,255,255,0.1) 100%);
+    }
+
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: rgb(34 197 94);
+        border: 2px solid white;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .slider::-moz-range-thumb {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: rgb(34 197 94);
+        border: 2px solid white;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    /* Input focus styles */
+    input:focus {
+        box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+    }
+
+    /* Prevent zoom on input focus for iOS */
+    @media screen and (-webkit-min-device-pixel-ratio: 0) {
+        input, select, textarea {
+            font-size: 16px;
+        }
+    }
+
+
+
+    /* Smooth transitions */
+    .pace-result {
+        transition: all 0.3s ease;
+    }
+
+    .pace-result:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(34, 197, 94, 0.15);
+    }
+
+
+
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+        .time-wheel {
+            width: 240px !important;
+            height: 240px !important;
+        }
+        
+        .time-wheel svg {
+            width: 208px !important;
+            height: 208px !important;
+        }
+    }
+</style>
+
+<script>
+    class EnhancedPaceCalculator {
+        private selectedDistance: number;
+        private selectedTime: number;
+        
+        constructor() {
+            this.selectedDistance = 10;
+            this.selectedTime = 60;
+            
+            this.init();
+        }
+        
+        init() {
+            this.bindEvents();
+            this.updateAllDisplays();
+            this.updateResults();
+            
+            // Set initial active states
+            this.selectDistance(this.selectedDistance);
+            this.selectTime(this.selectedTime);
+        }
+        
+        bindEvents() {
+            // Distance buttons
+            document.querySelectorAll('.distance-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    this.selectDistance(parseInt((btn as HTMLElement).dataset.distance || '10'));
+                });
+            });
+            
+            // Slider functionality
+            this.initSliderSelector();
+            
+            // Custom calculate button
+            document.getElementById('calculate-btn')?.addEventListener('click', () => {
+                this.calculateCustom();
+            });
+            
+            // Enter key on inputs
+            ['custom-distance', 'custom-time'].forEach(id => {
+                document.getElementById(id)?.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.calculateCustom();
+                });
+            });
+        }
+        
+
+        
+
+        
+        initSliderSelector() {
+            const slider = document.getElementById('time-slider') as HTMLInputElement;
+            const minusBtn = document.getElementById('time-minus');
+            const plusBtn = document.getElementById('time-plus');
+            
+            if (!slider) return;
+            
+            slider.addEventListener('input', () => {
+                this.selectTime(parseInt(slider.value));
+            });
+            
+            minusBtn?.addEventListener('click', () => {
+                const newTime = Math.max(30, this.selectedTime - 5);
+                this.selectTime(newTime);
+            });
+            
+            plusBtn?.addEventListener('click', () => {
+                const newTime = Math.min(120, this.selectedTime + 5);
+                this.selectTime(newTime);
+            });
+        }
+        
+        selectDistance(distance: number) {
+            this.selectedDistance = distance;
+            
+            // Update UI
+            document.querySelectorAll('.distance-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            const selectedBtn = document.querySelector(`[data-distance="${distance}"]`);
+            selectedBtn?.classList.add('active');
+            
+            this.updateResults();
+        }
+        
+        selectTime(time: number) {
+            this.selectedTime = time;
+            
+            // Update all displays
+            this.updateAllDisplays();
+            
+            this.updateResults();
+        }
+        
+
+        
+        updateAllDisplays() {
+            // Update main time display
+            const mainDisplay = document.getElementById('selected-time-display');
+            if (mainDisplay) {
+                mainDisplay.textContent = this.selectedTime.toString();
+            }
+            
+            // Update slider display
+            const sliderDisplay = document.getElementById('slider-time-display');
+            if (sliderDisplay) {
+                sliderDisplay.textContent = `${this.selectedTime}m`;
+            }
+            
+            // Update slider value
+            const slider = document.getElementById('time-slider') as HTMLInputElement;
+            if (slider) {
+                slider.value = this.selectedTime.toString();
+            }
+        }
+        
+        calculateCustom() {
+            const distanceInput = document.getElementById('custom-distance') as HTMLInputElement;
+            const timeInput = document.getElementById('custom-time') as HTMLInputElement;
+            
+            if (!distanceInput || !timeInput) return;
+            
+            const distance = parseFloat(distanceInput.value);
+            const time = parseInt(timeInput.value);
+            
+            if (distance && time && distance > 0 && time > 0) {
+                this.selectedDistance = distance;
+                this.selectedTime = time;
+                this.updateAllDisplays();
+                this.updateResults();
+            }
+        }
+        
+        updateResults() {
+            const resultsContainer = document.getElementById('pace-results');
+            if (!resultsContainer) return;
+            
+            const pace = this.calculatePace(this.selectedDistance, this.selectedTime);
+            
+            const timeString = this.selectedTime >= 60 
+                ? `${Math.floor(this.selectedTime / 60)}:${(this.selectedTime % 60).toString().padStart(2, '0')}h`
+                : `${this.selectedTime}m`;
+            
+            resultsContainer.innerHTML = `
+                <div class="pace-result bg-gradient-to-br from-secondary-500/20 to-secondary-600/20 border border-secondary-500/30 rounded-xl p-6">
+                    <div class="text-center mb-4">
+                        <div class="text-white/80 text-sm mb-1">Para terminar</div>
+                        <div class="text-white font-bold text-2xl mb-1">${this.selectedDistance}K en ${timeString}</div>
+                        <div class="text-secondary-400 text-sm">Tu ritmo objetivo</div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="text-white font-bold text-6xl">${pace.pacePerKm}</div>
+                        <div class="text-white/60 text-lg">min/km</div>
+                    </div>
+                    
+
+                    </div>
+                </div>
+            `;
+        }
+        
+        calculatePace(distance: number, targetTime: number) {
+            const totalSeconds = targetTime * 60; // Convert minutes to seconds
+            const pacePerKmSeconds = totalSeconds / distance;
+            const pacePerMileSeconds = pacePerKmSeconds * 1.60934; // Convert km to miles
+            
+            const minutes = Math.floor(pacePerKmSeconds / 60);
+            const seconds = Math.floor(pacePerKmSeconds % 60);
+            
+            const timePerKm = `${Math.floor(pacePerKmSeconds / 60)}:${Math.floor(pacePerKmSeconds % 60).toString().padStart(2, '0')}`;
+            const timePerMile = `${Math.floor(pacePerMileSeconds / 60)}:${Math.floor(pacePerMileSeconds % 60).toString().padStart(2, '0')}`;
+            
+            return {
+                minutes,
+                seconds,
+                pacePerKm: `${minutes}:${seconds.toString().padStart(2, '0')}`,
+                pacePerMile: `${Math.floor(pacePerMileSeconds / 60)}:${Math.floor(pacePerMileSeconds % 60).toString().padStart(2, '0')}`,
+                timePerKm,
+                timePerMile
+            };
+        }
+    }
+    
+    // Initialize the calculator when the DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+        new EnhancedPaceCalculator();
+    });
+</script>

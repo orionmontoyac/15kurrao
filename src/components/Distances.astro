@@ -1,5 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
+import PaceCalculator from "@components/PaceCalculator.astro";
 ---
 
 <section
@@ -239,7 +240,9 @@ import { Icon } from "astro-icon/components";
                     <!-- Description -->
                     <div class="mb-8">
                         <p class="text-white text-lg leading-relaxed mb-4">
-                            El reto perfecto para corredores experimentados. Una ruta que combina desafío físico con los paisajes más espectaculares de la región.
+                            El reto perfecto para corredores experimentados. Una
+                            ruta que combina desafío físico con los paisajes más
+                            espectaculares de la región.
                         </p>
                         <!-- <div class="flex flex-wrap gap-2">
                             <span class="px-3 py-1 bg-orange-500/20 text-orange-400 text-sm rounded-full border border-orange-500/30">Intermedio</span>
@@ -293,7 +296,10 @@ import { Icon } from "astro-icon/components";
                             <div
                                 class="relative flex items-center justify-center space-x-2"
                             >
-                                <Icon name="tabler/strava-icon" class="size-6" />
+                                <Icon
+                                    name="tabler/strava-icon"
+                                    class="size-6"
+                                />
                                 <span>Ver en Strava</span>
                             </div>
                         </a>
@@ -332,6 +338,7 @@ import { Icon } from "astro-icon/components";
             </div>
         </div> -->
     </div>
+    <PaceCalculator />
 </section>
 
 <style>
