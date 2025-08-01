@@ -55,102 +55,77 @@ const images = [
 
 <section
     id="gallery"
-    class="relative min-h-screen py-10 bg-gradient-to-br from-primary-900 via-primary-500 to-secondary-500 overflow-hidden"
+    class="relative min-h-screen py-6 sm:py-10 bg-gradient-to-br from-primary-900 via-primary-500 to-secondary-500 overflow-hidden"
 >
-    <!-- Animated background elements -->
-    <!-- <div class="absolute inset-0 opacity-10">
-        <div
-            class="absolute top-20 left-10 w-72 h-72 bg-emerald-500 rounded-full mix-blend-screen filter blur-xl animate-pulse"
-            style="animation-delay: 1s;"
-        >
-        </div>
-        <div
-            class="absolute bottom-40 right-20 w-96 h-96 bg-purple-500 rounded-full mix-blend-screen filter blur-xl animate-pulse"
-            style="animation-delay: 3s;"
-        >
-        </div>
-        <div
-            class="absolute top-1/2 left-1/2 w-80 h-80 bg-orange-500 rounded-full mix-blend-screen filter blur-xl animate-pulse"
-            style="animation-delay: 5s;"
-        >
-        </div>
-    </div> -->
-
     <!-- Grid pattern overlay -->
     <div
         class="absolute inset-0 opacity-5"
-        style="background-image: radial-gradient(circle, #ffffff 1px, transparent 1px); background-size: 50px 50px;"
+        style="background-image: radial-gradient(circle, #ffffff 1px, transparent 1px); background-size: 30px 30px; sm:background-size: 50px 50px;"
     >
     </div>
 
-    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="relative z-10 max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
         <!-- Header Section -->
-        <div class="text-center mb-16">
+        <div class="text-center mb-8 sm:mb-12 lg:mb-16">
             <div
-                class="inline-flex items-center px-4 py-2 rounded-full bg-secondary-500/10 border border-secondary-500/20 mb-6"
+                class="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-secondary-500/10 border border-secondary-500/20 mb-4 sm:mb-6"
             >
                 <Icon
                     name="tabler/camara"
-                    class="w-5 h-5 text-secondary-400 mr-2"
+                    class="w-4 h-4 sm:w-5 sm:h-5 text-secondary-400 mr-1.5 sm:mr-2"
                 />
-                <span class="text-secondary-400 text-sm font-medium"
+                <span class="text-secondary-400 text-xs sm:text-sm font-medium"
                     >Memorias 2024</span
                 >
             </div>
             <h1
-                class="font-nova text-5xl md:text-7xl lg:text-8xl text-white mb-6 tracking-tight"
+                class="font-nova text-5xl md:text-7xl lg:text-8xl text-white mb-4 sm:mb-6 tracking-tight"
             >
                 <span
-                    class="bg-gradient-to-r from-white via-secondary-400 to-white bg-clip-text text-transparent"
+                    class="bg-gradient-to-r from-secondary via-secondary-400 to-white bg-clip-text text-transparent"
                 >
                     Galería
                 </span>
             </h1>
-            <p class="text-white text-xl max-w-2xl mx-auto leading-relaxed mb-8">
+            <p class="text-white text-base sm:text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed mb-6 sm:mb-8 px-4">
                 Revive los momentos más emocionantes de la edición 2024. 
                 Cada imagen cuenta una historia de esfuerzo, pasión y superación.
             </p>
             
             <!-- Stats Badge -->
             <div
-                class="inline-flex items-center space-x-6 px-6 py-3 bg-white/5 backdrop-blur-lg rounded-full border border-white/10"
+                class="inline-flex items-center space-x-3 sm:space-x-6 px-4 sm:px-6 py-2 sm:py-3 bg-white/5 backdrop-blur-lg rounded-full border border-white/10"
             >
                 <div class="text-center">
-                    <div class="text-2xl font-bold text-white">{images.length}</div>
-                    <div class="text-sm text-slate-400">Fotografías</div>
+                    <div class="text-lg sm:text-2xl font-bold text-white">{images.length}</div>
+                    <div class="text-xs sm:text-sm text-slate-400">Fotografías</div>
                 </div>
-                <div class="w-px h-8 bg-white/20"></div>
+                <div class="w-px h-6 sm:h-8 bg-white/20"></div>
                 <div class="text-center">
-                    <div class="text-2xl font-bold text-white">2024</div>
-                    <div class="text-sm text-slate-400">Edición</div>
+                    <div class="text-lg sm:text-2xl font-bold text-white">2024</div>
+                    <div class="text-xs sm:text-sm text-slate-400">Edición</div>
                 </div>
-                <div class="w-px h-8 bg-white/20"></div>
+                <div class="w-px h-6 sm:h-8 bg-white/20"></div>
                 <div class="text-center">
-                    <div class="text-2xl font-bold text-white">∞</div>
-                    <div class="text-sm text-slate-400">Memorias</div>
+                    <div class="text-lg sm:text-2xl font-bold text-white">∞</div>
+                    <div class="text-xs sm:text-sm text-slate-400">Memorias</div>
                 </div>
             </div>
         </div>
 
         <!-- Gallery Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-12">
+        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-3 md:gap-4 mb-8 sm:mb-12">
             {images.map((image, index) => (
                 <div 
-                    class="group relative overflow-hidden rounded-2xl cursor-pointer transform transition-all duration-300 hover:scale-[1.02]"
+                    class="group relative overflow-hidden rounded-xl sm:rounded-2xl cursor-pointer transform transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] touch-manipulation"
                     data-lightbox-trigger
                     data-image-src={image.src}
                     data-image-alt={image.alt}
                     data-image-description={image.description}
                     data-image-index={index}
                 >
-                    <!-- Glassmorphism overlay -->
-                    <div
-                        class="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-2xl border border-white/10 transition-all duration-300 group-hover:border-secondary-500/30 group-hover:shadow-lg group-hover:shadow-secondary-500/10 z-10"
-                    >
-                    </div>
-                    
                     <!-- Image container -->
-                    <div class="relative aspect-square overflow-hidden rounded-2xl">
+                    <div class="relative aspect-square overflow-hidden rounded-xl sm:rounded-2xl">
                         <!-- For optimal performance, use Image component when importing assets -->
                         <img
                             src={image.src}
@@ -161,21 +136,21 @@ const images = [
                         />
                         
                         <!-- Hover overlay with preview info -->
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 z-20">
-                            <div class="absolute bottom-4 left-4 right-4">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-all duration-300 z-20">
+                            <div class="absolute bottom-2 sm:bottom-4 left-2 sm:left-4 right-2 sm:right-4">
                                 <div class="flex items-center justify-between">
-                                    <div class="flex-1 pr-3">
-                                        <div class="text-white text-sm font-medium mb-1">
+                                    <div class="flex-1 pr-2 sm:pr-3">
+                                        <div class="text-white text-xs sm:text-sm font-medium mb-0.5 sm:mb-1">
                                             #{index + 1} - 15K URRAO 2024
                                         </div>
-                                        <div class="text-white/80 text-xs leading-relaxed">
+                                        <div class="text-white/80 text-xs leading-relaxed line-clamp-2">
                                             {image.description}
                                         </div>
                                     </div>
-                                    <div class="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:bg-secondary-500/40 transition-colors duration-300">
+                                    <div class="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:bg-secondary-500/40 transition-colors duration-300 flex-shrink-0">
                                         <Icon
                                             name="tabler/medal"
-                                            class="w-5 h-5 text-white"
+                                            class="w-4 h-4 sm:w-5 sm:h-5 text-white"
                                         />
                                     </div>
                                 </div>
@@ -185,7 +160,7 @@ const images = [
                     
                     <!-- Corner badge -->
                     <div
-                        class="absolute top-3 right-3 w-7 h-7 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-full flex items-center justify-center shadow-lg z-30 transform transition-transform duration-300 group-hover:scale-110"
+                        class="absolute top-2 sm:top-3 right-2 sm:right-3 w-6 h-6 sm:w-7 sm:h-7 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-full flex items-center justify-center shadow-lg z-30 transform transition-transform duration-300 group-hover:scale-110"
                     >
                         <span class="text-white text-xs font-bold">{index + 1}</span>
                     </div>
@@ -194,26 +169,26 @@ const images = [
         </div>
 
         <!-- Gallery Controls -->
-        <div class="flex justify-center items-center space-x-4 mb-12">
+        <div class="flex justify-center items-center space-x-3 sm:space-x-4 mb-8 sm:mb-12">
             <button
                 id="prev-batch"
-                class="flex items-center space-x-2 px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 rounded-xl transition-all duration-300 text-white"
+                class="flex items-center space-x-1.5 sm:space-x-2 px-3 sm:px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 rounded-xl transition-all duration-300 text-white touch-manipulation"
             >
                 <Icon name="tabler/caret-left" class="w-4 h-4" />
-                <span class="text-sm">Anterior</span>
+                <span class="text-xs sm:text-sm">Anterior</span>
             </button>
             
-            <div class="flex items-center space-x-2">
-                <div class="w-2 h-2 bg-secondary-500 rounded-full"></div>
-                <div class="w-2 h-2 bg-white/30 rounded-full"></div>
-                <div class="w-2 h-2 bg-white/30 rounded-full"></div>
+            <div class="flex items-center space-x-1.5 sm:space-x-2">
+                <div class="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-secondary-500 rounded-full"></div>
+                <div class="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white/30 rounded-full"></div>
+                <div class="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white/30 rounded-full"></div>
             </div>
             
             <button
                 id="next-batch"
-                class="flex items-center space-x-2 px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 rounded-xl transition-all duration-300 text-white"
+                class="flex items-center space-x-1.5 sm:space-x-2 px-3 sm:px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 rounded-xl transition-all duration-300 text-white touch-manipulation"
             >
-                <span class="text-sm">Siguiente</span>
+                <span class="text-xs sm:text-sm">Siguiente</span>
                 <Icon name="tabler/caret-right" class="w-4 h-4" />
             </button>
         </div>
@@ -221,26 +196,26 @@ const images = [
         <!-- CTA Section -->
         <div class="text-center">
             <div
-                class="inline-flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6 px-8 py-6 bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10"
+                class="inline-flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6 px-4 sm:px-6 lg:px-8 py-4 sm:py-6 bg-white/5 backdrop-blur-lg rounded-xl sm:rounded-2xl border border-white/10"
             >
                 <div class="text-center md:text-left">
-                    <h3 class="text-white text-xl font-semibold mb-2">
+                    <h3 class="text-white text-lg sm:text-xl font-semibold mb-2">
                         ¿Quieres ser parte de la historia?
                     </h3>
-                    <p class="text-white">
+                    <p class="text-white text-sm sm:text-base">
                         Únete a la próxima edición y crea tus propios momentos inolvidables
                     </p>
                 </div>
                 <a
                     href="#distances"
-                    class="group/cta relative overflow-hidden bg-gradient-to-r from-secondary-500 to-secondary-600 hover:from-secondary-600 hover:to-secondary-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-secondary-500/25"
+                    class="group/cta relative overflow-hidden bg-gradient-to-r from-secondary-500 to-secondary-600 hover:from-secondary-600 hover:to-secondary-700 text-white font-semibold py-2.5 sm:py-3 px-4 sm:px-6 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-secondary-500/25 touch-manipulation"
                 >
                     <div
                         class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover/cta:translate-x-full transition-transform duration-700"
                     >
                     </div>
-                    <div class="relative flex items-center space-x-2">
-                        <span class="text-white">Inscríbete 2025</span>
+                    <div class="relative flex items-center space-x-1.5 sm:space-x-2">
+                        <span class="text-white text-sm sm:text-base">Inscríbete 2025</span>
                         <Icon
                             name="tabler/arrow-narrow-right"
                             class="w-4 h-4 transition-transform duration-300 group-hover/cta:translate-x-1"
@@ -260,33 +235,33 @@ const images = [
         <div class="absolute inset-0" id="lightbox-backdrop"></div>
         
         <!-- Modal Content -->
-        <div class="relative h-full flex items-center justify-center p-4">
+        <div class="relative h-full flex items-center justify-center p-2 sm:p-4">
             <!-- Close Button -->
             <button
                 id="lightbox-close"
-                class="absolute top-6 right-6 z-60 w-12 h-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300 group"
+                class="absolute top-2 sm:top-6 right-2 sm:right-6 z-60 w-10 h-10 sm:w-12 sm:h-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300 group touch-manipulation"
             >
-                <Icon name="tabler/x" class="w-6 h-6 text-white group-hover:scale-110 transition-transform duration-300" />
+                <Icon name="tabler/x" class="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:scale-110 transition-transform duration-300" />
             </button>
             
             <!-- Navigation Buttons -->
             <button
                 id="lightbox-prev"
-                class="absolute left-6 top-1/2 -translate-y-1/2 z-60 w-12 h-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300 group"
+                class="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 z-60 w-10 h-10 sm:w-12 sm:h-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300 group touch-manipulation"
             >
-                <Icon name="tabler/caret-left" class="w-6 h-6 text-white group-hover:scale-110 transition-transform duration-300" />
+                <Icon name="tabler/caret-left" class="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:scale-110 transition-transform duration-300" />
             </button>
             
             <button
                 id="lightbox-next"
-                class="absolute right-6 top-1/2 -translate-y-1/2 z-60 w-12 h-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300 group"
+                class="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 z-60 w-10 h-10 sm:w-12 sm:h-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300 group touch-manipulation"
             >
-                <Icon name="tabler/caret-right" class="w-6 h-6 text-white group-hover:scale-110 transition-transform duration-300" />
+                <Icon name="tabler/caret-right" class="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:scale-110 transition-transform duration-300" />
             </button>
             
             <!-- Image Container -->
-            <div class="max-w-5xl max-h-full flex flex-col items-center">
-                <div class="relative max-w-full max-h-[70vh] overflow-hidden rounded-2xl shadow-2xl">
+            <div class="max-w-full sm:max-w-5xl max-h-full flex flex-col items-center w-full">
+                <div class="relative max-w-full max-h-[60vh] sm:max-h-[70vh] overflow-hidden rounded-lg sm:rounded-2xl shadow-2xl">
                     <img
                         id="lightbox-image"
                         src=""
@@ -296,18 +271,18 @@ const images = [
                     
                     <!-- Loading Spinner -->
                     <div id="lightbox-loading" class="absolute inset-0 flex items-center justify-center bg-black/50">
-                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-secondary-500"></div>
+                        <div class="animate-spin rounded-full h-8 w-8 sm:h-12 sm:w-12 border-b-2 border-secondary-500"></div>
                     </div>
                 </div>
                 
                 <!-- Image Info -->
-                <div class="mt-6 text-center max-w-2xl">
-                    <h3 id="lightbox-title" class="text-white text-xl font-bold mb-2"></h3>
-                    <p id="lightbox-description" class="text-white/80 text-lg leading-relaxed"></p>
-                    <div class="mt-4 flex items-center justify-center space-x-4">
-                        <span id="lightbox-counter" class="text-white/60 text-sm"></span>
-                        <div class="w-px h-4 bg-white/20"></div>
-                        <span class="text-white/60 text-sm">15K URRAO 2024</span>
+                <div class="mt-4 sm:mt-6 text-center max-w-2xl px-4">
+                    <h3 id="lightbox-title" class="text-white text-lg sm:text-xl font-bold mb-2"></h3>
+                    <p id="lightbox-description" class="text-white/80 text-sm sm:text-lg leading-relaxed"></p>
+                    <div class="mt-3 sm:mt-4 flex items-center justify-center space-x-3 sm:space-x-4">
+                        <span id="lightbox-counter" class="text-white/60 text-xs sm:text-sm"></span>
+                        <div class="w-px h-3 sm:h-4 bg-white/20"></div>
+                        <span class="text-white/60 text-xs sm:text-sm">15K URRAO 2024</span>
                     </div>
                 </div>
             </div>
@@ -382,10 +357,48 @@ const images = [
     .gallery-container::-webkit-scrollbar-thumb:hover {
         background-color: rgba(255, 255, 255, 0.5);
     }
+
+    /* Mobile optimizations */
+    .touch-manipulation {
+        touch-action: manipulation;
+    }
+
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* Responsive grid pattern */
+    @media (max-width: 640px) {
+        .grid-pattern {
+            background-size: 30px 30px;
+        }
+    }
+
+    /* Mobile lightbox improvements */
+    @media (max-width: 640px) {
+        #lightbox-modal .max-w-full {
+            width: 100%;
+            margin: 0;
+        }
+        
+        #lightbox-modal .max-h-\[60vh\] {
+            max-height: 60vh;
+        }
+    }
+
+    /* Prevent zoom on input focus for iOS */
+    @media screen and (-webkit-min-device-pixel-ratio: 0) {
+        input, select, textarea {
+            font-size: 16px;
+        }
+    }
 </style>
 
 <script>
-    // Enhanced Gallery with Lightbox functionality
+    // Enhanced Gallery with Lightbox functionality and mobile support
     class GalleryLightbox {
         constructor() {
             this.currentIndex = 0;
@@ -396,6 +409,9 @@ const images = [
             this.lightboxDescription = null;
             this.lightboxCounter = null;
             this.lightboxLoading = null;
+            this.isMobile = window.innerWidth <= 768;
+            this.touchStartX = 0;
+            this.touchStartY = 0;
             
             this.init();
         }
@@ -420,6 +436,9 @@ const images = [
             
             // Initialize gallery animations
             this.initGalleryAnimations();
+            
+            // Handle resize events
+            this.handleResize();
         }
         
         collectImages() {
@@ -447,6 +466,11 @@ const images = [
             document.getElementById('lightbox-prev')?.addEventListener('click', () => this.prevImage());
             document.getElementById('lightbox-next')?.addEventListener('click', () => this.nextImage());
             
+            // Touch events for mobile
+            if (this.isMobile) {
+                this.bindTouchEvents();
+            }
+            
             // Keyboard navigation
             document.addEventListener('keydown', (e) => {
                 if (!this.modal?.classList.contains('lightbox-open')) return;
@@ -461,6 +485,52 @@ const images = [
                     case 'ArrowRight':
                         this.nextImage();
                         break;
+                }
+            });
+        }
+        
+        bindTouchEvents() {
+            const modal = this.modal;
+            if (!modal) return;
+            
+            modal.addEventListener('touchstart', (e) => {
+                this.touchStartX = e.touches[0].clientX;
+                this.touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+            
+            modal.addEventListener('touchend', (e) => {
+                if (!this.touchStartX || !this.touchStartY) return;
+                
+                const touchEndX = e.changedTouches[0].clientX;
+                const touchEndY = e.changedTouches[0].clientY;
+                const diffX = this.touchStartX - touchEndX;
+                const diffY = this.touchStartY - touchEndY;
+                
+                // Minimum swipe distance
+                const minSwipeDistance = 50;
+                
+                // Check if it's a horizontal swipe (more horizontal than vertical)
+                if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > minSwipeDistance) {
+                    if (diffX > 0) {
+                        // Swipe left - next image
+                        this.nextImage();
+                    } else {
+                        // Swipe right - previous image
+                        this.prevImage();
+                    }
+                }
+                
+                // Reset touch coordinates
+                this.touchStartX = 0;
+                this.touchStartY = 0;
+            }, { passive: true });
+        }
+        
+        handleResize() {
+            window.addEventListener('resize', () => {
+                this.isMobile = window.innerWidth <= 768;
+                if (this.isMobile) {
+                    this.bindTouchEvents();
                 }
             });
         }
