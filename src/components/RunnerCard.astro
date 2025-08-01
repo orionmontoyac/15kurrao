@@ -1,0 +1,642 @@
+---
+import { Icon } from "astro-icon/components";
+
+export interface Props {
+    id: number;
+    name: string;
+    distance: "10K" | "15K";
+    registrationTime: string;
+    timeAgo: number; // minutes
+    avatar: string;
+    location: string;
+}
+
+const { id, name, distance, registrationTime, timeAgo, avatar, location } = Astro.props;
+---
+
+<div 
+    class="group relative overflow-hidden rounded-2xl cursor-pointer transform transition-all duration-300 hover:scale-[1.02] bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-white/10 hover:border-secondary-500/30 hover:shadow-lg hover:shadow-secondary-500/10"
+    data-runner-id={id}
+>
+    <!-- Image Section (Half of the card) -->
+    <div class="relative aspect-square overflow-hidden">
+        <img
+            src={avatar}
+            alt={name}
+            class="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+            loading="lazy"
+        />
+        
+        <!-- Gradient overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        
+        <!-- Distance Badge (Top Right) -->
+        <div class={`absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-bold shadow-lg ${
+            distance === "15K" 
+                ? "bg-gradient-to-r from-primary-500 to-primary-600 text-white" 
+                : "bg-gradient-to-r from-orange-500 to-orange-600 text-white"
+        }`}>
+            <h1 class="text-white font-nova">
+                {distance}
+            </h1>
+        </div>
+        
+        <!-- Share Button (Top Left) - Always Visible -->
+        <button
+            class="absolute top-3 left-3 w-8 h-8 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-full flex items-center justify-center shadow-lg transform transition-all duration-300 hover:scale-110 hover:shadow-xl hover:shadow-secondary-500/25 z-10"
+            data-share-runner
+            data-runner-name={name}
+            data-runner-distance={distance}
+            data-runner-location={location}
+            data-runner-avatar={avatar}
+            title="Compartir corredor"
+        >
+            <Icon name="tabler/share" class="w-4 h-4 text-white" />
+        </button>
+        
+        <!-- Recent Registration Badge (Top Left - moved down when share button is visible) -->
+        {timeAgo <= 60 && (
+            <div
+                class="absolute top-3 left-12 w-8 h-8 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-lg transform transition-all duration-300 group-hover:scale-110"
+            >
+                <Icon name="tabler/clock" class="w-4 h-4 text-white" />
+            </div>
+        )}
+        
+        <!-- Online indicator (Bottom Right of image) -->
+        <!-- <div class="absolute bottom-3 right-3 w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-lg"></div> -->
+    </div>
+    
+    <!-- Content Section (Bottom Half) -->
+    <div class="p-4">
+        <!-- Runner Name -->
+        <h3 class="text-white font-semibold text-lg leading-tight mb-2 group-hover:text-secondary-300 transition-colors duration-300">
+            {name}
+        </h3>
+        
+        <!-- Location -->
+        <p class="text-slate-300 text-sm flex items-center mb-3">
+            <Icon name="tabler/map-pin" class="w-3 h-3 mr-1 flex-shrink-0" />
+            <span class="truncate">{location}</span>
+        </p>
+        
+        <!-- Registration Status -->
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <span class="text-green-400 text-sm font-medium">
+                    Inscrito
+                </span>
+            </div>
+            <span class="text-slate-300 text-sm">
+                {registrationTime}
+            </span>
+        </div>
+    </div>
+    
+    <!-- Hover Glow Effect -->
+    <div class="absolute inset-0 bg-gradient-to-br from-secondary-500/0 to-secondary-500/0 group-hover:from-secondary-500/5 group-hover:to-transparent rounded-2xl transition-all duration-500 pointer-events-none"></div>
+</div>
+
+<!-- Share Modal -->
+<div id="share-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 max-w-sm w-full transform scale-95 opacity-0 transition-all duration-300">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-white font-semibold text-lg">Compartir corredor</h3>
+            <button id="close-share-modal" class="text-white/70 hover:text-white transition-colors">
+                <Icon name="tabler/x" class="w-5 h-5" />
+            </button>
+        </div>
+        
+        <div class="space-y-3">
+            <!-- Instagram Stories -->
+            <button id="share-instagram" class="w-full flex items-center space-x-3 p-3 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl text-white font-medium hover:shadow-lg hover:shadow-pink-500/25 transition-all duration-300 transform hover:scale-[1.02]">
+                <Icon name="tabler/instagram-logo" class="w-5 h-5" />
+                <span>Instagram Stories</span>
+            </button>
+            
+            <!-- WhatsApp -->
+            <button id="share-whatsapp" class="w-full flex items-center space-x-3 p-3 bg-gradient-to-r from-green-500 to-green-600 rounded-xl text-white font-medium hover:shadow-lg hover:shadow-green-500/25 transition-all duration-300 transform hover:scale-[1.02]">
+                <Icon name="tabler/whatsapp-logo" class="w-5 h-5" />
+                <span>WhatsApp</span>
+            </button>
+            
+                         <!-- Download Image -->
+             <button id="download-image" class="w-full flex items-center space-x-3 p-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl text-white font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-[1.02]">
+                 <Icon name="tabler/circle-arrow-up" class="w-5 h-5" />
+                 <span>Descargar Imagen</span>
+             </button>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden canvas for image generation -->
+<canvas id="story-canvas" style="display: none;"></canvas>
+
+<style>
+    /* Enhanced glassmorphism effects */
+    .backdrop-blur-sm {
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+    
+    /* Smooth image loading */
+    img {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+    
+    /* Pulse animation for online indicators */
+    @keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.5;
+        }
+    }
+    
+    .animate-pulse {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    
+    /* Card hover animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .runner-card-animate {
+        animation: fadeInUp 0.6s ease-out forwards;
+    }
+</style>
+
+<script>
+    // Runner Card interactions
+    class RunnerCard {
+        constructor() {
+            this.init();
+        }
+        
+        init() {
+            this.bindEvents();
+        }
+        
+        bindEvents() {
+            // Add click handler for the card (excluding share button)
+            document.querySelectorAll('[data-runner-id]').forEach((card) => {
+                card.addEventListener('click', (e) => {
+                    // Don't trigger card click if clicking on share button
+                    if ((e.target as Element).closest('[data-share-runner]')) {
+                        return;
+                    }
+                    e.preventDefault();
+                    this.handleCardClick(card);
+                });
+            });
+            
+            // Add share button handlers
+            this.bindShareEvents();
+        }
+        
+        bindShareEvents() {
+            // Share button click
+            document.querySelectorAll('[data-share-runner]').forEach((button) => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.openShareModal(button);
+                });
+            });
+            
+            // Modal close button
+            const closeBtn = document.getElementById('close-share-modal');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => this.closeShareModal());
+            }
+            
+            // Close modal when clicking outside
+            const modal = document.getElementById('share-modal');
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        this.closeShareModal();
+                    }
+                });
+            }
+            
+            // Share platform buttons
+            this.bindSharePlatformEvents();
+        }
+        
+        bindSharePlatformEvents() {
+            // Instagram Stories
+            const instagramBtn = document.getElementById('share-instagram');
+            if (instagramBtn) {
+                instagramBtn.addEventListener('click', () => this.shareToInstagram());
+            }
+            
+            // WhatsApp
+            const whatsappBtn = document.getElementById('share-whatsapp');
+            if (whatsappBtn) {
+                whatsappBtn.addEventListener('click', () => this.shareToWhatsApp());
+            }
+            
+            // Download Image
+            const downloadBtn = document.getElementById('download-image');
+            if (downloadBtn) {
+                downloadBtn.addEventListener('click', () => this.downloadStoryImage());
+            }
+        }
+        
+        openShareModal(button: Element) {
+            const modal = document.getElementById('share-modal');
+            if (!modal) return;
+            
+            // Get runner data from button
+            const runnerName = button.getAttribute('data-runner-name') || '';
+            const runnerDistance = button.getAttribute('data-runner-distance') || '';
+            const runnerLocation = button.getAttribute('data-runner-location') || '';
+            const runnerAvatar = button.getAttribute('data-runner-avatar') || '';
+            
+            // Store data for sharing
+            (window as any).currentRunnerData = {
+                name: runnerName,
+                distance: runnerDistance,
+                location: runnerLocation,
+                avatar: runnerAvatar
+            };
+            
+            // Show modal with animation
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('scale-95', 'opacity-0');
+            }, 10);
+        }
+        
+        closeShareModal() {
+            const modal = document.getElementById('share-modal');
+            if (!modal) return;
+            
+            modal.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+        
+        async shareToInstagram() {
+            const data = (window as any).currentRunnerData;
+            if (!data) return;
+            
+            this.showToast('Generando imagen para Instagram...');
+            
+            try {
+                const imageBlob = await this.createStoryImage(data);
+                
+                // Try to share via Web Share API if available
+                if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([imageBlob], 'runner-story.png', { type: 'image/png' })] })) {
+                    await navigator.share({
+                        title: `${data.name} - 15KURRAO`,
+                        text: `🏃‍♂️ ¡Mira este corredor! ${data.name} se inscribió para la carrera de ${data.distance} desde ${data.location}. ¡Únete a la 15KURRAO! 🏁`,
+                        files: [new File([imageBlob], 'runner-story.png', { type: 'image/png' })]
+                    });
+                } else {
+                    // Fallback: Download the image
+                    this.downloadImageBlob(imageBlob, `${data.name}-15kurrao-story.png`);
+                    this.showToast('Imagen descargada. Compártela en Instagram Stories manualmente.');
+                }
+                
+                this.closeShareModal();
+            } catch (error) {
+                console.error('Error creating Instagram story:', error);
+                this.showToast('Error al generar la imagen. Inténtalo de nuevo.');
+            }
+        }
+        
+        shareToWhatsApp() {
+            const data = (window as any).currentRunnerData;
+            if (!data) return;
+            
+            const text = `🏃‍♂️ ¡Mira este corredor!\n\n${data.name} se inscribió para la carrera de ${data.distance} desde ${data.location}.\n\n¡Únete a la 15KURRAO! 🏁`;
+            const url = encodeURIComponent(window.location.href);
+            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}%20${url}`;
+            
+            window.open(whatsappUrl, '_blank');
+            this.closeShareModal();
+            this.showToast('Compartiendo en WhatsApp...');
+        }
+        
+        async downloadStoryImage() {
+            const data = (window as any).currentRunnerData;
+            if (!data) return;
+            
+            this.showToast('Generando imagen...');
+            
+            try {
+                const imageBlob = await this.createStoryImage(data);
+                this.downloadImageBlob(imageBlob, `${data.name}-15kurrao-story.png`);
+                this.showToast('¡Imagen descargada exitosamente!');
+                this.closeShareModal();
+            } catch (error) {
+                console.error('Error creating story image:', error);
+                this.showToast('Error al generar la imagen. Inténtalo de nuevo.');
+            }
+        }
+        
+        downloadImageBlob(blob: Blob, filename: string) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        async createStoryImage(data: any): Promise<Blob> {
+            const canvas = document.getElementById('story-canvas') as HTMLCanvasElement;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) throw new Error('Canvas context not available');
+            
+            // Instagram Story dimensions (9:16 aspect ratio)
+            canvas.width = 1080;
+            canvas.height = 1920;
+            
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, 0, 1920);
+            gradient.addColorStop(0, '#1e293b');
+            gradient.addColorStop(0.5, '#334155');
+            gradient.addColorStop(1, '#0f172a');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 1080, 1920);
+            
+            // Add decorative elements
+            ctx.fillStyle = 'rgba(59, 130, 246, 0.1)';
+            ctx.beginPath();
+            ctx.arc(200, 300, 150, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            ctx.fillStyle = 'rgba(236, 72, 153, 0.1)';
+            ctx.beginPath();
+            ctx.arc(880, 1600, 200, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Load and draw runner image
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                
+                img.onload = () => {
+                    try {
+                                                 // Draw runner image (circular with border)
+                         const centerX = 540;
+                         const centerY = 700;
+                         const imageRadius = 180;
+                         
+                         // Draw border
+                         ctx.beginPath();
+                         ctx.arc(centerX, centerY, imageRadius + 8, 0, 2 * Math.PI);
+                         ctx.fillStyle = '#3b82f6';
+                         ctx.fill();
+                         
+                         // Draw image
+                         ctx.save();
+                         ctx.beginPath();
+                         ctx.arc(centerX, centerY, imageRadius, 0, 2 * Math.PI);
+                         ctx.clip();
+                         
+                         // Calculate image dimensions to maintain aspect ratio
+                         const aspectRatio = img.width / img.height;
+                         let drawWidth = imageRadius * 2;
+                         let drawHeight = imageRadius * 2;
+                         
+                         if (aspectRatio > 1) {
+                             drawHeight = drawWidth / aspectRatio;
+                         } else {
+                             drawWidth = drawHeight * aspectRatio;
+                         }
+                         
+                         ctx.drawImage(img, centerX - drawWidth/2, centerY - drawHeight/2, drawWidth, drawHeight);
+                         ctx.restore();
+                        
+                        // Add runner name
+                        ctx.fillStyle = '#ffffff';
+                        ctx.font = 'bold 56px system-ui, -apple-system, sans-serif';
+                        ctx.textAlign = 'center';
+                        ctx.fillText(data.name, 540, 1000);
+                        
+                                                 // Add distance badge
+                         const badgeY = 1080;
+                         ctx.fillStyle = data.distance === '15K' ? '#3b82f6' : '#f97316';
+                         
+                         // Draw rounded rectangle manually (fallback for browsers without roundRect)
+                         const badgeX = 440;
+                         const badgeWidth = 200;
+                         const badgeHeight = 70;
+                         const radius = 35;
+                         
+                         ctx.beginPath();
+                         ctx.moveTo(badgeX + radius, badgeY - 35);
+                         ctx.lineTo(badgeX + badgeWidth - radius, badgeY - 35);
+                         ctx.quadraticCurveTo(badgeX + badgeWidth, badgeY - 35, badgeX + badgeWidth, badgeY - 35 + radius);
+                         ctx.lineTo(badgeX + badgeWidth, badgeY - 35 + badgeHeight - radius);
+                         ctx.quadraticCurveTo(badgeX + badgeWidth, badgeY - 35 + badgeHeight, badgeX + badgeWidth - radius, badgeY - 35 + badgeHeight);
+                         ctx.lineTo(badgeX + radius, badgeY - 35 + badgeHeight);
+                         ctx.quadraticCurveTo(badgeX, badgeY - 35 + badgeHeight, badgeX, badgeY - 35 + badgeHeight - radius);
+                         ctx.lineTo(badgeX, badgeY - 35 + radius);
+                         ctx.quadraticCurveTo(badgeX, badgeY - 35, badgeX + radius, badgeY - 35);
+                         ctx.closePath();
+                         ctx.fill();
+                         
+                         ctx.fillStyle = '#ffffff';
+                         ctx.font = 'bold 40px system-ui, -apple-system, sans-serif';
+                         ctx.fillText(data.distance, 540, badgeY + 15);
+                        
+                        // Add location
+                        ctx.fillStyle = '#94a3b8';
+                        ctx.font = '32px system-ui, -apple-system, sans-serif';
+                        ctx.fillText(`📍 ${data.location}`, 540, 1180);
+                        
+                        // Add event title
+                        ctx.fillStyle = '#ffffff';
+                        ctx.font = 'bold 72px system-ui, -apple-system, sans-serif';
+                        ctx.fillText('15KURRAO', 540, 1350);
+                        
+                        // Add subtitle
+                        ctx.fillStyle = '#3b82f6';
+                        ctx.font = 'bold 36px system-ui, -apple-system, sans-serif';
+                        ctx.fillText('¡Únete a la carrera!', 540, 1420);
+                        
+                        // Add running emojis
+                        ctx.font = '60px system-ui';
+                        ctx.fillText('🏃‍♂️ 🏁 🏃‍♀️', 540, 1550);
+                        
+                        // Add website/hashtag
+                        ctx.fillStyle = '#64748b';
+                        ctx.font = '28px system-ui, -apple-system, sans-serif';
+                        ctx.fillText('#15KURRAO #Urrao #Antioquia', 540, 1650);
+                        
+                        // Convert to blob
+                        canvas.toBlob((blob) => {
+                            if (blob) {
+                                resolve(blob);
+                            } else {
+                                reject(new Error('Failed to create blob'));
+                            }
+                        }, 'image/png', 0.95);
+                        
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+                
+                img.onerror = () => {
+                    // If image fails to load, create story without user image
+                    try {
+                        // Clear canvas and redraw without image
+                        ctx.clearRect(0, 0, 1080, 1920);
+                        
+                        // Background gradient
+                        const gradient = ctx.createLinearGradient(0, 0, 0, 1920);
+                        gradient.addColorStop(0, '#1e293b');
+                        gradient.addColorStop(0.5, '#334155');
+                        gradient.addColorStop(1, '#0f172a');
+                        ctx.fillStyle = gradient;
+                        ctx.fillRect(0, 0, 1080, 1920);
+                        
+                                                 // Add decorative circle instead of image
+                         const fallbackCenterX = 540;
+                         const fallbackCenterY = 700;
+                         const fallbackImageRadius = 180;
+                         
+                         ctx.fillStyle = '#3b82f6';
+                         ctx.beginPath();
+                         ctx.arc(fallbackCenterX, fallbackCenterY, fallbackImageRadius, 0, 2 * Math.PI);
+                         ctx.fill();
+                         
+                                                  // Add runner emoji in center
+                         ctx.font = '120px system-ui';
+                         ctx.fillText('🏃‍♂️', fallbackCenterX, fallbackCenterY + 40);
+                         
+                         // Add rest of the content
+                         ctx.fillStyle = '#ffffff';
+                         ctx.font = 'bold 56px system-ui, -apple-system, sans-serif';
+                         ctx.textAlign = 'center';
+                         ctx.fillText(data.name, 540, 1000);
+                         
+                         // Add distance badge (same as above)
+                         const fallbackBadgeY = 1080;
+                         ctx.fillStyle = data.distance === '15K' ? '#3b82f6' : '#f97316';
+                         
+                         // Draw rounded rectangle manually
+                         const fallbackBadgeX = 440;
+                         const fallbackBadgeWidth = 200;
+                         const fallbackBadgeHeight = 70;
+                         const fallbackBadgeRadius = 35;
+                         
+                         ctx.beginPath();
+                         ctx.moveTo(fallbackBadgeX + fallbackBadgeRadius, fallbackBadgeY - 35);
+                         ctx.lineTo(fallbackBadgeX + fallbackBadgeWidth - fallbackBadgeRadius, fallbackBadgeY - 35);
+                         ctx.quadraticCurveTo(fallbackBadgeX + fallbackBadgeWidth, fallbackBadgeY - 35, fallbackBadgeX + fallbackBadgeWidth, fallbackBadgeY - 35 + fallbackBadgeRadius);
+                         ctx.lineTo(fallbackBadgeX + fallbackBadgeWidth, fallbackBadgeY - 35 + fallbackBadgeHeight - fallbackBadgeRadius);
+                         ctx.quadraticCurveTo(fallbackBadgeX + fallbackBadgeWidth, fallbackBadgeY - 35 + fallbackBadgeHeight, fallbackBadgeX + fallbackBadgeWidth - fallbackBadgeRadius, fallbackBadgeY - 35 + fallbackBadgeHeight);
+                         ctx.lineTo(fallbackBadgeX + fallbackBadgeRadius, fallbackBadgeY - 35 + fallbackBadgeHeight);
+                         ctx.quadraticCurveTo(fallbackBadgeX, fallbackBadgeY - 35 + fallbackBadgeHeight, fallbackBadgeX, fallbackBadgeY - 35 + fallbackBadgeHeight - fallbackBadgeRadius);
+                         ctx.lineTo(fallbackBadgeX, fallbackBadgeY - 35 + fallbackBadgeRadius);
+                         ctx.quadraticCurveTo(fallbackBadgeX, fallbackBadgeY - 35, fallbackBadgeX + fallbackBadgeRadius, fallbackBadgeY - 35);
+                         ctx.closePath();
+                         ctx.fill();
+                         
+                         ctx.fillStyle = '#ffffff';
+                         ctx.font = 'bold 40px system-ui, -apple-system, sans-serif';
+                         ctx.fillText(data.distance, 540, fallbackBadgeY + 15);
+                         
+                         // Add location
+                         ctx.fillStyle = '#94a3b8';
+                         ctx.font = '32px system-ui, -apple-system, sans-serif';
+                         ctx.fillText(`📍 ${data.location}`, 540, 1180);
+                         
+                         // Add event title
+                         ctx.fillStyle = '#ffffff';
+                         ctx.font = 'bold 72px system-ui, -apple-system, sans-serif';
+                         ctx.fillText('15KURRAO', 540, 1350);
+                         
+                         // Add subtitle
+                         ctx.fillStyle = '#3b82f6';
+                         ctx.font = 'bold 36px system-ui, -apple-system, sans-serif';
+                         ctx.fillText('¡Únete a la carrera!', 540, 1420);
+                         
+                         // Add running emojis
+                         ctx.font = '60px system-ui';
+                         ctx.fillText('🏃‍♂️ 🏁 🏃‍♀️', 540, 1550);
+                         
+                         // Add website/hashtag
+                         ctx.fillStyle = '#64748b';
+                         ctx.font = '28px system-ui, -apple-system, sans-serif';
+                         ctx.fillText('#15KURRAO #Urrao #Antioquia', 540, 1650);
+                        
+                        canvas.toBlob((blob) => {
+                            if (blob) {
+                                resolve(blob);
+                            } else {
+                                reject(new Error('Failed to create blob'));
+                            }
+                        }, 'image/png', 0.95);
+                        
+                    } catch (fallbackError) {
+                        reject(fallbackError);
+                    }
+                };
+                
+                img.src = data.avatar;
+            });
+        }
+        
+        handleCardClick(card: Element) {
+            const runnerId = card.getAttribute('data-runner-id');
+            const runnerName = card.querySelector('h3')?.textContent || 'corredor';
+            
+            // You can implement a modal or navigation here
+            console.log(`Clicked runner ${runnerId}: ${runnerName}`);
+            
+            // Show a toast notification
+            this.showToast(`Ver detalles de ${runnerName}`);
+        }
+        
+        showToast(message: string) {
+            // Create a simple toast notification
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-4 right-4 bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl px-4 py-3 text-white text-sm z-50 transform translate-y-full transition-transform duration-300';
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            // Animate in
+            setTimeout(() => {
+                toast.classList.remove('translate-y-full');
+            }, 100);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.classList.add('translate-y-full');
+                setTimeout(() => {
+                    if (document.body.contains(toast)) {
+                        document.body.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
+        }
+    }
+    
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+        new RunnerCard();
+    });
+</script>

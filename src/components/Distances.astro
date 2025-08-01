@@ -4,97 +4,450 @@ import { Icon } from "astro-icon/components";
 
 <section
     id="distances"
-    class="flex flex-col justify-center items-center"
+    class="relative min-h-screen py-10 bg-gradient-to-br from-primary-900 via-primary-500 to-secondary-500 overflow-hidden"
 >
-    <div class="w-full py-6 md:py-10">
-        <h1
-            class="font-nova text-5xl text-center py-6 md:text-6xl text-white z-10"
+    <!-- Animated background elements -->
+    <div class="absolute inset-0 opacity-10">
+        <div
+            class="absolute top-20 left-10 w-72 h-72 bg-orange-500 rounded-full mix-blend-screen filter blur-xl animate-pulse"
         >
-            Distancias
-        </h1>
+        </div>
+        <div
+            class="absolute top-40 right-20 w-96 h-96 bg-blue-500 rounded-full mix-blend-screen filter blur-xl animate-pulse"
+            style="animation-delay: 2s;"
+        >
+        </div>
+        <div
+            class="absolute bottom-20 left-1/3 w-80 h-80 bg-purple-500 rounded-full mix-blend-screen filter blur-xl animate-pulse"
+            style="animation-delay: 4s;"
+        >
+        </div>
     </div>
 
-    <div class="w-full flex flex-col md:flex-row justify-center items-center">
-        <!-- 10K Section -->
-        <div
-            class="w-full md:w-1/2 h-ful p-4 md:py-6 md:px-12 relative overflow-hidden"
-        >
-            <!-- Background Image -->
-            <div class="absolute inset-0 bg-cover bg-center opacity-30"></div>
+    <!-- Grid pattern overlay -->
+    <div
+        class="absolute inset-0 opacity-5"
+        style="background-image: radial-gradient(circle, #ffffff 1px, transparent 1px); background-size: 50px 50px;"
+    >
+    </div>
 
-            <!-- Content -->
-            <div class="relative z-10">
-                <h1 class="font-nova text-5xl md:text-6xl text-white mb-6 text-center md:text-left">
-                    10K
-                </h1>
-                <p
-                    class="text-white text-lg md:text-xl mb-4 md:mb-8 leading-relaxed bg-black/10 md:py-3 md:px-0 p-3 rounded-md"
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header Section -->
+        <div class="text-center mb-16">
+            <div
+                class="inline-flex items-center px-4 py-2 rounded-full bg-secondary-500/10 border border-secondary-500/20 mb-6"
+            >
+                <Icon
+                    name="tabler/hand-fist"
+                    class="w-5 h-5 text-secondary-400 mr-2"
+                />
+                <span class="text-secondary-400 text-sm font-medium"
+                    >Elige tu desafío</span
                 >
-                    ¿Estás listo para tu primera gran aventura? Los 10K son el
-                    punto perfecto para desafiarte a ti mismo. No importa si
-                    eres principiante o corredor experimentado, esta distancia
-                    te permitirá descubrir tu fortaleza interior mientras te
-                    conectas con la belleza natural de Urrao. ¡Da el primer paso
-                    hacia tu meta!
-                </p>
-                <div class="flex justify-center md:justify-start">
-                    <a
-                        href="https://www.strava.com/routes/3258282215372496568"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="inline-flex items-center px-5 py-3 bg-[#FC4C02] text-white font-semibold rounded-md hover:bg-[#E34100] transition-colors"
+            </div>
+            <h1
+                class="font-nova text-5xl md:text-7xl lg:text-8xl text-white mb-6 tracking-tight"
+            >
+                <span
+                    class="bg-gradient-to-r from-secondary-400 via-secondary-500 to-secondary-400 bg-clip-text text-transparent"
+                >
+                    Distancias
+                </span>
+            </h1>
+            <p class="text-white text-xl max-w-2xl mx-auto leading-relaxed">
+                Descubre las rutas más espectaculares de Urrao. Cada kilómetro
+                es una nueva aventura esperándote.
+            </p>
+        </div>
+
+        <!-- Distance Cards -->
+        <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
+            <!-- 10K Card -->
+            <div class="group relative">
+                <!-- Card Background with Glassmorphism -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-br from-white/20 to-white/10 backdrop-blur-lg rounded-3xl border border-white/10 transition-all duration-500 group-hover:border-orange-500/30 group-hover:shadow-2xl group-hover:shadow-orange-500/10"
+                >
+                </div>
+
+                <!-- Glow effect on hover -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-orange-500/0 group-hover:from-orange-500/5 group-hover:to-transparent rounded-3xl transition-all duration-500"
+                >
+                </div>
+
+                <div class="relative p-8 lg:p-10">
+                    <!-- Distance Badge -->
+                    <div class="flex items-center justify-between mb-8">
+                        <div class="flex items-center space-x-3">
+                            <div
+                                class="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg"
+                            >
+                                <Icon
+                                    name="tabler/sneaker-move"
+                                    class="size-8 text-white"
+                                />
+                            </div>
+                            <div>
+                                <h1
+                                    class="font-nova text-4xl lg:text-5xl text-white font-bold"
+                                >
+                                    10K
+                                </h1>
+
+                                <!-- <p class="text-orange-400 text-sm font-medium">
+                                    Corredor
+                                </p> -->
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-white/60 text-sm">
+                                Tiempo estimado
+                            </div>
+                            <div class="text-white text-lg font-semibold">
+                                45-60 min
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-8">
+                        <p class="text-white text-lg leading-relaxed mb-4">
+                            Perfecto para comenzar tu aventura en Urrao. Una
+                            ruta diseñada para disfrutar de paisajes increíbles
+                            mientras te desafías a ti mismo.
+                        </p>
+                        <!-- <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-green-500/20 text-green-400 text-sm rounded-full border border-green-500/30">Principiante</span>
+                            <span class="px-3 py-1 bg-blue-500/20 text-blue-400 text-sm rounded-full border border-blue-500/30">Paisajes</span>
+                            <span class="px-3 py-1 bg-purple-500/20 text-purple-400 text-sm rounded-full border border-purple-500/30">Montaña</span>
+                        </div> -->
+                    </div>
+
+                    <!-- Strava Embed -->
+                    <div
+                        class="mb-8 overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur-sm"
                     >
-                        <span class="mr-2">
+                        <div class="p-4 border-b border-white/10">
+                            <div class="flex items-center space-x-2">
+                                <Icon
+                                    name="tabler/map-pin"
+                                    class="w-4 h-4 text-orange-400"
+                                />
+                                <span class="text-white text-sm font-medium"
+                                    >Ruta 10K - Urrao</span
+                                >
+                            </div>
+                        </div>
+                        <div class="p-1">
+                            <div
+                                class="strava-embed-placeholder w-full"
+                                data-embed-type="route"
+                                data-embed-id="3258282215372496568"
+                                data-hide-elevation="false"
+                                data-style="standard"
+                                data-map-hash="11.94/6.29627/-76.13291"
+                                data-club-id="1292152"
+                                data-from-embed="true"
+                            >
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CTA Button -->
+                    <div class="flex space-x-4">
+                        <a
+                            href="https://www.strava.com/routes/3258282215372496568"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="flex-1 group/btn relative overflow-hidden bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg hover:shadow-orange-500/25"
+                        >
+                            <div
+                                class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700"
+                            >
+                            </div>
+                            <div
+                                class="relative flex items-center justify-center space-x-2"
+                            >
+                                <Icon
+                                    name="tabler/strava-icon"
+                                    class="size-6"
+                                />
+                                <span>Ver en Strava</span>
+                            </div>
+                        </a>
+                        <button
+                            class="p-4 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 rounded-xl transition-all duration-300 group/share"
+                        >
                             <Icon
-                                name="tabler/strava-icon"
-                                class="mr-1 h-[1.5em] w-[1.5em] text-white"
+                                name="tabler/share"
+                                class="size-6 text-white group-hover/share:scale-110 transition-transform duration-300"
                             />
-                        </span>
-                        Ver ruta en Strava
-                    </a>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 15K Card -->
+            <div class="group relative">
+                <!-- Card Background with Glassmorphism -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-3xl border border-white/10 transition-all duration-500 group-hover:border-blue-500/30 group-hover:shadow-2xl group-hover:shadow-blue-500/10"
+                >
+                </div>
+
+                <!-- Glow effect on hover -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-br from-blue-500/0 to-blue-500/0 group-hover:from-blue-500/5 group-hover:to-transparent rounded-3xl transition-all duration-500"
+                >
+                </div>
+
+                <div class="relative p-8 lg:p-10">
+                    <!-- Distance Badge -->
+                    <div class="flex items-center justify-between mb-8">
+                        <div class="flex items-center space-x-3">
+                            <div
+                                class="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg"
+                            >
+                                <Icon
+                                    name="tabler/flame"
+                                    class="size-8 text-white"
+                                />
+                            </div>
+                            <div>
+                                <h1
+                                    class="font-nova text-4xl lg:text-5xl text-white font-bold"
+                                >
+                                    15K
+                                </h1>
+
+                                <!-- <p class="text-orange-400 text-sm font-medium">
+                                    Corredor
+                                </p> -->
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-white/60 text-sm">
+                                Tiempo estimado
+                            </div>
+                            <div class="text-white text-lg font-semibold">
+                                70-90 min
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-8">
+                        <p class="text-white text-lg leading-relaxed mb-4">
+                            El reto perfecto para corredores experimentados. Una ruta que combina desafío físico con los paisajes más espectaculares de la región.
+                        </p>
+                        <!-- <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-orange-500/20 text-orange-400 text-sm rounded-full border border-orange-500/30">Intermedio</span>
+                            <span class="px-3 py-1 bg-red-500/20 text-red-400 text-sm rounded-full border border-red-500/30">Desafío</span>
+                            <span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 text-sm rounded-full border border-emerald-500/30">Naturaleza</span>
+                        </div> -->
+                    </div>
+
+                    <!-- Strava Embed -->
+                    <div
+                        class="mb-8 overflow-hidden rounded-2xl border border-white/10 bg-black/20 backdrop-blur-sm"
+                    >
+                        <div class="p-4 border-b border-white/10">
+                            <div class="flex items-center space-x-2">
+                                <Icon
+                                    name="tabler/map-pin"
+                                    class="w-4 h-4 text-blue-400"
+                                />
+                                <span class="text-white text-sm font-medium"
+                                    >Ruta 15K - Urrao</span
+                                >
+                            </div>
+                        </div>
+                        <div class="p-1">
+                            <div
+                                class="strava-embed-placeholder w-full"
+                                data-embed-type="route"
+                                data-embed-id="3258238777102863098"
+                                data-hide-elevation="false"
+                                data-style="standard"
+                                data-map-hash="11.31/6.2849/-76.1316"
+                                data-club-id="1292152"
+                                data-from-embed="true"
+                            >
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CTA Button -->
+                    <div class="flex space-x-4">
+                        <a
+                            href="https://www.strava.com/routes/3258238777102863098"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="flex-1 group/btn relative overflow-hidden bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg hover:shadow-primary-500/25"
+                        >
+                            <div
+                                class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700"
+                            >
+                            </div>
+                            <div
+                                class="relative flex items-center justify-center space-x-2"
+                            >
+                                <Icon name="tabler/strava-icon" class="size-6" />
+                                <span>Ver en Strava</span>
+                            </div>
+                        </a>
+                        <button
+                            class="p-4 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 rounded-xl transition-all duration-300 group/share"
+                        >
+                            <Icon
+                                name="tabler/share"
+                                class="size-6 text-white group-hover/share:scale-110 transition-transform duration-300"
+                            />
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- 15K Section -->
-        <div
-            class="w-full md:w-1/2 py-10 h-ful p-4 md:py-6 md:px-12 relative overflow-hidden"
-        >
-            <!-- Background Image -->
-            <div class="absolute inset-0 bg-cover bg-center opacity-30"></div>
-
-            <!-- Content -->
-            <div class="relative z-10">
-                <h1 class="font-nova text-5xl md:text-6xl text-white mb-6 text-center md:text-left">
-                    15K
-                </h1>
-                <p
-                    class="text-white text-lg md:text-xl mb-4 md:mb-8 leading-relaxed bg-black/10 md:py-3 md:px-0 p-3 rounded-md"
-                >
-                    ¿Listo para conquistar nuestra prueba reina? Los 15K te
-                    llevan a una experiencia única. Esta distancia, diseñada
-                    para aquellos que buscan ir más allá, combina el desafío
-                    físico con paisajes espectaculares que solo Urrao puede
-                    ofrecer. ¡Atrévete a ser parte de esta aventura épica y
-                    demuestra de qué estás hecho!
-                </p>
-                <div class="flex justify-center md:justify-start">
-                <a
-                    href="https://www.strava.com/routes/3258238777102863098"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="inline-flex items-center px-5 py-3 bg-[#FC4C02] text-white font-semibold rounded-md hover:bg-[#E34100] transition-colors"
-                >
-                    <span class="mr-2">
-                        <Icon
-                            name="tabler/strava-icon"
-                            class="mr-1 h-[1.5em] w-[1.5em] text-white"
-                        />
-                        </span>
-                        Ver ruta en Strava
-                    </a>
+        <!-- Stats Footer -->
+        <!-- <div class="mt-20 text-center">
+            <div
+                class="inline-flex items-center space-x-8 px-8 py-4 bg-white/5 backdrop-blur-lg rounded-full border border-white/10"
+            >
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-white">500+</div>
+                    <div class="text-sm text-slate-400">Participantes</div>
+                </div>
+                <div class="w-px h-8 bg-white/20"></div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-white">25km</div>
+                    <div class="text-sm text-slate-400">Total de rutas</div>
+                </div>
+                <div class="w-px h-8 bg-white/20"></div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-white">4.8★</div>
+                    <div class="text-sm text-slate-400">Calificación</div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </section>
+
+<style>
+    @keyframes float {
+        0%,
+        100% {
+            transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+            transform: translateY(-20px) rotate(5deg);
+        }
+    }
+
+    .animate-float {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    /* Custom scrollbar for embedded content */
+    :global(.strava-embed-placeholder) {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+</style>
+
+<script>
+    // Enhanced Strava embed loading with error handling
+    function loadStravaEmbeds() {
+        if (typeof window !== "undefined") {
+            // Check if script already exists
+            const existingScript = document.querySelector(
+                'script[src="https://strava-embeds.com/embed.js"]',
+            );
+            if (existingScript) {
+                console.log("Strava embeds script already loaded");
+                return;
+            }
+
+            // Create script element
+            const script = document.createElement("script");
+            script.src = "https://strava-embeds.com/embed.js";
+            script.async = true;
+
+            // Add error handling
+            script.onerror = () => {
+                console.warn("Failed to load Strava embeds script");
+                // Fallback: show links to routes instead
+                const placeholders = document.querySelectorAll(
+                    ".strava-embed-placeholder",
+                );
+                placeholders.forEach((placeholder) => {
+                    const routeId = placeholder.getAttribute("data-embed-id");
+                    placeholder.innerHTML = `
+                        <div class="p-4 text-center bg-slate-800/50 rounded-lg border border-slate-700">
+                            <p class="text-slate-300 mb-3">Vista previa no disponible</p>
+                            <a href="https://www.strava.com/routes/${routeId}" 
+                               target="_blank" 
+                               class="inline-flex items-center px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm transition-colors">
+                                Ver ruta completa
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    `;
+                });
+            };
+
+            // Add success handler
+            script.onload = () => {
+                console.log("Strava embeds script loaded successfully");
+
+                // Add loading indicators
+                const placeholders = document.querySelectorAll(
+                    ".strava-embed-placeholder",
+                );
+                placeholders.forEach((placeholder) => {
+                    if (!placeholder.innerHTML.trim()) {
+                        placeholder.innerHTML = `
+                            <div class="flex items-center justify-center p-8">
+                                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+                                <span class="ml-3 text-slate-400">Cargando mapa...</span>
+                            </div>
+                        `;
+                    }
+                });
+            };
+
+            // Add to head
+            document.head.appendChild(script);
+        }
+    }
+
+    // Load when DOM is ready
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", loadStravaEmbeds);
+    } else {
+        loadStravaEmbeds();
+    }
+
+    // Add intersection observer for performance
+    if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        // entry.target.classList.add('animate-float');
+                    }
+                });
+            },
+            { threshold: 0.1 },
+        );
+
+        // Observe cards for animation
+        document.addEventListener("DOMContentLoaded", () => {
+            const cards = document.querySelectorAll(".group");
+            cards.forEach((card) => observer.observe(card));
+        });
+    }
+</script>

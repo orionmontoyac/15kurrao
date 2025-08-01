@@ -1,0 +1,342 @@
+---
+import { Icon } from "astro-icon/components";
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer
+    id="footer"
+    class="relative py-16 bg-gradient-to-br from-primary-900 via-primary-800 to-primary-900 overflow-hidden"
+>
+    <!-- Animated background elements -->
+    <div class="absolute inset-0 opacity-10">
+        <div
+            class="absolute top-10 left-10 w-64 h-64 bg-secondary-500 rounded-full mix-blend-screen filter blur-xl animate-pulse"
+            style="animation-delay: 1s;"
+        >
+        </div>
+        <div
+            class="absolute bottom-20 right-20 w-80 h-80 bg-primary-500 rounded-full mix-blend-screen filter blur-xl animate-pulse"
+            style="animation-delay: 3s;"
+        >
+        </div>
+        <div
+            class="absolute top-1/2 left-1/3 w-72 h-72 bg-emerald-500 rounded-full mix-blend-screen filter blur-xl animate-pulse"
+            style="animation-delay: 5s;"
+        >
+        </div>
+    </div>
+
+    <!-- Grid pattern overlay -->
+    <div
+        class="absolute inset-0 opacity-5"
+        style="background-image: radial-gradient(circle, #ffffff 1px, transparent 1px); background-size: 50px 50px;"
+    >
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Main Footer Content -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+            <!-- Event Info -->
+            <div class="space-y-6">
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="w-20 h-20 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-xl flex items-center justify-center shadow-lg"
+                    >
+                        <Icon
+                            name="tabler/15KURRAO"
+                            class="size-20 text-white"
+                        />
+                    </div>
+                    <div>
+                        <h1 class="font-nova text-2xl text-white font-bold">
+                            15K URRAO
+                        </h1>
+                        <p class="text-secondary-400 text-sm">
+                            Carrera 2025
+                        </p>
+                    </div>
+                </div>
+                <p class="text-slate-300 text-sm leading-relaxed">
+                    La experiencia deportiva más emocionante en Urrao, Antioquia. 
+                    Disfruta de paisajes únicos mientras te desafías a ti mismo.
+                </p>
+                <div class="flex space-x-4">
+                    <!-- <a
+                        href="#"
+                        class="group p-3 bg-white/10 hover:bg-secondary-500/20 border border-white/20 hover:border-secondary-500/30 rounded-xl transition-all duration-300"
+                    >
+                        <Icon
+                            name="tabler/brand-facebook"
+                            class="size-5 text-white group-hover:scale-110 transition-transform duration-300"
+                        />
+                    </a>
+                    <a
+                        href="#"
+                        class="group p-3 bg-white/10 hover:bg-secondary-500/20 border border-white/20 hover:border-secondary-500/30 rounded-xl transition-all duration-300"
+                    >
+                        <Icon
+                            name="tabler/brand-x"
+                            class="size-5 text-white group-hover:scale-110 transition-transform duration-300"
+                        />
+                    </a> -->
+                    <a
+                        href="https://www.instagram.com/15kurrao/"
+                        class="group p-3 bg-white/10 hover:bg-secondary-500/20 border border-white/20 hover:border-secondary-500/30 rounded-xl transition-all duration-300"
+                    >
+                        <Icon
+                            name="tabler/instagram-logo"
+                            class="size-5 text-white group-hover:scale-110 transition-transform duration-300"
+                        />
+                    </a>
+                    <!-- <a
+                        href="#"
+                        class="group p-3 bg-white/10 hover:bg-secondary-500/20 border border-white/20 hover:border-secondary-500/30 rounded-xl transition-all duration-300"
+                    >
+                        <Icon
+                            name="tabler/whatsapp-logo"
+                            class="size-5 text-white group-hover:scale-110 transition-transform duration-300"
+                        />
+                    </a> -->
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="space-y-6">
+                <h3 class="text-white text-lg font-semibold mb-4">
+                    Enlaces Rápidos
+                </h3>
+                <div class="space-y-3">
+                    <a
+                        href="#distances"
+                        class="group flex items-center space-x-3 text-slate-300 hover:text-white transition-colors duration-300"
+                    >
+                        <div class="w-2 h-2 bg-secondary-500 rounded-full group-hover:scale-150 transition-transform duration-300"></div>
+                        <span>Distancias</span>
+                    </a>
+                    <a
+                        href="#sponsors"
+                        class="group flex items-center space-x-3 text-slate-300 hover:text-white transition-colors duration-300"
+                    >
+                        <div class="w-2 h-2 bg-secondary-500 rounded-full group-hover:scale-150 transition-transform duration-300"></div>
+                        <span>Patrocinadores</span>
+                    </a>
+                    <a
+                        href="#about"
+                        class="group flex items-center space-x-3 text-slate-300 hover:text-white transition-colors duration-300"
+                    >
+                        <div class="w-2 h-2 bg-secondary-500 rounded-full group-hover:scale-150 transition-transform duration-300"></div>
+                        <span>Acerca de</span>
+                    </a>
+                    <a
+                        href="#contact"
+                        class="group flex items-center space-x-3 text-slate-300 hover:text-white transition-colors duration-300"
+                    >
+                        <div class="w-2 h-2 bg-secondary-500 rounded-full group-hover:scale-150 transition-transform duration-300"></div>
+                        <span>Contacto</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Event Details -->
+            <div class="space-y-6">
+                <h3 class="text-white text-lg font-semibold mb-4">
+                    Detalles del Evento
+                </h3>
+                <div class="space-y-4">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <Icon
+                                name="tabler/calendar-dots"
+                                class="size-4 text-white"
+                            />
+                        </div>
+                        <div>
+                            <p class="text-white text-sm font-medium">Fecha</p>
+                            <p class="text-slate-300 text-sm">12 de octubre, 2025</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <Icon
+                                name="tabler/map-pin"
+                                class="size-4 text-white"
+                            />
+                        </div>
+                        <div>
+                            <p class="text-white text-sm font-medium">Ubicación</p>
+                            <p class="text-slate-300 text-sm">Urrao, Antioquia</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <Icon
+                                name="tabler/clock"
+                                class="size-4 text-white"
+                            />
+                        </div>
+                        <div>
+                            <p class="text-white text-sm font-medium">Horario</p>
+                            <p class="text-slate-300 text-sm">6:00 AM - Inicio</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="space-y-6">
+                <h3 class="text-white text-lg font-semibold mb-4">
+                    Contacto
+                </h3>
+                <div class="space-y-4">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <Icon
+                                name="tabler/mail"
+                                class="size-4 text-white"
+                            />
+                        </div>
+                        <div>
+                            <p class="text-white text-sm font-medium">Email</p>
+                            <a
+                                href="mailto:info@15kurrao.com"
+                                class="text-slate-300 text-sm hover:text-secondary-400 transition-colors duration-300"
+                            >
+                                urraorunning@gmail.com
+                            </a>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <!-- <div class="w-8 h-8 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <Icon
+                                name="tabler/phone"
+                                class="size-4 text-white"
+                            /> -->
+                        </div>
+                        <!-- <div>
+                            <p class="text-white text-sm font-medium">Teléfono</p>
+                            <a
+                                href="tel:+573001234567"
+                                class="text-slate-300 text-sm hover:text-secondary-400 transition-colors duration-300"
+                            >
+                                +57 300 123 4567
+                            </a>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 bg-gradient-to-br from-pink-500 to-pink-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <Icon
+                                name="tabler/whatsapp-logo"
+                                class="size-4 text-white"
+                            />
+                        </div>
+                        <div>
+                            <p class="text-white text-sm font-medium">WhatsApp</p>
+                            <a
+                                href="https://wa.me/573001234567"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="text-slate-300 text-sm hover:text-secondary-400 transition-colors duration-300"
+                            >
+                                +57 300 123 4567
+                            </a>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Newsletter Section -->
+        <!-- <div class="mb-12">
+            <div
+                class="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-2xl border border-white/20 p-8"
+            >
+                <div class="text-center max-w-2xl mx-auto">
+                    <div
+                        class="inline-flex items-center px-4 py-2 rounded-full bg-secondary-500/10 border border-secondary-500/20 mb-4"
+                    >
+                        <Icon
+                            name="tabler/rss"
+                            class="w-5 h-5 text-secondary-400 mr-2"
+                        />
+                        <span class="text-secondary-400 text-sm font-medium"
+                            >Mantente informado</span
+                        >
+                    </div>
+                    <h3 class="text-white text-2xl font-semibold mb-3">
+                        ¡No te pierdas nada!
+                    </h3>
+                    <p class="text-slate-300 text-sm mb-6">
+                        Suscríbete para recibir las últimas noticias, actualizaciones y ofertas especiales del evento.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                        <input
+                            type="email"
+                            placeholder="Tu email"
+                            class="flex-1 px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-secondary-500/50 focus:ring-2 focus:ring-secondary-500/20 transition-all duration-300"
+                        />
+                        <button
+                            class="group relative overflow-hidden bg-gradient-to-r from-secondary-500 to-secondary-600 hover:from-secondary-600 hover:to-secondary-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-secondary-500/25"
+                        >
+                            <div
+                                class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700"
+                            >
+                            </div>
+                            <div class="relative flex items-center space-x-2">
+                                <span>Suscribirse</span>
+                                <Icon
+                                    name="tabler/arrow-narrow-right"
+                                    class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                                />
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- Bottom Bar -->
+        <div
+            class="pt-8 border-t border-white/10"
+        >
+            <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                <div class="text-slate-400 text-sm">
+                    © {currentYear} 15K URRAO. Todos los derechos reservados.
+                </div>
+                <div class="flex items-center space-x-6 text-sm">
+                    <a
+                        href="#"
+                        class="text-slate-400 hover:text-white transition-colors duration-300"
+                    >
+                        Términos y Condiciones
+                    </a>
+                    <a
+                        href="#"
+                        class="text-slate-400 hover:text-white transition-colors duration-300"
+                    >
+                        Política de Privacidad
+                    </a>
+                    <a
+                        href="#"
+                        class="text-slate-400 hover:text-white transition-colors duration-300"
+                    >
+                        Cookies
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<style>
+    /* Enhanced glassmorphism effects */
+    .backdrop-blur-lg {
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+
+    /* Smooth scrolling for anchor links */
+    html {
+        scroll-behavior: smooth;
+    }
+</style> 

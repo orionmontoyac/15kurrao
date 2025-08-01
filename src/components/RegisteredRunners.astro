@@ -1,0 +1,342 @@
+---
+import { Icon } from "astro-icon/components";
+import RunnerCard from "./RunnerCard.astro";
+
+// Mock data for registered runners - replace with real data
+const registeredRunners: Array<{
+    id: number;
+    name: string;
+    distance: "10K" | "15K";
+    registrationTime: string;
+    timeAgo: number;
+    avatar: string;
+    location: string;
+}> = [
+    {
+        id: 1,
+        name: "María González",
+        distance: "15K",
+        registrationTime: "10 minutos atrás",
+        timeAgo: 10, // minutes
+        avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+        location: "Medellín, Antioquia"
+    },
+    {
+        id: 2,
+        name: "Carlos Rodríguez",
+        distance: "10K",
+        registrationTime: "25 minutos atrás",
+        timeAgo: 25,
+        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+        location: "Urrao, Antioquia"
+    },
+    {
+        id: 3,
+        name: "Ana Sofía López",
+        distance: "15K",
+        registrationTime: "1 hora atrás",
+        timeAgo: 60,
+        avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+        location: "Bogotá, Cundinamarca"
+    },
+    {
+        id: 4,
+        name: "Diego Martínez",
+        distance: "10K",
+        registrationTime: "1 hora atrás",
+        timeAgo: 65,
+        avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+        location: "Cali, Valle del Cauca"
+    },
+    {
+        id: 5,
+        name: "Valentina Herrera",
+        distance: "15K",
+        registrationTime: "2 horas atrás",
+        timeAgo: 120,
+        avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face",
+        location: "Pereira, Risaralda"
+    },
+    {
+        id: 6,
+        name: "Andrés Jiménez",
+        distance: "10K",
+        registrationTime: "2 horas atrás",
+        timeAgo: 125,
+        avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
+        location: "Manizales, Caldas"
+    },
+    {
+        id: 7,
+        name: "Isabella Torres",
+        distance: "15K",
+        registrationTime: "3 horas atrás",
+        timeAgo: 180,
+        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face",
+        location: "Armenia, Quindío"
+    },
+    {
+        id: 8,
+        name: "Santiago Vargas",
+        distance: "10K",
+        registrationTime: "4 horas atrás",
+        timeAgo: 240,
+        avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face",
+        location: "Ibagué, Tolima"
+    },
+    {
+        id: 9,
+        name: "Camila Silva",
+        distance: "15K",
+        registrationTime: "5 horas atrás",
+        timeAgo: 300,
+        avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop&crop=face",
+        location: "Neiva, Huila"
+    },
+    {
+        id: 10,
+        name: "Juan Pablo Ortiz",
+        distance: "10K",
+        registrationTime: "6 horas atrás",
+        timeAgo: 360,
+        avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face",
+        location: "Villavicencio, Meta"
+    }
+];
+
+// Calculate total registrations (mock data)
+const totalRegistrations = 847;
+const recentRegistrations = 23; // last 24 hours
+---
+
+<section
+    id="registered-runners"
+    class="relative py-20 bg-gradient-to-br from-primary-900 via-primary-800 to-secondary-500 overflow-hidden"
+>
+    <!-- Animated background elements -->
+    <div class="absolute inset-0 opacity-10">
+        <div
+            class="absolute top-20 right-10 w-64 h-64 bg-emerald-500 rounded-full mix-blend-screen filter blur-xl animate-pulse"
+            style="animation-delay: 1s;"
+        >
+        </div>
+        <div
+            class="absolute bottom-40 left-20 w-80 h-80 bg-purple-500 rounded-full mix-blend-screen filter blur-xl animate-pulse"
+            style="animation-delay: 3s;"
+        >
+        </div>
+        <div
+            class="absolute top-1/2 left-1/2 w-72 h-72 bg-orange-500 rounded-full mix-blend-screen filter blur-xl animate-pulse"
+            style="animation-delay: 5s;"
+        >
+        </div>
+    </div>
+
+    <!-- Grid pattern overlay -->
+    <div
+        class="absolute inset-0 opacity-5"
+        style="background-image: radial-gradient(circle, #ffffff 1px, transparent 1px); background-size: 50px 50px;"
+    >
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header Section -->
+        <div class="text-center mb-16">
+            <div
+                class="inline-flex items-center px-4 py-2 rounded-full bg-secondary-500/10 border border-secondary-500/20 mb-6"
+            >
+                <Icon
+                    name="tabler/medal"
+                    class="w-5 h-5 text-secondary-400 mr-2"
+                />
+                <span class="text-secondary-400 text-sm font-medium"
+                    >Últimos inscritos</span
+                >
+            </div>
+            <h1
+                class="font-nova text-5xl md:text-7xl lg:text-8xl text-white mb-6 tracking-tight"
+            >
+                <span
+                    class="bg-gradient-to-r from-white via-secondary-400 to-white bg-clip-text text-transparent"
+                >
+                    Corredores
+                </span>
+            </h1>
+            <p class="text-white text-xl max-w-2xl mx-auto leading-relaxed mb-8">
+                Únete a nuestra comunidad de atletas. Cada inscripción es un paso más hacia el éxito del evento.
+            </p>
+            
+            <!-- Stats Badge -->
+            <div
+                class="inline-flex items-center space-x-8 px-8 py-4 bg-white/5 backdrop-blur-lg rounded-full border border-white/10"
+            >
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white">{totalRegistrations}</div>
+                    <div class="text-sm text-slate-400">Total inscritos</div>
+                </div>
+                <div class="w-px h-8 bg-white/20"></div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white">{recentRegistrations}</div>
+                    <div class="text-sm text-slate-400">Últimas 24h</div>
+                </div>
+                <div class="w-px h-8 bg-white/20"></div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white">10</div>
+                    <div class="text-sm text-slate-400">Mostrados</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Runners Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
+            {registeredRunners.map((runner, index) => (
+                <RunnerCard
+                    id={runner.id}
+                    name={runner.name}
+                    distance={runner.distance}
+                    registrationTime={runner.registrationTime}
+                    timeAgo={runner.timeAgo}
+                    avatar={runner.avatar}
+                    location={runner.location}
+                />
+            ))}
+        </div>
+
+        <!-- View More Section -->
+        <div class="text-center">
+            <div
+                class="inline-flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6 px-8 py-6 bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10"
+            >
+                <div class="text-center md:text-left">
+                    <h3 class="text-white text-xl font-semibold mb-2">
+                        ¿Quieres ver más corredores?
+                    </h3>
+                    <p class="text-slate-400">
+                        Descubre toda nuestra comunidad de atletas inscritos
+                    </p>
+                </div>
+                <a
+                    href="#all-runners"
+                    class="group/cta relative overflow-hidden bg-gradient-to-r from-secondary-500 to-secondary-600 hover:from-secondary-600 hover:to-secondary-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-secondary-500/25"
+                >
+                    <div
+                        class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover/cta:translate-x-full transition-transform duration-700"
+                    >
+                    </div>
+                    <div class="relative flex items-center space-x-2">
+                        <span class="text-white">Ver todos</span>
+                        <Icon
+                            name="tabler/arrow-narrow-right"
+                            class="w-4 h-4 transition-transform duration-300 group-hover/cta:translate-x-1"
+                        />
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Live Registration Counter -->
+        <div class="mt-12 text-center">
+            <div
+                class="inline-flex items-center space-x-4 px-6 py-3 bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-lg rounded-full border border-green-500/30"
+            >
+                <div class="flex items-center space-x-2">
+                    <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                    <span class="text-green-400 text-sm font-medium">Registración en vivo</span>
+                </div>
+                <div class="w-px h-4 bg-green-500/30"></div>
+                <span class="text-white text-sm">
+                    Última inscripción: <span class="text-green-400 font-medium">hace 10 minutos</span>
+                </span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Enhanced glassmorphism effects */
+    .backdrop-blur-lg {
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+
+    .backdrop-blur-sm {
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+
+    /* Runner card animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .runner-card-animate {
+        animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    /* Pulse animation for online indicators */
+    @keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.5;
+        }
+    }
+
+    .animate-pulse {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+</style>
+
+<script>
+    // Live registration updates for RegisteredRunners component
+    class RegisteredRunners {
+        constructor() {
+            this.init();
+        }
+        
+        init() {
+            this.initLiveUpdates();
+        }
+        
+        initLiveUpdates() {
+            // Simulate live registration updates
+            setInterval(() => {
+                this.updateLiveCounter();
+            }, 30000); // Update every 30 seconds
+        }
+        
+        updateLiveCounter() {
+            const liveCounter = document.querySelector('.text-green-400.font-medium');
+            if (liveCounter) {
+                const times = [
+                    'hace 5 minutos',
+                    'hace 8 minutos', 
+                    'hace 12 minutos',
+                    'hace 15 minutos',
+                    'hace 20 minutos'
+                ];
+                const randomTime = times[Math.floor(Math.random() * times.length)];
+                liveCounter.textContent = randomTime;
+                
+                // Add a subtle animation
+                liveCounter.classList.add('animate-pulse');
+                setTimeout(() => {
+                    liveCounter.classList.remove('animate-pulse');
+                }, 1000);
+            }
+        }
+    }
+
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+        new RegisteredRunners();
+    });
+</script> 
