@@ -2,55 +2,18 @@
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
 
-// Import all images from the 2024-edition folder - you'll need to import them individually for Astro:assets
-// For demonstration, I'll show the structure you should follow:
-// import image1 from "/2024-edition/ESM_2415-2.jpg";
-// import image2 from "/2024-edition/ESM_2413-2.jpg";
-// etc.
+// Import all images from the 2024-edition folder using glob
+const imageFiles = await Astro.glob('/src/assets/images/2024-edition/*.{jpg,jpeg,png,webp}');
 
-// For now, using the string paths but recommend importing actual assets
-const images = [
-    {
-        src: "/2024-edition/ESM_2415-2.jpg",
-        alt: "Corredores en la línea de salida - 15K URRAO 2024",
-        description: "El momento previo al gran desafío"
-    },
-    {
-        src: "/2024-edition/ESM_2413-2.jpg", 
-        alt: "Participantes durante la carrera - 15K URRAO 2024",
-        description: "Esfuerzo y determinación en cada paso"
-    },
-    {
-        src: "/2024-edition/ESM_2408-2.jpg",
-        alt: "Paisajes de Urrao durante la carrera - 15K URRAO 2024", 
-        description: "La belleza natural que acompaña cada kilómetro"
-    },
-    {
-        src: "/2024-edition/ESM_2405-2.jpg",
-        alt: "Momento de celebración - 15K URRAO 2024",
-        description: "La alegría del logro alcanzado"
-    },
-    {
-        src: "/2024-edition/ESM_2404-2.jpg",
-        alt: "Corredores en acción - 15K URRAO 2024",
-        description: "Superación personal en cada zancada"
-    },
-    {
-        src: "/2024-edition/ESM_2402-2.jpg",
-        alt: "Ambiente de la carrera - 15K URRAO 2024",
-        description: "La comunidad unida por el deporte"
-    },
-    {
-        src: "/2024-edition/ESM_2398-2.jpg",
-        alt: "Finalistas cruzando la meta - 15K URRAO 2024",
-        description: "El momento más esperado del evento"
-    },
-    {
-        src: "/2024-edition/ESM_2396-2.jpg",
-        alt: "Premiación y reconocimientos - 15K URRAO 2024",
-        description: "Celebrando a nuestros campeones"
-    },
-];
+// Create simplified image array with just the src
+const images = imageFiles.map((file, index) => ({
+    src: file.default,
+    index: index + 1
+}));
+
+// Calculate pagination info
+const imagesPerPage = 10;
+const totalPages = Math.ceil(images.length / imagesPerPage);
 ---
 
 <section
@@ -107,29 +70,26 @@ const images = [
                 </div>
                 <div class="w-px h-6 sm:h-8 bg-white/20"></div>
                 <div class="text-center">
-                    <div class="text-lg sm:text-2xl font-bold text-white">∞</div>
-                    <div class="text-xs sm:text-sm text-slate-400">Memorias</div>
+                    <div class="text-lg sm:text-2xl font-bold text-white">{totalPages}</div>
+                    <div class="text-xs sm:text-sm text-slate-400">Páginas</div>
                 </div>
             </div>
         </div>
 
         <!-- Gallery Grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-3 md:gap-4 mb-8 sm:mb-12">
+        <div id="gallery-grid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-3 md:gap-4 mb-8 sm:mb-12">
             {images.map((image, index) => (
                 <div 
-                    class="group relative overflow-hidden rounded-xl sm:rounded-2xl cursor-pointer transform transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] touch-manipulation"
-                    data-lightbox-trigger
-                    data-image-src={image.src}
-                    data-image-alt={image.alt}
-                    data-image-description={image.description}
+                    class="group relative overflow-hidden rounded-xl sm:rounded-2xl transform transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] touch-manipulation gallery-item"
                     data-image-index={index}
+                    style={index >= imagesPerPage ? "display: none;" : ""}
                 >
                     <!-- Image container -->
                     <div class="relative aspect-square overflow-hidden rounded-xl sm:rounded-2xl">
-                        <!-- For optimal performance, use Image component when importing assets -->
-                        <img
+                        <!-- Using Image component for optimal performance -->
+                        <Image
                             src={image.src}
-                            alt={image.alt}
+                            alt={`15K URRAO 2024 - Imagen ${image.index}`}
                             class="w-full h-full object-cover transition-all duration-500 group-hover:scale-110 group-hover:rotate-1"
                             loading="lazy"
                             decoding="async"
@@ -141,10 +101,10 @@ const images = [
                                 <div class="flex items-center justify-between">
                                     <div class="flex-1 pr-2 sm:pr-3">
                                         <div class="text-white text-xs sm:text-sm font-medium mb-0.5 sm:mb-1">
-                                            #{index + 1} - 15K URRAO 2024
+                                            #{image.index} - 15K URRAO 2024
                                         </div>
                                         <div class="text-white/80 text-xs leading-relaxed line-clamp-2">
-                                            {image.description}
+                                            Memoria de la edición 2024
                                         </div>
                                     </div>
                                     <div class="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:bg-secondary-500/40 transition-colors duration-300 flex-shrink-0">
@@ -162,7 +122,7 @@ const images = [
                     <div
                         class="absolute top-2 sm:top-3 right-2 sm:right-3 w-6 h-6 sm:w-7 sm:h-7 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-full flex items-center justify-center shadow-lg z-30 transform transition-transform duration-300 group-hover:scale-110"
                     >
-                        <span class="text-white text-xs font-bold">{index + 1}</span>
+                        <span class="text-white text-xs font-bold">{image.index}</span>
                     </div>
                 </div>
             ))}
@@ -172,25 +132,34 @@ const images = [
         <div class="flex justify-center items-center space-x-3 sm:space-x-4 mb-8 sm:mb-12">
             <button
                 id="prev-batch"
-                class="flex items-center space-x-1.5 sm:space-x-2 px-3 sm:px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 rounded-xl transition-all duration-300 text-white touch-manipulation"
+                class="flex items-center space-x-1.5 sm:space-x-2 px-3 sm:px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 rounded-xl transition-all duration-300 text-white touch-manipulation disabled:opacity-50 disabled:pointer-events-none"
+                disabled
             >
                 <Icon name="tabler/caret-left" class="w-4 h-4" />
                 <span class="text-xs sm:text-sm">Anterior</span>
             </button>
             
-            <div class="flex items-center space-x-1.5 sm:space-x-2">
-                <div class="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-secondary-500 rounded-full"></div>
-                <div class="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white/30 rounded-full"></div>
-                <div class="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white/30 rounded-full"></div>
+            <div id="pagination-dots" class="flex items-center space-x-1.5 sm:space-x-2">
+                <!-- Pagination dots will be generated by JavaScript -->
             </div>
             
             <button
                 id="next-batch"
-                class="flex items-center space-x-1.5 sm:space-x-2 px-3 sm:px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 rounded-xl transition-all duration-300 text-white touch-manipulation"
+                class="flex items-center space-x-1.5 sm:space-x-2 px-3 sm:px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 rounded-xl transition-all duration-300 text-white touch-manipulation disabled:opacity-50 disabled:pointer-events-none"
             >
                 <span class="text-xs sm:text-sm">Siguiente</span>
                 <Icon name="tabler/caret-right" class="w-4 h-4" />
             </button>
+        </div>
+
+        <!-- Page Info -->
+        <div class="text-center mb-8 sm:mb-12">
+            <div class="inline-flex items-center space-x-2 px-4 py-2 bg-white/5 backdrop-blur-lg rounded-full border border-white/10">
+                <span class="text-white text-sm">Página</span>
+                <span id="current-page" class="text-secondary-400 font-bold text-sm">1</span>
+                <span class="text-white text-sm">de</span>
+                <span class="text-secondary-400 font-bold text-sm">{totalPages}</span>
+            </div>
         </div>
 
         <!-- CTA Section -->
@@ -225,69 +194,6 @@ const images = [
             </div>
         </div>
     </div>
-
-    <!-- Lightbox Modal -->
-    <div
-        id="lightbox-modal"
-        class="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl opacity-0 invisible transition-all duration-300"
-    >
-        <!-- Modal Background -->
-        <div class="absolute inset-0" id="lightbox-backdrop"></div>
-        
-        <!-- Modal Content -->
-        <div class="relative h-full flex items-center justify-center p-2 sm:p-4">
-            <!-- Close Button -->
-            <button
-                id="lightbox-close"
-                class="absolute top-2 sm:top-6 right-2 sm:right-6 z-60 w-10 h-10 sm:w-12 sm:h-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300 group touch-manipulation"
-            >
-                <Icon name="tabler/x" class="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:scale-110 transition-transform duration-300" />
-            </button>
-            
-            <!-- Navigation Buttons -->
-            <button
-                id="lightbox-prev"
-                class="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 z-60 w-10 h-10 sm:w-12 sm:h-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300 group touch-manipulation"
-            >
-                <Icon name="tabler/caret-left" class="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:scale-110 transition-transform duration-300" />
-            </button>
-            
-            <button
-                id="lightbox-next"
-                class="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 z-60 w-10 h-10 sm:w-12 sm:h-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300 group touch-manipulation"
-            >
-                <Icon name="tabler/caret-right" class="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:scale-110 transition-transform duration-300" />
-            </button>
-            
-            <!-- Image Container -->
-            <div class="max-w-full sm:max-w-5xl max-h-full flex flex-col items-center w-full">
-                <div class="relative max-w-full max-h-[60vh] sm:max-h-[70vh] overflow-hidden rounded-lg sm:rounded-2xl shadow-2xl">
-                    <img
-                        id="lightbox-image"
-                        src=""
-                        alt=""
-                        class="max-w-full max-h-full object-contain"
-                    />
-                    
-                    <!-- Loading Spinner -->
-                    <div id="lightbox-loading" class="absolute inset-0 flex items-center justify-center bg-black/50">
-                        <div class="animate-spin rounded-full h-8 w-8 sm:h-12 sm:w-12 border-b-2 border-secondary-500"></div>
-                    </div>
-                </div>
-                
-                <!-- Image Info -->
-                <div class="mt-4 sm:mt-6 text-center max-w-2xl px-4">
-                    <h3 id="lightbox-title" class="text-white text-lg sm:text-xl font-bold mb-2"></h3>
-                    <p id="lightbox-description" class="text-white/80 text-sm sm:text-lg leading-relaxed"></p>
-                    <div class="mt-3 sm:mt-4 flex items-center justify-center space-x-3 sm:space-x-4">
-                        <span id="lightbox-counter" class="text-white/60 text-xs sm:text-sm"></span>
-                        <div class="w-px h-3 sm:h-4 bg-white/20"></div>
-                        <span class="text-white/60 text-xs sm:text-sm">15K URRAO 2024</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </section>
 
 <style>
@@ -313,12 +219,6 @@ const images = [
         image-rendering: crisp-edges;
     }
 
-    /* Lightbox animations */
-    .lightbox-open {
-        opacity: 1 !important;
-        visibility: visible !important;
-    }
-
     /* Gallery item animations */
     @keyframes fadeInUp {
         from {
@@ -333,6 +233,16 @@ const images = [
 
     .gallery-item-animate {
         animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    /* Pagination dot animations */
+    .pagination-dot {
+        transition: all 0.3s ease;
+    }
+
+    .pagination-dot.active {
+        background-color: rgb(34 197 94);
+        transform: scale(1.2);
     }
 
     /* Custom scrollbar */
@@ -377,18 +287,6 @@ const images = [
         }
     }
 
-    /* Mobile lightbox improvements */
-    @media (max-width: 640px) {
-        #lightbox-modal .max-w-full {
-            width: 100%;
-            margin: 0;
-        }
-        
-        #lightbox-modal .max-h-\[60vh\] {
-            max-height: 60vh;
-        }
-    }
-
     /* Prevent zoom on input focus for iOS */
     @media screen and (-webkit-min-device-pixel-ratio: 0) {
         input, select, textarea {
@@ -398,35 +296,38 @@ const images = [
 </style>
 
 <script>
-    // Enhanced Gallery with Lightbox functionality and mobile support
-    class GalleryLightbox {
+    // Gallery with pagination functionality - Plain JavaScript
+    class Gallery {
         constructor() {
-            this.currentIndex = 0;
-            this.images = [];
-            this.modal = null;
-            this.lightboxImage = null;
-            this.lightboxTitle = null;
-            this.lightboxDescription = null;
-            this.lightboxCounter = null;
-            this.lightboxLoading = null;
-            this.isMobile = window.innerWidth <= 768;
-            this.touchStartX = 0;
-            this.touchStartY = 0;
+            this.currentPage = 1;
+            this.imagesPerPage = 10;
+            this.allImages = [];
+            this.totalPages = 0;
+            this.galleryGrid = null;
+            this.prevBtn = null;
+            this.nextBtn = null;
+            this.currentPageElement = null;
+            this.paginationDots = null;
             
             this.init();
         }
         
         init() {
             // Get DOM elements
-            this.modal = document.getElementById('lightbox-modal');
-            this.lightboxImage = document.getElementById('lightbox-image');
-            this.lightboxTitle = document.getElementById('lightbox-title');
-            this.lightboxDescription = document.getElementById('lightbox-description');
-            this.lightboxCounter = document.getElementById('lightbox-counter');
-            this.lightboxLoading = document.getElementById('lightbox-loading');
+            this.galleryGrid = document.getElementById('gallery-grid');
+            this.prevBtn = document.getElementById('prev-batch');
+            this.nextBtn = document.getElementById('next-batch');
+            this.currentPageElement = document.getElementById('current-page');
+            this.paginationDots = document.getElementById('pagination-dots');
             
-            // Collect image data
+            // Collect all images data
             this.collectImages();
+            
+            // Calculate total pages
+            this.totalPages = Math.ceil(this.allImages.length / this.imagesPerPage);
+            
+            // Initialize pagination
+            this.initPagination();
             
             // Bind events
             this.bindEvents();
@@ -436,169 +337,132 @@ const images = [
             
             // Initialize gallery animations
             this.initGalleryAnimations();
-            
-            // Handle resize events
-            this.handleResize();
         }
         
         collectImages() {
-            const triggers = document.querySelectorAll('[data-lightbox-trigger]');
-            this.images = Array.from(triggers).map(trigger => ({
-                src: trigger.dataset.imageSrc,
-                alt: trigger.dataset.imageAlt,
-                description: trigger.dataset.imageDescription,
-                index: parseInt(trigger.dataset.imageIndex)
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            this.allImages = Array.from(galleryItems).map((item, index) => ({
+                element: item,
+                index: index
             }));
         }
         
-        bindEvents() {
-            // Gallery item clicks
-            document.querySelectorAll('[data-lightbox-trigger]').forEach((trigger, index) => {
-                trigger.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    this.openLightbox(index);
+        initPagination() {
+            // Generate pagination dots
+            this.generatePaginationDots();
+            
+            // Update page info
+            this.updatePageInfo();
+            
+            // Update button states
+            this.updateButtonStates();
+        }
+        
+        generatePaginationDots() {
+            if (!this.paginationDots) return;
+            
+            this.paginationDots.innerHTML = '';
+            
+            for (let i = 1; i <= this.totalPages; i++) {
+                const dot = document.createElement('div');
+                dot.className = `w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full pagination-dot cursor-pointer transition-all duration-300 ${
+                    i === 1 ? 'bg-secondary-500 active' : 'bg-white/30'
+                }`;
+                dot.dataset.page = i.toString();
+                
+                dot.addEventListener('click', () => {
+                    this.goToPage(i);
                 });
-            });
-            
-            // Modal controls
-            document.getElementById('lightbox-close')?.addEventListener('click', () => this.closeLightbox());
-            document.getElementById('lightbox-backdrop')?.addEventListener('click', () => this.closeLightbox());
-            document.getElementById('lightbox-prev')?.addEventListener('click', () => this.prevImage());
-            document.getElementById('lightbox-next')?.addEventListener('click', () => this.nextImage());
-            
-            // Touch events for mobile
-            if (this.isMobile) {
-                this.bindTouchEvents();
+                
+                this.paginationDots.appendChild(dot);
+            }
+        }
+        
+        bindEvents() {
+            // Navigation buttons
+            if (this.prevBtn) {
+                this.prevBtn.addEventListener('click', () => {
+                    if (this.currentPage > 1) {
+                        this.goToPage(this.currentPage - 1);
+                    }
+                });
             }
             
-            // Keyboard navigation
-            document.addEventListener('keydown', (e) => {
-                if (!this.modal?.classList.contains('lightbox-open')) return;
-                
-                switch(e.key) {
-                    case 'Escape':
-                        this.closeLightbox();
-                        break;
-                    case 'ArrowLeft':
-                        this.prevImage();
-                        break;
-                    case 'ArrowRight':
-                        this.nextImage();
-                        break;
-                }
-            });
-        }
-        
-        bindTouchEvents() {
-            const modal = this.modal;
-            if (!modal) return;
-            
-            modal.addEventListener('touchstart', (e) => {
-                this.touchStartX = e.touches[0].clientX;
-                this.touchStartY = e.touches[0].clientY;
-            }, { passive: true });
-            
-            modal.addEventListener('touchend', (e) => {
-                if (!this.touchStartX || !this.touchStartY) return;
-                
-                const touchEndX = e.changedTouches[0].clientX;
-                const touchEndY = e.changedTouches[0].clientY;
-                const diffX = this.touchStartX - touchEndX;
-                const diffY = this.touchStartY - touchEndY;
-                
-                // Minimum swipe distance
-                const minSwipeDistance = 50;
-                
-                // Check if it's a horizontal swipe (more horizontal than vertical)
-                if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > minSwipeDistance) {
-                    if (diffX > 0) {
-                        // Swipe left - next image
-                        this.nextImage();
-                    } else {
-                        // Swipe right - previous image
-                        this.prevImage();
+            if (this.nextBtn) {
+                this.nextBtn.addEventListener('click', () => {
+                    if (this.currentPage < this.totalPages) {
+                        this.goToPage(this.currentPage + 1);
                     }
-                }
-                
-                // Reset touch coordinates
-                this.touchStartX = 0;
-                this.touchStartY = 0;
-            }, { passive: true });
+                });
+            }
         }
         
-        handleResize() {
-            window.addEventListener('resize', () => {
-                this.isMobile = window.innerWidth <= 768;
-                if (this.isMobile) {
-                    this.bindTouchEvents();
-                }
+        goToPage(page) {
+            if (page < 1 || page > this.totalPages) return;
+            
+            this.currentPage = page;
+            this.updateGallery();
+            this.updatePageInfo();
+            this.updateButtonStates();
+            this.updatePaginationDots();
+        }
+        
+        updateGallery() {
+            if (!this.galleryGrid) return;
+            
+            const startIndex = (this.currentPage - 1) * this.imagesPerPage;
+            const endIndex = startIndex + this.imagesPerPage;
+            
+            // Hide all images first
+            this.allImages.forEach(item => {
+                item.element.style.display = 'none';
+                item.element.classList.remove('gallery-item-animate');
+            });
+            
+            // Show images for current page with animation
+            this.allImages.slice(startIndex, endIndex).forEach((item, index) => {
+                item.element.style.display = 'block';
+                item.element.style.animationDelay = `${index * 0.1}s`;
+                
+                // Trigger animation after a short delay
+                setTimeout(() => {
+                    item.element.classList.add('gallery-item-animate');
+                }, 50);
             });
         }
         
-        openLightbox(index) {
-            this.currentIndex = index;
-            this.modal?.classList.add('lightbox-open');
-            this.loadImage();
-            
-            // Prevent body scroll
-            document.body.style.overflow = 'hidden';
+        updatePageInfo() {
+            if (this.currentPageElement) {
+                this.currentPageElement.textContent = this.currentPage.toString();
+            }
         }
         
-        closeLightbox() {
-            this.modal?.classList.remove('lightbox-open');
+        updateButtonStates() {
+            if (this.prevBtn) {
+                this.prevBtn.disabled = this.currentPage === 1;
+            }
             
-            // Restore body scroll
-            document.body.style.overflow = '';
+            if (this.nextBtn) {
+                this.nextBtn.disabled = this.currentPage === this.totalPages;
+            }
         }
         
-        loadImage() {
-            const image = this.images[this.currentIndex];
-            if (!image) return;
+        updatePaginationDots() {
+            const dots = this.paginationDots?.querySelectorAll('.pagination-dot');
+            if (!dots) return;
             
-            // Show loading spinner
-            this.lightboxLoading?.classList.remove('hidden');
-            
-            // Create new image to preload
-            const img = new Image();
-            img.onload = () => {
-                // Hide loading spinner
-                this.lightboxLoading?.classList.add('hidden');
-                
-                // Update lightbox content
-                if (this.lightboxImage) {
-                    this.lightboxImage.src = image.src;
-                    this.lightboxImage.alt = image.alt;
+            dots.forEach((dot, index) => {
+                const pageNumber = index + 1;
+                if (pageNumber === this.currentPage) {
+                    dot.classList.add('active');
+                    dot.classList.remove('bg-white/30');
+                    dot.classList.add('bg-secondary-500');
+                } else {
+                    dot.classList.remove('active');
+                    dot.classList.remove('bg-secondary-500');
+                    dot.classList.add('bg-white/30');
                 }
-                
-                if (this.lightboxTitle) {
-                    this.lightboxTitle.textContent = image.alt;
-                }
-                
-                if (this.lightboxDescription) {
-                    this.lightboxDescription.textContent = image.description;
-                }
-                
-                if (this.lightboxCounter) {
-                    this.lightboxCounter.textContent = `${this.currentIndex + 1} de ${this.images.length}`;
-                }
-            };
-            
-            img.onerror = () => {
-                this.lightboxLoading?.classList.add('hidden');
-                console.error('Error loading image:', image.src);
-            };
-            
-            img.src = image.src;
-        }
-        
-        nextImage() {
-            this.currentIndex = (this.currentIndex + 1) % this.images.length;
-            this.loadImage();
-        }
-        
-        prevImage() {
-            this.currentIndex = (this.currentIndex - 1 + this.images.length) % this.images.length;
-            this.loadImage();
+            });
         }
         
         initLazyLoading() {
@@ -635,10 +499,9 @@ const images = [
                     rootMargin: '0px 0px -50px 0px'
                 });
 
-                // Observe gallery items
-                const galleryItems = document.querySelectorAll('[data-lightbox-trigger]');
-                galleryItems.forEach((item, index) => {
-                    // Add staggered delay
+                // Initial animation for visible items
+                const visibleItems = document.querySelectorAll('.gallery-item[style*="display: block"], .gallery-item:not([style*="display: none"])');
+                visibleItems.forEach((item, index) => {
                     item.style.animationDelay = `${index * 0.1}s`;
                     animationObserver.observe(item);
                 });
@@ -647,27 +510,11 @@ const images = [
     }
 
     // Initialize gallery when DOM is loaded
-    document.addEventListener('DOMContentLoaded', () => {
-        new GalleryLightbox();
-        
-        // Initialize other gallery features
-        initGalleryControls();
-    });
-    
-    // Gallery batch navigation (if you want to show images in batches)
-    function initGalleryControls() {
-        const prevBtn = document.getElementById('prev-batch');
-        const nextBtn = document.getElementById('next-batch');
-        
-        // Add functionality for batch navigation if needed
-        prevBtn?.addEventListener('click', () => {
-            // Implement batch navigation logic
-            console.log('Previous batch');
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            new Gallery();
         });
-        
-        nextBtn?.addEventListener('click', () => {
-            // Implement batch navigation logic
-            console.log('Next batch');
-        });
+    } else {
+        new Gallery();
     }
 </script>

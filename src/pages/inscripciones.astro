@@ -1,0 +1,56 @@
+---
+// Inscripciones page for 15K URRAO 2025
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Inscripciones 15K URRAO 2025">
+  <div class="min-h-screen w-full">
+    <style>
+      html, body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+      }
+      
+      .tally-container {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        border: 0;
+        width: 100%;
+        height: 100vh;
+      }
+      
+      .tally-iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    
+    <div class="tally-container">
+      <iframe 
+        data-tally-src="https://tally.so/r/3lkGj6?formEventsForwarding=1" 
+        class="tally-iframe"
+        frameborder="0" 
+        marginheight="0" 
+        marginwidth="0" 
+        title="Inscripciones 15K URRAO 2025">
+      </iframe>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  // Load Tally script dynamically
+  if (typeof window !== 'undefined') {
+    const script = document.createElement('script');
+    script.src = 'https://tally.so/widgets/embed.js';
+    script.async = true;
+    document.head.appendChild(script);
+  }
+</script> 

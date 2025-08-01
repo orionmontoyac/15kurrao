@@ -1,0 +1,393 @@
+---
+import Layout from "@layouts/Layout.astro";
+import { Icon } from "astro-icon/components";
+---
+
+<Layout title="Nosotros - 15K Urrao">
+    <section
+        id="nosotros"
+        class="relative min-h-screen py-20 bg-gradient-to-br from-primary-900 via-primary-500 to-secondary-500 overflow-hidden"
+    >
+        <!-- Animated background elements -->
+        <div class="absolute inset-0 opacity-10">
+            <div
+                class="absolute top-20 left-10 w-72 h-72 bg-orange-500 rounded-full mix-blend-screen filter blur-xl animate-pulse"
+            >
+            </div>
+            <div
+                class="absolute top-40 right-20 w-96 h-96 bg-blue-500 rounded-full mix-blend-screen filter blur-xl animate-pulse"
+                style="animation-delay: 2s;"
+            >
+            </div>
+            <div
+                class="absolute bottom-20 left-1/3 w-80 h-80 bg-purple-500 rounded-full mix-blend-screen filter blur-xl animate-pulse"
+                style="animation-delay: 4s;"
+            >
+            </div>
+        </div>
+
+        <!-- Grid pattern overlay -->
+        <div
+            class="absolute inset-0 opacity-5"
+            style="background-image: radial-gradient(circle, #ffffff 1px, transparent 1px); background-size: 50px 50px;"
+        >
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Header Section -->
+            <div class="text-center mb-16">
+                <div
+                    class="inline-flex items-center px-4 py-2 rounded-full bg-secondary-500/10 border border-secondary-500/20 mb-6"
+                >
+                    <Icon
+                        name="tabler/heart"
+                        class="w-5 h-5 text-secondary-400 mr-2"
+                    />
+                    <span class="text-secondary-400 text-sm font-medium"
+                        >Conoce nuestra historia</span
+                    >
+                </div>
+                <h1
+                    class="font-nova text-5xl md:text-7xl lg:text-8xl text-white mb-6 tracking-tight"
+                >
+                    <span
+                        class="bg-gradient-to-r from-secondary-400 via-secondary-500 to-secondary-400 bg-clip-text text-transparent"
+                    >
+                        Nosotros
+                    </span>
+                </h1>
+                <p class="text-white text-xl max-w-2xl mx-auto leading-relaxed">
+                    Descubre la pasión y el propósito detrás de la carrera 15K Urrao
+                </p>
+            </div>
+
+            <!-- Main Content Cards -->
+            <div class="grid lg:grid-cols-2 gap-8 lg:gap-12 mb-16">
+                <!-- About Us Card -->
+                <div class="group relative">
+                    <!-- Card Background with Glassmorphism -->
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-white/20 to-white/10 backdrop-blur-lg rounded-3xl border border-white/10 transition-all duration-500 group-hover:border-orange-500/30 group-hover:shadow-2xl group-hover:shadow-orange-500/10"
+                    >
+                    </div>
+
+                    <!-- Glow effect on hover -->
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-orange-500/0 group-hover:from-orange-500/5 group-hover:to-transparent rounded-3xl transition-all duration-500"
+                    >
+                    </div>
+
+                    <div class="relative p-8">
+                        <!-- Icon Badge -->
+                        <div class="flex items-center space-x-3 mb-8">
+                            <div
+                                class="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg"
+                            >
+                                <Icon
+                                    name="tabler/home-heart"
+                                    class="size-8 text-white"
+                                />
+                            </div>
+                            <div>
+                                <h2
+                                    class="font-nova text-3xl lg:text-4xl text-white font-bold"
+                                >
+                                    ¿Quiénes Somos?
+                                </h2>
+                            </div>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="space-y-6">
+                            <p class="text-white text-lg leading-relaxed">
+                                Somos una comunidad apasionada por el running y enamorada de Urrao, 
+                                un pueblo mágico en el corazón de Antioquia. Nuestra misión es 
+                                promover el deporte, la salud y el turismo en esta hermosa región 
+                                montañosa.
+                            </p>
+                            <p class="text-white text-lg leading-relaxed">
+                                La carrera 15K Urrao nació del deseo de mostrar al mundo la 
+                                belleza natural de nuestro territorio y crear un espacio donde 
+                                corredores de todos los niveles puedan disfrutar de una experiencia 
+                                única en medio de paisajes espectaculares.
+                            </p>
+                            <p class="text-white text-lg leading-relaxed">
+                                Cada año, cientos de atletas se reúnen para celebrar no solo 
+                                el deporte, sino también la cultura, la amistad y el amor por 
+                                la naturaleza que caracteriza a Urrao.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Race Purpose Card -->
+                <div class="group relative">
+                    <!-- Card Background with Glassmorphism -->
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-3xl border border-white/10 transition-all duration-500 group-hover:border-blue-500/30 group-hover:shadow-2xl group-hover:shadow-blue-500/10"
+                    >
+                    </div>
+
+                    <!-- Glow effect on hover -->
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-blue-500/0 to-blue-500/0 group-hover:from-blue-500/5 group-hover:to-transparent rounded-3xl transition-all duration-500"
+                    >
+                    </div>
+
+                    <div class="relative p-8">
+                        <!-- Icon Badge -->
+                        <div class="flex items-center space-x-3 mb-8">
+                            <div
+                                class="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg"
+                            >
+                                <Icon
+                                    name="tabler/medal"
+                                    class="size-8 text-white"
+                                />
+                            </div>
+                            <div>
+                                <h2
+                                    class="font-nova text-3xl lg:text-4xl text-white font-bold"
+                                >
+                                    Nuestro Propósito
+                                </h2>
+                            </div>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="space-y-6">
+                            <p class="text-white text-lg leading-relaxed">
+                                Nuestro propósito es crear una experiencia deportiva inolvidable 
+                                que combine el desafío físico con el descubrimiento de uno de 
+                                los paisajes más hermosos de Colombia.
+                            </p>
+                            <p class="text-white text-lg leading-relaxed">
+                                Queremos promover el turismo deportivo en Urrao, apoyar el 
+                                desarrollo local y crear conciencia sobre la importancia de 
+                                mantener un estilo de vida activo y saludable.
+                            </p>
+                            <p class="text-white text-lg leading-relaxed">
+                                Cada participante no solo corre por sí mismo, sino que también 
+                                contribuye al crecimiento de nuestra comunidad y al cuidado 
+                                de nuestro entorno natural.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Race Description Section -->
+            <div class="group relative mb-16">
+                <!-- Card Background with Glassmorphism -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-br from-white/15 to-white/8 backdrop-blur-lg rounded-3xl border border-white/15 transition-all duration-500 group-hover:border-emerald-500/30 group-hover:shadow-2xl group-hover:shadow-emerald-500/10"
+                >
+                </div>
+
+                <!-- Glow effect on hover -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-br from-emerald-500/0 to-emerald-500/0 group-hover:from-emerald-500/5 group-hover:to-transparent rounded-3xl transition-all duration-500"
+                >
+                </div>
+
+                <div class="relative p-8">
+                    <!-- Header -->
+                    <div class="text-center mb-8">
+                        <div class="flex items-center justify-center space-x-3 mb-4">
+                            <div
+                                class="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg"
+                            >
+                                <Icon
+                                    name="tabler/calendar-check"
+                                    class="size-10 text-white"
+                                />
+                            </div>
+                        </div>
+                        <h2
+                            class="font-nova text-4xl lg:text-5xl text-white font-bold mb-4"
+                        >
+                            La Carrera
+                        </h2>
+                    </div>
+
+                    <!-- Race Description -->
+                    <div class="max-w-4xl mx-auto">
+                        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
+                            <p class="text-white text-xl leading-relaxed text-center mb-6">
+                                ¡Únete a una emocionante carrera de 10 o 15 kilómetros el domingo 13 de octubre 2024 en Urrao, Antioquia!
+                            </p>
+                            <p class="text-white text-lg leading-relaxed mb-6">
+                                El recorrido comenzará en el parque principal de Urrao y te llevará hasta la Vereda La San José, 
+                                bordeando el majestuoso río Penderisco. Urrao, con su espectacular escenario paisajístico y natural, 
+                                es el lugar perfecto para la práctica del running.
+                            </p>
+                            <p class="text-white text-lg leading-relaxed mb-6">
+                                Esta carrera recreativa es la excusa perfecta para descubrir su belleza mientras te mantienes en forma. 
+                                Cada paso que des será una nueva aventura, cada respiro te llenará de la pureza del aire de montaña, 
+                                y cada kilómetro te acercará más a la esencia de este pueblo mágico.
+                            </p>
+                            <p class="text-white text-lg leading-relaxed">
+                                No solo es una competencia, es una celebración de la vida, la salud y la naturaleza. 
+                                Es una oportunidad para conectarte con otros corredores, con la comunidad local y con 
+                                el espíritu indomable de las montañas antioqueñas. ¡No te la pierdas!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Values Section -->
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <!-- Value 1: Community -->
+                <div class="group relative">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-2xl border border-white/10 transition-all duration-300 group-hover:border-orange-500/30 group-hover:shadow-lg group-hover:shadow-orange-500/10"
+                    >
+                    </div>
+                    <div class="relative p-6 text-center">
+                        <div
+                            class="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg mx-auto mb-4"
+                        >
+                            <Icon
+                                name="tabler/star"
+                                class="size-8 text-white"
+                            />
+                        </div>
+                        <h3 class="text-white font-semibold text-xl mb-3">Comunidad</h3>
+                        <p class="text-slate-200 text-sm leading-relaxed">
+                            Construimos puentes entre corredores, locales y visitantes, 
+                            creando una familia unida por la pasión del deporte.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Value 2: Nature -->
+                <div class="group relative">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-2xl border border-white/10 transition-all duration-300 group-hover:border-emerald-500/30 group-hover:shadow-lg group-hover:shadow-emerald-500/10"
+                    >
+                    </div>
+                    <div class="relative p-6 text-center">
+                        <div
+                            class="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg mx-auto mb-4"
+                        >
+                            <Icon
+                                name="tabler/user"
+                                class="size-8 text-white"
+                            />
+                        </div>
+                        <h3 class="text-white font-semibold text-xl mb-3">Naturaleza</h3>
+                        <p class="text-slate-200 text-sm leading-relaxed">
+                            Honramos y protegemos el entorno natural que hace de Urrao 
+                            un paraíso para corredores y amantes de la montaña.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Value 3: Excellence -->
+                <div class="group relative">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-2xl border border-white/10 transition-all duration-300 group-hover:border-blue-500/30 group-hover:shadow-lg group-hover:shadow-blue-500/10"
+                    >
+                    </div>
+                    <div class="relative p-6 text-center">
+                        <div
+                            class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg mx-auto mb-4"
+                        >
+                            <Icon
+                                name="tabler/star"
+                                class="size-8 text-white"
+                            />
+                        </div>
+                        <h3 class="text-white font-semibold text-xl mb-3">Excelencia</h3>
+                        <p class="text-slate-200 text-sm leading-relaxed">
+                            Nos esforzamos por ofrecer la mejor experiencia posible, 
+                            desde la organización hasta el apoyo durante la carrera.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="text-center">
+                <div
+                    class="inline-flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6 px-8 py-6 bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10"
+                >
+                    <div class="text-center md:text-left">
+                        <h3 class="text-white text-xl font-semibold mb-2">
+                            ¿Listo para la aventura?
+                        </h3>
+                        <p class="text-slate-400">
+                            Únete a nosotros en esta increíble experiencia deportiva
+                        </p>
+                    </div>
+                    <a
+                        href="/inscripciones"
+                        class="group/cta relative overflow-hidden bg-gradient-to-r from-secondary-500 to-secondary-600 hover:from-secondary-600 hover:to-secondary-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-secondary-500/25"
+                    >
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover/cta:translate-x-full transition-transform duration-700"
+                        >
+                        </div>
+                        <div class="relative flex items-center space-x-2">
+                            <span class="text-white">Inscribirse</span>
+                            <Icon
+                                name="tabler/arrow-narrow-right"
+                                class="w-4 h-4 transition-transform duration-300 group-hover/cta:translate-x-1"
+                            />
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</Layout>
+
+<style>
+    @keyframes float {
+        0%,
+        100% {
+            transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+            transform: translateY(-20px) rotate(5deg);
+        }
+    }
+
+    .animate-float {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    /* Enhanced glassmorphism effects */
+    .backdrop-blur-lg {
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+
+    .backdrop-blur-sm {
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+</style>
+
+<script>
+    // Add intersection observer for performance
+    if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        // entry.target.classList.add('animate-float');
+                    }
+                });
+            },
+            { threshold: 0.1 },
+        );
+
+        // Observe cards for animation
+        document.addEventListener("DOMContentLoaded", () => {
+            const cards = document.querySelectorAll(".group");
+            cards.forEach((card) => observer.observe(card));
+        });
+    }
+</script> 
