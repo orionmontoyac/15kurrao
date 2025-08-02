@@ -7,15 +7,15 @@ import ImageSlideBg from "@components/common/ImageSlideBg3.astro";
 import Logo from "@images/logo.svg";
 ---
 
-<section class="overflow-hidden w-screen pb-5" style="min-height: 100dvh;">
+<section class="overflow-hidden w-screen min-h-screen h-screen relative flex flex-col justify-end">
     <!-- Hero Background -->
-    <div class="absolute h-full w-full -z-10 overflow-hidden">
+    <div class="absolute inset-0 -z-10 overflow-hidden h-full w-full">
         <ImageSlideBg />
     </div>
 
     <!-- Hero Content -->
     <div
-        class="absolute bottom-0 left-0 w-full flex justify-end md:justify-end items-end md:mx-0 pointer-events-none"
+        class="relative flex flex-1 w-full justify-end md:justify-end items-end md:mx-0 pointer-events-none"
     >
         <div
             class="w-full md:w-6/12 flex flex-col justify-end items-center md:items-end text-white md:px-8 pb-12 pointer-events-auto"

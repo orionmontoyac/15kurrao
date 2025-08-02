@@ -105,13 +105,13 @@ const registeredRunners: Array<{
 ];
 
 // Calculate total registrations (mock data)
-const totalRegistrations = 847;
+const totalRegistrations = 134;
 const recentRegistrations = 23; // last 24 hours
 ---
 
 <section
     id="registered-runners"
-    class="relative py-20 bg-gradient-to-br from-primary-900 via-primary-800 to-secondary-500 overflow-hidden"
+    class="relative py-20 bg-gradient-to-tr from-primary-900 via-primary-500 to-secondary-500 overflow-hidden"
 >
     <!-- Animated background elements -->
     <div class="absolute inset-0 opacity-10">
@@ -172,17 +172,17 @@ const recentRegistrations = 23; // last 24 hours
             >
                 <div class="text-center">
                     <div class="text-3xl font-bold text-white">{totalRegistrations}</div>
-                    <div class="text-sm text-slate-400">Total inscritos</div>
+                    <div class="text-sm text-slate-200">Total inscritos</div>
                 </div>
                 <div class="w-px h-8 bg-white/20"></div>
                 <div class="text-center">
                     <div class="text-3xl font-bold text-white">{recentRegistrations}</div>
-                    <div class="text-sm text-slate-400">Últimas 24h</div>
+                    <div class="text-sm text-slate-200">Últimas 24h</div>
                 </div>
                 <div class="w-px h-8 bg-white/20"></div>
                 <div class="text-center">
                     <div class="text-3xl font-bold text-white">10</div>
-                    <div class="text-sm text-slate-400">Mostrados</div>
+                    <div class="text-sm text-slate-200">Mostrados</div>
                 </div>
             </div>
         </div>

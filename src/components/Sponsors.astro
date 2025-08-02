@@ -6,13 +6,13 @@ const supportingSponsors = [
     {
         id: 1,
         name: "Sponsor de Apoyo 1",
-        image: "https://www.reshot.com/preview-assets/icons/KLM5JS63AR/shield-on-KLM5JS63AR.svg",
+        image: "/sponsors/laserrana.png",
         hoverColor: "blue"
     },
     {
         id: 2,
         name: "Sponsor de Apoyo 2",
-        image: "https://www.reshot.com/preview-assets/icons/KLM5JS63AR/shield-on-KLM5JS63AR.svg",
+        image: "/sponsors/reves.png",
         hoverColor: "purple"
     },
     {
@@ -70,24 +70,7 @@ const supportingSponsors = [
     id="sponsors"
     class="relative py-20 bg-gradient-to-bl from-secondary-500 via-primary-500 to-primary-900 overflow-hidden"
 >
-    <!-- Animated background elements -->
-    <div class="absolute inset-0 opacity-10">
-        <div
-            class="absolute top-20 right-10 w-64 h-64 bg-emerald-500 rounded-full mix-blend-screen filter blur-xl animate-pulse"
-            style="animation-delay: 1s;"
-        >
-        </div>
-        <div
-            class="absolute bottom-40 left-20 w-80 h-80 bg-indigo-500 rounded-full mix-blend-screen filter blur-xl animate-pulse"
-            style="animation-delay: 3s;"
-        >
-        </div>
-        <div
-            class="absolute top-1/2 left-1/2 w-72 h-72 bg-pink-500 rounded-full mix-blend-screen filter blur-xl animate-pulse"
-            style="animation-delay: 5s;"
-        >
-        </div>
-    </div>
+
 
     <!-- Grid pattern overlay -->
     <div
@@ -260,12 +243,12 @@ const supportingSponsors = [
                         >
                         </div>
                         <div
-                            class="relative w-32 h-32 sm:w-28 sm:h-28 md:w-32 md:h-32 bg-white/95 backdrop-blur-sm rounded-2xl p-3 flex items-center justify-center transition-all duration-300 group-hover:scale-105"
+                            class="relative size-32 sm:size-28 md:size-32 bg-white/95 backdrop-blur-sm rounded-2xl p-1 flex items-center justify-center transition-all duration-300 group-hover:scale-105"
                         >
                             <img
                                 src={sponsor.image}
                                 alt={sponsor.name}
-                                class="h-12 w-auto sm:h-14 md:h-16 object-contain transition-transform duration-300 group-hover:scale-110"
+                                class="h-28 w-auto object-contain transition-transform duration-300 group-hover:scale-110"
                                 loading="lazy"
                             />
                         </div>

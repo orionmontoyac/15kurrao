@@ -121,17 +121,14 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location } = Astr
                 <span>WhatsApp</span>
             </button>
             
-                         <!-- Download Image -->
-             <button id="download-image" class="w-full flex items-center space-x-3 p-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl text-white font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-[1.02]">
-                 <Icon name="tabler/circle-arrow-up" class="w-5 h-5" />
-                 <span>Descargar Imagen</span>
-             </button>
+            <!-- Download Image -->
+            <button id="download-image" class="w-full flex items-center space-x-3 p-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl text-white font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-[1.02]">
+                <Icon name="tabler/circle-arrow-up" class="w-5 h-5" />
+                <span>Descargar Imagen</span>
+            </button>
         </div>
     </div>
 </div>
-
-<!-- Hidden canvas for image generation -->
-<canvas id="story-canvas" style="display: none;"></canvas>
 
 <style>
     /* Enhanced glassmorphism effects */
@@ -178,6 +175,15 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location } = Astr
 </style>
 
 <script>
+    // Import html2canvas from CDN
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+    script.onload = () => {
+        console.log('html2canvas loaded successfully');
+        initializeRunnerCard();
+    };
+    document.head.appendChild(script);
+
     // Runner Card interactions
     class RunnerCard {
         constructor() {
@@ -193,7 +199,7 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location } = Astr
             document.querySelectorAll('[data-runner-id]').forEach((card) => {
                 card.addEventListener('click', (e) => {
                     // Don't trigger card click if clicking on share button
-                    if ((e.target as Element).closest('[data-share-runner]')) {
+                    if (e.target.closest('[data-share-runner]')) {
                         return;
                     }
                     e.preventDefault();
@@ -211,6 +217,7 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location } = Astr
                 button.addEventListener('click', (e) => {
                     e.preventDefault();
                     e.stopPropagation();
+                    console.log('Share button clicked');
                     this.openShareModal(button);
                 });
             });
@@ -239,7 +246,10 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location } = Astr
             // Instagram Stories
             const instagramBtn = document.getElementById('share-instagram');
             if (instagramBtn) {
-                instagramBtn.addEventListener('click', () => this.shareToInstagram());
+                instagramBtn.addEventListener('click', () => {
+                    console.log('Instagram share clicked');
+                    this.shareToInstagram();
+                });
             }
             
             // WhatsApp
@@ -251,13 +261,18 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location } = Astr
             // Download Image
             const downloadBtn = document.getElementById('download-image');
             if (downloadBtn) {
-                downloadBtn.addEventListener('click', () => this.downloadStoryImage());
+                downloadBtn.addEventListener('click', () => {
+                    console.log('Download image clicked');
+                    this.downloadStoryImage();
+                });
             }
         }
         
-        openShareModal(button: Element) {
+        openShareModal(button) {
             const modal = document.getElementById('share-modal');
             if (!modal) return;
+            
+            console.log('Opening share modal');
             
             // Get runner data from button
             const runnerName = button.getAttribute('data-runner-name') || '';
@@ -266,7 +281,7 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location } = Astr
             const runnerAvatar = button.getAttribute('data-runner-avatar') || '';
             
             // Store data for sharing
-            (window as any).currentRunnerData = {
+            window.currentRunnerData = {
                 name: runnerName,
                 distance: runnerDistance,
                 location: runnerLocation,
@@ -291,36 +306,47 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location } = Astr
         }
         
         async shareToInstagram() {
-            const data = (window as any).currentRunnerData;
-            if (!data) return;
+            const data = window.currentRunnerData;
+            if (!data) {
+                console.error('No runner data found');
+                return;
+            }
             
-            this.showToast('Generando imagen para Instagram...');
+            this.showToast('Capturando imagen del corredor...');
             
             try {
-                const imageBlob = await this.createStoryImage(data);
+                const imageBlob = await this.captureRunnerCard(data);
+                console.log('Image captured successfully');
                 
                 // Try to share via Web Share API if available
-                if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([imageBlob], 'runner-story.png', { type: 'image/png' })] })) {
-                    await navigator.share({
-                        title: `${data.name} - 15KURRAO`,
-                        text: `🏃‍♂️ ¡Mira este corredor! ${data.name} se inscribió para la carrera de ${data.distance} desde ${data.location}. ¡Únete a la 15KURRAO! 🏁`,
-                        files: [new File([imageBlob], 'runner-story.png', { type: 'image/png' })]
-                    });
+                if (navigator.share && navigator.canShare) {
+                    const file = new File([imageBlob], 'runner-card.png', { type: 'image/png' });
+                    if (navigator.canShare({ files: [file] })) {
+                        await navigator.share({
+                            title: `${data.name} - 15KURRAO`,
+                            text: `🏃‍♂️ ¡Mira este corredor! ${data.name} se inscribió para la carrera de ${data.distance} desde ${data.location}. ¡Únete a la 15KURRAO! 🏁`,
+                            files: [file]
+                        });
+                    } else {
+                        // Fallback: Download the image
+                        this.downloadImageBlob(imageBlob, `${data.name}-15kurrao-card.png`);
+                        this.showToast('Imagen descargada. Compártela en Instagram Stories manualmente.');
+                    }
                 } else {
                     // Fallback: Download the image
-                    this.downloadImageBlob(imageBlob, `${data.name}-15kurrao-story.png`);
+                    this.downloadImageBlob(imageBlob, `${data.name}-15kurrao-card.png`);
                     this.showToast('Imagen descargada. Compártela en Instagram Stories manualmente.');
                 }
                 
                 this.closeShareModal();
             } catch (error) {
-                console.error('Error creating Instagram story:', error);
-                this.showToast('Error al generar la imagen. Inténtalo de nuevo.');
+                console.error('Error capturing runner card:', error);
+                this.showToast('Error al capturar la imagen. Inténtalo de nuevo.');
             }
         }
         
         shareToWhatsApp() {
-            const data = (window as any).currentRunnerData;
+            const data = window.currentRunnerData;
             if (!data) return;
             
             const text = `🏃‍♂️ ¡Mira este corredor!\n\n${data.name} se inscribió para la carrera de ${data.distance} desde ${data.location}.\n\n¡Únete a la 15KURRAO! 🏁`;
@@ -333,23 +359,26 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location } = Astr
         }
         
         async downloadStoryImage() {
-            const data = (window as any).currentRunnerData;
-            if (!data) return;
+            const data = window.currentRunnerData;
+            if (!data) {
+                console.error('No runner data found');
+                return;
+            }
             
-            this.showToast('Generando imagen...');
+            this.showToast('Capturando imagen...');
             
             try {
-                const imageBlob = await this.createStoryImage(data);
-                this.downloadImageBlob(imageBlob, `${data.name}-15kurrao-story.png`);
+                const imageBlob = await this.captureRunnerCard(data);
+                this.downloadImageBlob(imageBlob, `${data.name}-15kurrao-card.png`);
                 this.showToast('¡Imagen descargada exitosamente!');
                 this.closeShareModal();
             } catch (error) {
-                console.error('Error creating story image:', error);
-                this.showToast('Error al generar la imagen. Inténtalo de nuevo.');
+                console.error('Error capturing runner card:', error);
+                this.showToast('Error al capturar la imagen. Inténtalo de nuevo.');
             }
         }
         
-        downloadImageBlob(blob: Blob, filename: string) {
+        downloadImageBlob(blob, filename) {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
@@ -360,246 +389,100 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location } = Astr
             URL.revokeObjectURL(url);
         }
         
-        async createStoryImage(data: any): Promise<Blob> {
-            const canvas = document.getElementById('story-canvas') as HTMLCanvasElement;
-            const ctx = canvas.getContext('2d');
-            if (!ctx) throw new Error('Canvas context not available');
+        async captureRunnerCard(data) {
+            console.log('Starting capture process for:', data.name);
             
-            // Instagram Story dimensions (9:16 aspect ratio)
-            canvas.width = 1080;
-            canvas.height = 1920;
+            // Check if html2canvas is available
+            if (typeof html2canvas === 'undefined') {
+                throw new Error('html2canvas library not loaded');
+            }
             
-            // Background gradient
-            const gradient = ctx.createLinearGradient(0, 0, 0, 1920);
-            gradient.addColorStop(0, '#1e293b');
-            gradient.addColorStop(0.5, '#334155');
-            gradient.addColorStop(1, '#0f172a');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, 1080, 1920);
+            // Find the runner card element using the stored runner data
+            const runnerCards = document.querySelectorAll('[data-runner-id]');
+            let targetCard = null;
             
-            // Add decorative elements
-            ctx.fillStyle = 'rgba(59, 130, 246, 0.1)';
-            ctx.beginPath();
-            ctx.arc(200, 300, 150, 0, 2 * Math.PI);
-            ctx.fill();
+            // Find the card that matches the current runner data
+            for (const card of runnerCards) {
+                const cardName = card.querySelector('h3')?.textContent?.trim();
+                if (cardName === data.name) {
+                    targetCard = card;
+                    break;
+                }
+            }
             
-            ctx.fillStyle = 'rgba(236, 72, 153, 0.1)';
-            ctx.beginPath();
-            ctx.arc(880, 1600, 200, 0, 2 * Math.PI);
-            ctx.fill();
+            if (!targetCard) {
+                console.error('Runner card not found for:', data.name);
+                throw new Error('Runner card not found');
+            }
             
-            // Load and draw runner image
-            return new Promise((resolve, reject) => {
-                const img = new Image();
-                img.crossOrigin = 'anonymous';
+            console.log('Found target card:', targetCard);
+            
+            // Temporarily hide the share button to get a clean capture
+            const shareButton = targetCard.querySelector('[data-share-runner]');
+            const originalDisplay = shareButton ? shareButton.style.display : '';
+            if (shareButton) {
+                shareButton.style.display = 'none';
+            }
+            
+            try {
+                console.log('Capturing with html2canvas...');
                 
-                img.onload = () => {
-                    try {
-                                                 // Draw runner image (circular with border)
-                         const centerX = 540;
-                         const centerY = 700;
-                         const imageRadius = 180;
-                         
-                         // Draw border
-                         ctx.beginPath();
-                         ctx.arc(centerX, centerY, imageRadius + 8, 0, 2 * Math.PI);
-                         ctx.fillStyle = '#3b82f6';
-                         ctx.fill();
-                         
-                         // Draw image
-                         ctx.save();
-                         ctx.beginPath();
-                         ctx.arc(centerX, centerY, imageRadius, 0, 2 * Math.PI);
-                         ctx.clip();
-                         
-                         // Calculate image dimensions to maintain aspect ratio
-                         const aspectRatio = img.width / img.height;
-                         let drawWidth = imageRadius * 2;
-                         let drawHeight = imageRadius * 2;
-                         
-                         if (aspectRatio > 1) {
-                             drawHeight = drawWidth / aspectRatio;
-                         } else {
-                             drawWidth = drawHeight * aspectRatio;
-                         }
-                         
-                         ctx.drawImage(img, centerX - drawWidth/2, centerY - drawHeight/2, drawWidth, drawHeight);
-                         ctx.restore();
-                        
-                        // Add runner name
-                        ctx.fillStyle = '#ffffff';
-                        ctx.font = 'bold 56px system-ui, -apple-system, sans-serif';
-                        ctx.textAlign = 'center';
-                        ctx.fillText(data.name, 540, 1000);
-                        
-                                                 // Add distance badge
-                         const badgeY = 1080;
-                         ctx.fillStyle = data.distance === '15K' ? '#3b82f6' : '#f97316';
-                         
-                         // Draw rounded rectangle manually (fallback for browsers without roundRect)
-                         const badgeX = 440;
-                         const badgeWidth = 200;
-                         const badgeHeight = 70;
-                         const radius = 35;
-                         
-                         ctx.beginPath();
-                         ctx.moveTo(badgeX + radius, badgeY - 35);
-                         ctx.lineTo(badgeX + badgeWidth - radius, badgeY - 35);
-                         ctx.quadraticCurveTo(badgeX + badgeWidth, badgeY - 35, badgeX + badgeWidth, badgeY - 35 + radius);
-                         ctx.lineTo(badgeX + badgeWidth, badgeY - 35 + badgeHeight - radius);
-                         ctx.quadraticCurveTo(badgeX + badgeWidth, badgeY - 35 + badgeHeight, badgeX + badgeWidth - radius, badgeY - 35 + badgeHeight);
-                         ctx.lineTo(badgeX + radius, badgeY - 35 + badgeHeight);
-                         ctx.quadraticCurveTo(badgeX, badgeY - 35 + badgeHeight, badgeX, badgeY - 35 + badgeHeight - radius);
-                         ctx.lineTo(badgeX, badgeY - 35 + radius);
-                         ctx.quadraticCurveTo(badgeX, badgeY - 35, badgeX + radius, badgeY - 35);
-                         ctx.closePath();
-                         ctx.fill();
-                         
-                         ctx.fillStyle = '#ffffff';
-                         ctx.font = 'bold 40px system-ui, -apple-system, sans-serif';
-                         ctx.fillText(data.distance, 540, badgeY + 15);
-                        
-                        // Add location
-                        ctx.fillStyle = '#94a3b8';
-                        ctx.font = '32px system-ui, -apple-system, sans-serif';
-                        ctx.fillText(`📍 ${data.location}`, 540, 1180);
-                        
-                        // Add event title
-                        ctx.fillStyle = '#ffffff';
-                        ctx.font = 'bold 72px system-ui, -apple-system, sans-serif';
-                        ctx.fillText('15KURRAO', 540, 1350);
-                        
-                        // Add subtitle
-                        ctx.fillStyle = '#3b82f6';
-                        ctx.font = 'bold 36px system-ui, -apple-system, sans-serif';
-                        ctx.fillText('¡Únete a la carrera!', 540, 1420);
-                        
-                        // Add running emojis
-                        ctx.font = '60px system-ui';
-                        ctx.fillText('🏃‍♂️ 🏁 🏃‍♀️', 540, 1550);
-                        
-                        // Add website/hashtag
-                        ctx.fillStyle = '#64748b';
-                        ctx.font = '28px system-ui, -apple-system, sans-serif';
-                        ctx.fillText('#15KURRAO #Urrao #Antioquia', 540, 1650);
-                        
-                        // Convert to blob
-                        canvas.toBlob((blob) => {
-                            if (blob) {
-                                resolve(blob);
-                            } else {
-                                reject(new Error('Failed to create blob'));
+                // Wait for images to load
+                const images = targetCard.querySelectorAll('img');
+                await Promise.all(Array.from(images).map(img => {
+                    if (img.complete) return Promise.resolve();
+                    return new Promise((resolve, reject) => {
+                        img.onload = resolve;
+                        img.onerror = reject;
+                        // Add timeout to prevent hanging
+                        setTimeout(reject, 5000);
+                    });
+                }));
+                
+                // Use html2canvas to capture the runner card
+                const canvas = await html2canvas(targetCard, {
+                    backgroundColor: null, // Transparent background
+                    scale: 2, // Higher resolution for better quality
+                    useCORS: true,
+                    allowTaint: false,
+                    logging: true, // Enable logging for debugging
+                    width: targetCard.offsetWidth,
+                    height: targetCard.offsetHeight,
+                    onclone: (clonedDoc) => {
+                        // Ensure styles are preserved in the cloned document
+                        const clonedCard = clonedDoc.querySelector(`[data-runner-id="${targetCard.getAttribute('data-runner-id')}"]`);
+                        if (clonedCard) {
+                            const clonedShareButton = clonedCard.querySelector('[data-share-runner]');
+                            if (clonedShareButton) {
+                                clonedShareButton.style.display = 'none';
                             }
-                        }, 'image/png', 0.95);
-                        
-                    } catch (error) {
-                        reject(error);
+                        }
                     }
-                };
+                });
                 
-                img.onerror = () => {
-                    // If image fails to load, create story without user image
-                    try {
-                        // Clear canvas and redraw without image
-                        ctx.clearRect(0, 0, 1080, 1920);
-                        
-                        // Background gradient
-                        const gradient = ctx.createLinearGradient(0, 0, 0, 1920);
-                        gradient.addColorStop(0, '#1e293b');
-                        gradient.addColorStop(0.5, '#334155');
-                        gradient.addColorStop(1, '#0f172a');
-                        ctx.fillStyle = gradient;
-                        ctx.fillRect(0, 0, 1080, 1920);
-                        
-                                                 // Add decorative circle instead of image
-                         const fallbackCenterX = 540;
-                         const fallbackCenterY = 700;
-                         const fallbackImageRadius = 180;
-                         
-                         ctx.fillStyle = '#3b82f6';
-                         ctx.beginPath();
-                         ctx.arc(fallbackCenterX, fallbackCenterY, fallbackImageRadius, 0, 2 * Math.PI);
-                         ctx.fill();
-                         
-                                                  // Add runner emoji in center
-                         ctx.font = '120px system-ui';
-                         ctx.fillText('🏃‍♂️', fallbackCenterX, fallbackCenterY + 40);
-                         
-                         // Add rest of the content
-                         ctx.fillStyle = '#ffffff';
-                         ctx.font = 'bold 56px system-ui, -apple-system, sans-serif';
-                         ctx.textAlign = 'center';
-                         ctx.fillText(data.name, 540, 1000);
-                         
-                         // Add distance badge (same as above)
-                         const fallbackBadgeY = 1080;
-                         ctx.fillStyle = data.distance === '15K' ? '#3b82f6' : '#f97316';
-                         
-                         // Draw rounded rectangle manually
-                         const fallbackBadgeX = 440;
-                         const fallbackBadgeWidth = 200;
-                         const fallbackBadgeHeight = 70;
-                         const fallbackBadgeRadius = 35;
-                         
-                         ctx.beginPath();
-                         ctx.moveTo(fallbackBadgeX + fallbackBadgeRadius, fallbackBadgeY - 35);
-                         ctx.lineTo(fallbackBadgeX + fallbackBadgeWidth - fallbackBadgeRadius, fallbackBadgeY - 35);
-                         ctx.quadraticCurveTo(fallbackBadgeX + fallbackBadgeWidth, fallbackBadgeY - 35, fallbackBadgeX + fallbackBadgeWidth, fallbackBadgeY - 35 + fallbackBadgeRadius);
-                         ctx.lineTo(fallbackBadgeX + fallbackBadgeWidth, fallbackBadgeY - 35 + fallbackBadgeHeight - fallbackBadgeRadius);
-                         ctx.quadraticCurveTo(fallbackBadgeX + fallbackBadgeWidth, fallbackBadgeY - 35 + fallbackBadgeHeight, fallbackBadgeX + fallbackBadgeWidth - fallbackBadgeRadius, fallbackBadgeY - 35 + fallbackBadgeHeight);
-                         ctx.lineTo(fallbackBadgeX + fallbackBadgeRadius, fallbackBadgeY - 35 + fallbackBadgeHeight);
-                         ctx.quadraticCurveTo(fallbackBadgeX, fallbackBadgeY - 35 + fallbackBadgeHeight, fallbackBadgeX, fallbackBadgeY - 35 + fallbackBadgeHeight - fallbackBadgeRadius);
-                         ctx.lineTo(fallbackBadgeX, fallbackBadgeY - 35 + fallbackBadgeRadius);
-                         ctx.quadraticCurveTo(fallbackBadgeX, fallbackBadgeY - 35, fallbackBadgeX + fallbackBadgeRadius, fallbackBadgeY - 35);
-                         ctx.closePath();
-                         ctx.fill();
-                         
-                         ctx.fillStyle = '#ffffff';
-                         ctx.font = 'bold 40px system-ui, -apple-system, sans-serif';
-                         ctx.fillText(data.distance, 540, fallbackBadgeY + 15);
-                         
-                         // Add location
-                         ctx.fillStyle = '#94a3b8';
-                         ctx.font = '32px system-ui, -apple-system, sans-serif';
-                         ctx.fillText(`📍 ${data.location}`, 540, 1180);
-                         
-                         // Add event title
-                         ctx.fillStyle = '#ffffff';
-                         ctx.font = 'bold 72px system-ui, -apple-system, sans-serif';
-                         ctx.fillText('15KURRAO', 540, 1350);
-                         
-                         // Add subtitle
-                         ctx.fillStyle = '#3b82f6';
-                         ctx.font = 'bold 36px system-ui, -apple-system, sans-serif';
-                         ctx.fillText('¡Únete a la carrera!', 540, 1420);
-                         
-                         // Add running emojis
-                         ctx.font = '60px system-ui';
-                         ctx.fillText('🏃‍♂️ 🏁 🏃‍♀️', 540, 1550);
-                         
-                         // Add website/hashtag
-                         ctx.fillStyle = '#64748b';
-                         ctx.font = '28px system-ui, -apple-system, sans-serif';
-                         ctx.fillText('#15KURRAO #Urrao #Antioquia', 540, 1650);
-                        
-                        canvas.toBlob((blob) => {
-                            if (blob) {
-                                resolve(blob);
-                            } else {
-                                reject(new Error('Failed to create blob'));
-                            }
-                        }, 'image/png', 0.95);
-                        
-                    } catch (fallbackError) {
-                        reject(fallbackError);
-                    }
-                };
+                console.log('Canvas created successfully:', canvas.width, 'x', canvas.height);
                 
-                img.src = data.avatar;
-            });
+                // Convert canvas to blob
+                return new Promise((resolve, reject) => {
+                    canvas.toBlob((blob) => {
+                        if (blob) {
+                            console.log('Blob created successfully:', blob.size, 'bytes');
+                            resolve(blob);
+                        } else {
+                            reject(new Error('Failed to create blob from canvas'));
+                        }
+                    }, 'image/png', 0.95);
+                });
+                
+            } finally {
+                // Restore the share button
+                if (shareButton) {
+                    shareButton.style.display = originalDisplay;
+                }
+            }
         }
         
-        handleCardClick(card: Element) {
+        handleCardClick(card) {
             const runnerId = card.getAttribute('data-runner-id');
             const runnerName = card.querySelector('h3')?.textContent || 'corredor';
             
@@ -610,7 +493,7 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location } = Astr
             this.showToast(`Ver detalles de ${runnerName}`);
         }
         
-        showToast(message: string) {
+        showToast(message) {
             // Create a simple toast notification
             const toast = document.createElement('div');
             toast.className = 'fixed bottom-4 right-4 bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl px-4 py-3 text-white text-sm z-50 transform translate-y-full transition-transform duration-300';
@@ -635,8 +518,23 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location } = Astr
         }
     }
     
-    // Initialize when DOM is loaded
-    document.addEventListener('DOMContentLoaded', () => {
+    // Initialize function
+    function initializeRunnerCard() {
+        console.log('Initializing RunnerCard...');
         new RunnerCard();
-    });
+    }
+    
+    // Initialize when DOM is loaded (fallback if script is already executed)
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof html2canvas !== 'undefined') {
+                initializeRunnerCard();
+            }
+        });
+    } else {
+        // DOM is already loaded
+        if (typeof html2canvas !== 'undefined') {
+            initializeRunnerCard();
+        }
+    }
 </script>
