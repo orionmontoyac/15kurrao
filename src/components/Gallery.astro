@@ -86,14 +86,21 @@ const totalPages = Math.ceil(images.length / imagesPerPage);
                 >
                     <!-- Image container -->
                     <div class="relative aspect-square overflow-hidden rounded-xl sm:rounded-2xl">
-                        <!-- Using Image component for optimal performance -->
+                        <!-- Using Image component with optimized sizes for thumbnails -->
                         <Image
                             src={image.src}
                             alt={`15K URRAO 2024 - Imagen ${image.index}`}
                             class="w-full h-full object-cover transition-all duration-500 group-hover:scale-110 group-hover:rotate-1"
-                            loading="lazy"
+                            loading={index < 10 ? "eager" : "lazy"}
                             decoding="async"
+                            widths={[200, 300, 400]}
+                            sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
+                            format="webp"
+                            quality={80}
                         />
+                        
+                        <!-- Loading placeholder -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-gray-300 to-gray-400 animate-pulse gallery-placeholder" style="display: none;"></div>
                         
                         <!-- Hover overlay with preview info -->
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-all duration-300 z-20">
@@ -161,38 +168,6 @@ const totalPages = Math.ceil(images.length / imagesPerPage);
                 <span class="text-secondary-400 font-bold text-sm">{totalPages}</span>
             </div>
         </div>
-
-        <!-- CTA Section -->
-        <!-- <div class="text-center">
-            <div
-                class="inline-flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6 px-4 sm:px-6 lg:px-8 py-4 sm:py-6 bg-white/5 backdrop-blur-lg rounded-xl sm:rounded-2xl border border-white/10"
-            >
-                <div class="text-center md:text-left">
-                    <h3 class="text-white text-lg sm:text-xl font-semibold mb-2">
-                        ¿Quieres ser parte de la historia?
-                    </h3>
-                    <p class="text-white text-sm sm:text-base">
-                        Únete a la próxima edición y crea tus propios momentos inolvidables
-                    </p>
-                </div>
-                <a
-                    href="#distances"
-                    class="group/cta relative overflow-hidden bg-gradient-to-r from-secondary-500 to-secondary-600 hover:from-secondary-600 hover:to-secondary-700 text-white font-semibold py-2.5 sm:py-3 px-4 sm:px-6 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-secondary-500/25 touch-manipulation"
-                >
-                    <div
-                        class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover/cta:translate-x-full transition-transform duration-700"
-                    >
-                    </div>
-                    <div class="relative flex items-center space-x-1.5 sm:space-x-2">
-                        <span class="text-white text-sm sm:text-base">Inscríbete 2025</span>
-                        <Icon
-                            name="tabler/arrow-narrow-right"
-                            class="w-4 h-4 transition-transform duration-300 group-hover/cta:translate-x-1"
-                        />
-                    </div>
-                </a>
-            </div>
-        </div> -->
     </div>
 </section>
 
@@ -233,6 +208,22 @@ const totalPages = Math.ceil(images.length / imagesPerPage);
 
     .gallery-item-animate {
         animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    /* Loading placeholder animation */
+    .gallery-placeholder {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+    }
+
+    @keyframes loading {
+        0% {
+            background-position: 200% 0;
+        }
+        100% {
+            background-position: -200% 0;
+        }
     }
 
     /* Pagination dot animations */
@@ -299,14 +290,24 @@ const totalPages = Math.ceil(images.length / imagesPerPage);
     // Gallery with pagination functionality - Plain JavaScript
     class Gallery {
         constructor() {
+            // Initialize properties with explicit assignments
+            /** @type {number} */
             this.currentPage = 1;
+            /** @type {number} */
             this.imagesPerPage = 10;
+            /** @type {Array<{element: Element, index: number}>} */
             this.allImages = [];
+            /** @type {number} */
             this.totalPages = 0;
+            /** @type {HTMLElement | null} */
             this.galleryGrid = null;
+            /** @type {HTMLButtonElement | null} */
             this.prevBtn = null;
+            /** @type {HTMLButtonElement | null} */
             this.nextBtn = null;
+            /** @type {HTMLElement | null} */
             this.currentPageElement = null;
+            /** @type {HTMLElement | null} */
             this.paginationDots = null;
             
             this.init();
@@ -422,7 +423,9 @@ const totalPages = Math.ceil(images.length / imagesPerPage);
             // Show images for current page with animation
             this.allImages.slice(startIndex, endIndex).forEach((item, index) => {
                 item.element.style.display = 'block';
-                item.element.style.animationDelay = `${index * 0.1}s`;
+                if (item.element instanceof HTMLElement) {
+                    item.element.style.animationDelay = `${index * 0.1}s`;
+                }
                 
                 // Trigger animation after a short delay
                 setTimeout(() => {
@@ -502,7 +505,9 @@ const totalPages = Math.ceil(images.length / imagesPerPage);
                 // Initial animation for visible items
                 const visibleItems = document.querySelectorAll('.gallery-item[style*="display: block"], .gallery-item:not([style*="display: none"])');
                 visibleItems.forEach((item, index) => {
-                    item.style.animationDelay = `${index * 0.1}s`;
+                    if (item instanceof HTMLElement) {
+                        item.style.animationDelay = `${index * 0.1}s`;
+                    }
                     animationObserver.observe(item);
                 });
             }
