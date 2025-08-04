@@ -1,0 +1,139 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { Icon } from "astro-icon/components";
+
+// SEO and metadata
+const pageTitle = "Términos y Condiciones - 15K URRAO 2025";
+const pageDescription = "Términos y condiciones oficiales de la carrera 15K URRAO 2025. Reglamento, categorías, inscripciones y condiciones de participación.";
+const canonicalUrl = "https://15kurrao.netlify.app/terminos";
+---
+
+<Layout title={pageTitle}>
+  <!-- SEO Meta Tags -->
+  <meta name="description" content={pageDescription} />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href={canonicalUrl} />
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={pageDescription} />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:type" content="website" />
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={pageTitle} />
+  <meta name="twitter:description" content={pageDescription} />
+
+  <main class="min-h-screen bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700">
+    <section class="relative overflow-hidden">
+      <div class="absolute inset-0 opacity-10">
+        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22%23ffffff%22 fill-opacity=%220.1%22%3E%3Ccircle cx=%2230%22 cy=%2230%22 r=%222%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+      </div>
+      <div class="relative z-10 container mx-auto px-4 py-8 md:py-16">
+        <header class="text-center mb-8 md:mb-12">
+          <h1 class="font-nova text-4xl md:text-6xl lg:text-7xl text-white mb-4 tracking-tight leading-tight">
+            <span class="bg-gradient-to-r from-white via-primary-100 to-white bg-clip-text text-transparent">
+              Términos y Condiciones
+            </span>
+          </h1>
+          <p class="text-lg md:text-xl text-primary-100 max-w-2xl mx-auto leading-relaxed">
+            Reglamento oficial de la carrera 15K URRAO 2025
+          </p>
+        </header>
+        <div class="max-w-4xl mx-auto">
+          <div class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 p-6 md:p-8 text-white">
+            <article class="mb-8">
+              <h2 class="text-2xl md:text-3xl font-bold mb-4 text-secondary-400">1. Denominación</h2>
+              <p class="text-lg leading-relaxed mb-4">
+                La carrera 15K URRAO 2025 es una competencia atlética con recorridos de 15K y 10K, organizada en Urrao, Antioquia. El punto de concentración y salida será el Parque Principal de Urrao, salvo notificación oficial de la organización.
+              </p>
+            </article>
+            <article class="mb-8">
+              <h2 class="text-2xl md:text-3xl font-bold mb-4 text-secondary-400">2. Fecha</h2>
+              <p class="text-lg leading-relaxed mb-4">
+                Domingo, 12 de octubre de 2025.
+              </p>
+            </article>
+            <article class="mb-8">
+              <h2 class="text-2xl md:text-3xl font-bold mb-4 text-secondary-400">3. Participación</h2>
+              <p class="text-lg leading-relaxed mb-4">
+                Podrán participar personas mayores de 18 años en 15K y mayores de 14 años en 10K, debidamente inscritas y que acepten este reglamento. Menores de edad (14-17 años) requieren autorización de padres o tutor.
+              </p>
+            </article>
+            <article class="mb-8">
+              <h2 class="text-2xl md:text-3xl font-bold mb-4 text-secondary-400">4. Recorridos</h2>
+              <p class="text-lg leading-relaxed mb-4">
+                Los recorridos oficiales estarán publicados en www.15kurrao.netlify.app y podrán ser modificados por razones de seguridad o clima.
+              </p>
+            </article>
+            <article class="mb-8">
+              <h2 class="text-2xl md:text-3xl font-bold mb-4 text-secondary-400">5. Categorías y Edades</h2>
+              <div class="grid md:grid-cols-2 gap-6 mb-6">
+                <div class="bg-white/5 rounded-xl p-6">
+                  <h3 class="text-xl font-bold mb-4 text-secondary-300">15K</h3>
+                  <div class="space-y-2">
+                    <div class="flex justify-between"><span>Abierta</span><span>18-39 años</span></div>
+                    <div class="flex justify-between"><span>Veteranos</span><span>40-49 años</span></div>
+                    <div class="flex justify-between"><span>Plus</span><span>50+ años</span></div>
+                  </div>
+                </div>
+                <div class="bg-white/5 rounded-xl p-6">
+                  <h3 class="text-xl font-bold mb-4 text-secondary-300">10K</h3>
+                  <div class="space-y-2">
+                    <div class="flex justify-between"><span>Menores</span><span>14-17 años</span></div>
+                    <div class="flex justify-between"><span>Juvenil</span><span>18-19 años</span></div>
+                    <div class="flex justify-between"><span>Abierta</span><span>20-39 años</span></div>
+                    <div class="flex justify-between"><span>Veteranos</span><span>40-49 años</span></div>
+                    <div class="flex justify-between"><span>Plus</span><span>50+ años</span></div>
+                  </div>
+                </div>
+              </div>
+            </article>
+            <article class="mb-8">
+              <h2 class="text-2xl md:text-3xl font-bold mb-4 text-secondary-400">6. Inscripciones</h2>
+              <p class="text-lg leading-relaxed mb-4">
+                Las inscripciones estarán abiertas hasta agotar cupos o hasta la fecha límite publicada. El valor de la inscripción no es reembolsable. No se permiten cambios de distancia ni de talla de camiseta una vez confirmada la inscripción.
+              </p>
+            </article>
+            <article class="mb-8">
+              <h2 class="text-2xl md:text-3xl font-bold mb-4 text-secondary-400">7. Entrega de Kits</h2>
+              <p class="text-lg leading-relaxed mb-4">
+                La entrega de kits y números se realizará en el lugar y fechas informados por la organización. Es obligatorio portar el número en la parte delantera de la camiseta oficial durante la carrera.
+              </p>
+            </article>
+            <article class="mb-8">
+              <h2 class="text-2xl md:text-3xl font-bold mb-4 text-secondary-400">8. Servicios Médicos</h2>
+              <p class="text-lg leading-relaxed mb-4">
+                El evento contará con asistencia médica y ambulancias. Los participantes deben informar cualquier condición médica relevante al momento de la inscripción.
+              </p>
+            </article>
+            <article class="mb-8">
+              <h2 class="text-2xl md:text-3xl font-bold mb-4 text-secondary-400">9. Responsabilidad del Participante</h2>
+              <ul class="list-disc pl-6 text-lg mb-4">
+                <li>Declara estar en condiciones físicas y mentales aptas para participar.</li>
+                <li>Asume los riesgos inherentes a la actividad deportiva.</li>
+                <li>Exime a la organización de cualquier responsabilidad por accidentes o incidentes durante el evento.</li>
+                <li>Se compromete a respetar las indicaciones del personal y la señalización del evento.</li>
+              </ul>
+            </article>
+            <article class="mb-8">
+              <h2 class="text-2xl md:text-3xl font-bold mb-4 text-secondary-400">10. Modificaciones y Cancelaciones</h2>
+              <p class="text-lg leading-relaxed mb-4">
+                La organización podrá modificar el reglamento, recorridos, horarios o cancelar el evento por causas de fuerza mayor, seguridad o autoridad. Cualquier cambio será comunicado por los canales oficiales.
+              </p>
+            </article>
+            <article class="mb-8">
+              <h2 class="text-2xl md:text-3xl font-bold mb-4 text-secondary-400">11. Contacto</h2>
+              <div class="bg-secondary-500/20 border border-secondary-500/50 rounded-lg p-6 mt-4">
+                <p><strong>Email:</strong> urraorunning@gmail.com</p>
+                <p><strong>Instagram:</strong> @15kurrao</p>
+                <p><strong>Sitio Web:</strong> www.15kurrao.netlify.app</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>

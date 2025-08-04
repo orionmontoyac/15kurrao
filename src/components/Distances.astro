@@ -338,7 +338,35 @@ import PaceCalculator from "@components/PaceCalculator.astro";
             </div>
         </div> -->
     </div>
-    <PaceCalculator />
+    
+    <!-- Expandable Pace Calculator Section -->
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+        <div class="text-center mb-8">
+            <button
+                id="pace-calculator-toggle"
+                class="group inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-secondary-500/20 to-secondary-600/20 border border-secondary-500/30 hover:from-secondary-500/30 hover:to-secondary-600/30 transition-all duration-300 transform hover:scale-105"
+            >
+                <Icon
+                    name="tabler/clock"
+                    class="w-5 h-5 text-secondary-400 mr-3 group-hover:scale-110 transition-transform duration-300"
+                />
+                <span class="text-white font-semibold">Calculadora de Ritmo</span>
+                <Icon
+                    id="toggle-icon"
+                    name="tabler/chevron-down"
+                    class="w-5 h-5 text-secondary-400 ml-3 transition-transform duration-300"
+                />
+            </button>
+        </div>
+        
+        <div
+            id="pace-calculator-container"
+            class="overflow-hidden transition-all duration-500 ease-in-out"
+            style="max-height: 0; opacity: 0;"
+        >
+            <PaceCalculator />
+        </div>
+    </div>
 </section>
 
 <style>
@@ -457,4 +485,47 @@ import PaceCalculator from "@components/PaceCalculator.astro";
             cards.forEach((card) => observer.observe(card));
         });
     }
+
+    // Pace Calculator Toggle Functionality
+    document.addEventListener("DOMContentLoaded", () => {
+        const toggleBtn = document.getElementById("pace-calculator-toggle");
+        const container = document.getElementById("pace-calculator-container");
+        const toggleIcon = document.getElementById("toggle-icon");
+        
+        if (toggleBtn && container && toggleIcon) {
+            let isExpanded = false;
+            
+            toggleBtn.addEventListener("click", () => {
+                isExpanded = !isExpanded;
+                
+                if (isExpanded) {
+                    // Expand
+                    container.style.maxHeight = container.scrollHeight + "px";
+                    container.style.opacity = "1";
+                    toggleIcon.style.transform = "rotate(180deg)";
+                    toggleBtn.setAttribute("aria-expanded", "true");
+                } else {
+                    // Collapse
+                    container.style.maxHeight = "0";
+                    container.style.opacity = "0";
+                    toggleIcon.style.transform = "rotate(0deg)";
+                    toggleBtn.setAttribute("aria-expanded", "false");
+                }
+            });
+            
+            // Add keyboard support
+            toggleBtn.addEventListener("keydown", (e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    toggleBtn.click();
+                }
+            });
+            
+            // Set initial ARIA attributes
+            toggleBtn.setAttribute("aria-expanded", "false");
+            toggleBtn.setAttribute("aria-controls", "pace-calculator-container");
+            toggleBtn.setAttribute("role", "button");
+            toggleBtn.setAttribute("tabindex", "0");
+        }
+    });
 </script>

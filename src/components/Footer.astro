@@ -96,7 +96,7 @@ const currentYear = new Date().getFullYear();
                 </h3>
                 <div class="space-y-2 sm:space-y-3">
                     <a
-                        href="#distances"
+                        href="/#distances"
                         class="group flex items-center space-x-2 sm:space-x-3 text-slate-300 hover:text-white transition-colors duration-300"
                     >
                         <div
@@ -125,7 +125,7 @@ const currentYear = new Date().getFullYear();
                         </div>
                         <span class="text-sm sm:text-base">Acerca de</span>
                     </a>
-                    <a
+                    <!-- <a
                         href="#contact"
                         class="group flex items-center space-x-2 sm:space-x-3 text-slate-300 hover:text-white transition-colors duration-300"
                     >
@@ -134,7 +134,7 @@ const currentYear = new Date().getFullYear();
                         >
                         </div>
                         <span class="text-sm sm:text-base">Contacto</span>
-                    </a>
+                    </a> -->
                 </div>
             </div>
 
@@ -338,27 +338,29 @@ const currentYear = new Date().getFullYear();
                     class="text-slate-400 text-xs sm:text-sm text-center sm:text-left"
                 >
                     © {currentYear} 15K URRAO. Todos los derechos reservados.
+                    <br>
+                    <span class="text-slate-400">
+                        Web creada por Orion Montoya C email: <a
+                            href="mailto:orionmontoyac@gmail.com"
+                            class="underline hover:text-white transition-colors duration-300"
+                            >orionmontoyac@gmail.com</a
+                        >
+                    </span>
                 </div>
                 <div
                     class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-6 text-xs sm:text-sm"
                 >
                     <a
-                        href="#"
+                        href="/terminos"
                         class="text-slate-400 hover:text-white transition-colors duration-300"
                     >
                         Términos y Condiciones
                     </a>
                     <a
-                        href="#"
+                        href="/privacidad"
                         class="text-slate-400 hover:text-white transition-colors duration-300"
                     >
                         Política de Privacidad
-                    </a>
-                    <a
-                        href="#"
-                        class="text-slate-400 hover:text-white transition-colors duration-300"
-                    >
-                        Cookies
                     </a>
                 </div>
             </div>
@@ -378,4 +380,3 @@ const currentYear = new Date().getFullYear();
         scroll-behavior: smooth;
     }
 </style>
-
