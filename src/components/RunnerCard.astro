@@ -17,8 +17,12 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location } = Astr
 <div 
     class="group relative overflow-hidden rounded-2xl cursor-pointer transform transition-all duration-300 hover:scale-[1.02] bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-white/10 hover:border-secondary-500/30 hover:shadow-lg hover:shadow-secondary-500/10"
     data-runner-id={id}
+    data-runner-name={name}
+    data-runner-distance={distance}
+    data-runner-location={location}
+    data-runner-avatar={avatar}
 >
-    <!-- Image Section (Half of the card) -->
+    <!-- Image Section -->
     <div class="relative aspect-square overflow-hidden">
         <img
             src={avatar}
@@ -30,47 +34,38 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location } = Astr
         <!-- Gradient overlay -->
         <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         
-        <!-- Distance Badge (Top Right) -->
+        <!-- Distance Badge -->
         <div class={`absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-bold shadow-lg ${
             distance === "15K" 
                 ? "bg-gradient-to-r from-primary-500 to-primary-600 text-white" 
                 : "bg-gradient-to-r from-orange-500 to-orange-600 text-white"
         }`}>
-            <h1 class="text-white font-nova md:text-sm text-lg">
+            <span class="text-white font-nova md:text-sm text-lg">
                 {distance}
-            </h1>
+            </span>
         </div>
         
-        <!-- Share Button (Top Left) - Always Visible -->
+        <!-- Share Button -->
         <button
-            class="absolute top-3 left-3 w-8 h-8 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-full flex items-center justify-center shadow-lg transform transition-all duration-300 hover:scale-110 hover:shadow-xl hover:shadow-secondary-500/25 z-10"
-            data-share-runner
-            data-runner-name={name}
-            data-runner-distance={distance}
-            data-runner-location={location}
-            data-runner-avatar={avatar}
+            class="runner-share-btn absolute top-3 left-3 w-8 h-8 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-full flex items-center justify-center shadow-lg transform transition-all duration-300 hover:scale-110 hover:shadow-xl hover:shadow-secondary-500/25 z-10"
             title="Compartir corredor"
+            type="button"
         >
             <Icon name="tabler/share" class="w-4 h-4 text-white" />
         </button>
         
-        <!-- Recent Registration Badge (Top Left - moved down when share button is visible) -->
+        <!-- Recent Registration Badge -->
         {timeAgo <= 60 && (
-            <div
-                class="absolute top-3 left-12 w-8 h-8 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-lg transform transition-all duration-300 group-hover:scale-110"
-            >
+            <div class="absolute top-3 left-12 w-8 h-8 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-lg transform transition-all duration-300 group-hover:scale-110">
                 <Icon name="tabler/clock" class="w-4 h-4 text-white" />
             </div>
         )}
-        
-        <!-- Online indicator (Bottom Right of image) -->
-        <!-- <div class="absolute bottom-3 right-3 w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-lg"></div> -->
     </div>
     
-    <!-- Content Section (Bottom Half) -->
+    <!-- Content Section -->
     <div class="p-4">
         <!-- Runner Name -->
-        <h3 class="text-white font-semibold md:text-lg text-3xl eading-tight mb-2 group-hover:text-secondary-300 transition-colors duration-300">
+        <h3 class="text-white font-semibold md:text-lg text-3xl leading-tight mb-2 group-hover:text-secondary-300 transition-colors duration-300">
             {name}
         </h3>
         
@@ -99,36 +94,58 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location } = Astr
 </div>
 
 <!-- Share Modal -->
-<div id="share-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 max-w-sm w-full transform scale-95 opacity-0 transition-all duration-300">
-        <div class="flex items-center justify-between mb-4">
+<div id="share-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 invisible transition-all duration-300">
+    <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 max-w-sm w-full transform scale-95 transition-all duration-300">
+        <!-- Modal Header -->
+        <div class="flex items-center justify-between mb-6">
             <h3 class="text-white font-semibold text-lg">Compartir corredor</h3>
-            <button id="close-share-modal" class="text-white/70 hover:text-white transition-colors">
+            <button id="close-share-modal" class="text-white/70 hover:text-white transition-colors p-1" type="button">
                 <Icon name="tabler/x" class="w-5 h-5" />
             </button>
         </div>
         
+        <!-- Runner Info Preview -->
+        <div id="runner-preview" class="bg-white/5 rounded-xl p-4 mb-6 border border-white/10">
+            <div class="flex items-center space-x-3">
+                <img id="preview-avatar" src="" alt="" class="w-12 h-12 rounded-full object-cover" />
+                <div>
+                    <h4 id="preview-name" class="text-white font-medium"></h4>
+                    <p id="preview-info" class="text-slate-300 text-sm"></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Share Options -->
         <div class="space-y-3">
             <!-- Instagram Stories -->
-            <button id="share-instagram" class="w-full flex items-center space-x-3 p-3 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl text-white font-medium hover:shadow-lg hover:shadow-pink-500/25 transition-all duration-300 transform hover:scale-[1.02]">
+            <button id="share-instagram" class="w-full flex items-center space-x-3 p-3 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl text-white font-medium hover:shadow-lg hover:shadow-pink-500/25 transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed" type="button">
                 <Icon name="tabler/instagram-logo" class="w-5 h-5" />
                 <span>Instagram Stories</span>
             </button>
             
             <!-- WhatsApp -->
-            <button id="share-whatsapp" class="w-full flex items-center space-x-3 p-3 bg-gradient-to-r from-green-500 to-green-600 rounded-xl text-white font-medium hover:shadow-lg hover:shadow-green-500/25 transition-all duration-300 transform hover:scale-[1.02]">
+            <button id="share-whatsapp" class="w-full flex items-center space-x-3 p-3 bg-gradient-to-r from-green-500 to-green-600 rounded-xl text-white font-medium hover:shadow-lg hover:shadow-green-500/25 transition-all duration-300 transform hover:scale-[1.02]" type="button">
                 <Icon name="tabler/whatsapp-logo" class="w-5 h-5" />
                 <span>WhatsApp</span>
             </button>
             
             <!-- Download Image -->
-            <button id="download-image" class="w-full flex items-center space-x-3 p-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl text-white font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-[1.02]">
-                <Icon name="tabler/circle-arrow-up" class="w-5 h-5" />
+            <button id="download-image" class="w-full flex items-center space-x-3 p-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl text-white font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed" type="button">
+                <Icon name="tabler/download" class="w-5 h-5" />
                 <span>Descargar Imagen</span>
             </button>
         </div>
+        
+        <!-- Loading State -->
+        <div id="loading-state" class="hidden text-center py-4">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto mb-2"></div>
+            <p class="text-white text-sm">Procesando imagen...</p>
+        </div>
     </div>
 </div>
+
+<!-- Toast Container -->
+<div id="toast-container" class="fixed bottom-4 right-4 z-60 space-y-2"></div>
 
 <style>
     /* Enhanced glassmorphism effects */
@@ -137,248 +154,444 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location } = Astr
         -webkit-backdrop-filter: blur(4px);
     }
     
+    .backdrop-blur-lg {
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    
     /* Smooth image loading */
     img {
         image-rendering: -webkit-optimize-contrast;
         image-rendering: crisp-edges;
     }
     
-    /* Pulse animation for online indicators */
+    /* Pulse animation */
     @keyframes pulse {
-        0%, 100% {
-            opacity: 1;
-        }
-        50% {
-            opacity: 0.5;
-        }
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
     }
     
     .animate-pulse {
         animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     }
     
-    /* Card hover animations */
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    /* Spin animation for loading */
+    @keyframes spin {
+        to { transform: rotate(360deg); }
     }
     
-    .runner-card-animate {
-        animation: fadeInUp 0.6s ease-out forwards;
+    .animate-spin {
+        animation: spin 1s linear infinite;
+    }
+    
+    /* Modal animations */
+    #share-modal.show {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    #share-modal.show > div {
+        transform: scale(1);
     }
 </style>
 
 <script>
-    // Import html2canvas from CDN
-    const script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-    script.onload = () => {
-        console.log('html2canvas loaded successfully');
-        initializeRunnerCard();
-    };
-    document.head.appendChild(script);
+    // Types
+    interface RunnerData {
+        id: number;
+        name: string;
+        distance: string;
+        location: string;
+        avatar: string;
+    }
 
-    // Runner Card interactions
-    class RunnerCard {
+    interface ToastOptions {
+        type?: 'success' | 'error' | 'info';
+        duration?: number;
+    }
+
+    // Toast utility
+    class ToastManager {
+        private container: HTMLElement;
+
         constructor() {
+            this.container = document.getElementById('toast-container')!;
+        }
+
+        show(message: string, options: ToastOptions = {}): void {
+            const { type = 'info', duration = 3000 } = options;
+            
+            const toast = document.createElement('div');
+            toast.className = `
+                transform translate-x-full transition-all duration-300 ease-out
+                bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl 
+                px-4 py-3 text-white text-sm shadow-lg max-w-xs
+                ${type === 'success' ? 'border-green-500/30 bg-green-500/10' : ''}
+                ${type === 'error' ? 'border-red-500/30 bg-red-500/10' : ''}
+            `;
+            
+            toast.textContent = message;
+            this.container.appendChild(toast);
+            
+            // Animate in
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-x-full');
+            });
+            
+            // Remove after duration
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+                setTimeout(() => {
+                    if (this.container.contains(toast)) {
+                        this.container.removeChild(toast);
+                    }
+                }, 300);
+            }, duration);
+        }
+    }
+
+    // Image capture utility
+    class ImageCaptureService {
+        private static async loadHtml2Canvas(): Promise<void> {
+            if (typeof (window as any).html2canvas !== 'undefined') return;
+            
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+                script.onload = () => resolve();
+                script.onerror = () => reject(new Error('Failed to load html2canvas'));
+                document.head.appendChild(script);
+            });
+        }
+
+        static async captureElement(element: HTMLElement): Promise<Blob> {
+            await this.loadHtml2Canvas();
+            
+            const html2canvas = (window as any).html2canvas;
+            if (!html2canvas) {
+                throw new Error('html2canvas not available');
+            }
+
+            return this.createStoryCanvas(element);
+        }
+
+        private static async createStoryCanvas(element: HTMLElement): Promise<Blob> {
+            const html2canvas = (window as any).html2canvas;
+            
+            // Hide share button during capture
+            const shareBtn = element.querySelector('.runner-share-btn') as HTMLElement;
+            const originalDisplay = shareBtn?.style.display || '';
+            if (shareBtn) shareBtn.style.display = 'none';
+
+            try {
+                // Wait for images to load
+                const images = element.querySelectorAll('img');
+                await Promise.all(Array.from(images).map(img => {
+                    if (img.complete) return Promise.resolve();
+                    return new Promise<void>((resolve, reject) => {
+                        const timeout = setTimeout(() => reject(new Error('Image load timeout')), 5000);
+                        img.onload = () => {
+                            clearTimeout(timeout);
+                            resolve();
+                        };
+                        img.onerror = () => {
+                            clearTimeout(timeout);
+                            reject(new Error('Image load failed'));
+                        };
+                    });
+                }));
+
+                // Create a temporary container for story format
+                const storyContainer = document.createElement('div');
+                storyContainer.style.cssText = `
+                    position: fixed;
+                    top: -9999px;
+                    left: -9999px;
+                    width: 1080px;
+                    height: 1920px;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 60px 40px;
+                    box-sizing: border-box;
+                `;
+
+                // Clone the card element
+                const cardClone = element.cloneNode(true) as HTMLElement;
+                cardClone.style.cssText = `
+                    width: 100%;
+                    max-width: 480px;
+                    height: auto;
+                    transform: scale(1.2);
+                    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+                    border-radius: 24px;
+                `;
+
+                // Fix text positioning and sizes in the clone
+                const nameElement = cardClone.querySelector('h3');
+                if (nameElement) {
+                    nameElement.style.cssText = `
+                        color: white;
+                        font-weight: 600;
+                        font-size: 28px;
+                        line-height: 1.2;
+                        margin-bottom: 12px;
+                        text-align: left;
+                        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+                    `;
+                }
+
+                const locationElement = cardClone.querySelector('p');
+                if (locationElement) {
+                    locationElement.style.cssText = `
+                        color: rgb(203, 213, 225);
+                        font-size: 16px;
+                        display: flex;
+                        align-items: center;
+                        margin-bottom: 16px;
+                        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+                    `;
+                }
+
+                const statusContainer = cardClone.querySelector('.flex.items-center.justify-between');
+                if (statusContainer) {
+                    (statusContainer as HTMLElement).style.cssText = `
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        font-size: 16px;
+                    `;
+                    
+                    const statusText = statusContainer.querySelector('.text-green-400');
+                    if (statusText) {
+                        (statusText as HTMLElement).style.textShadow = '0 1px 2px rgba(0, 0, 0, 0.3)';
+                    }
+                    
+                    const timeText = statusContainer.querySelector('.text-slate-300');
+                    if (timeText) {
+                        (timeText as HTMLElement).style.textShadow = '0 1px 2px rgba(0, 0, 0, 0.3)';
+                    }
+                }
+
+                // Remove the share button from clone
+                const clonedShareBtn = cardClone.querySelector('.runner-share-btn');
+                if (clonedShareBtn) {
+                    clonedShareBtn.remove();
+                }
+
+                // Add branding
+                const brandingDiv = document.createElement('div');
+                brandingDiv.style.cssText = `
+                    position: absolute;
+                    bottom: 40px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    text-align: center;
+                    color: white;
+                `;
+                brandingDiv.innerHTML = `
+                    <div style="font-size: 32px; font-weight: bold; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">15KURRAO</div>
+                    <div style="font-size: 18px; opacity: 0.9; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);">¡Únete a la carrera! 🏃‍♂️</div>
+                `;
+
+                storyContainer.appendChild(cardClone);
+                storyContainer.appendChild(brandingDiv);
+                document.body.appendChild(storyContainer);
+
+                // Capture the story container
+                const canvas = await html2canvas(storyContainer, {
+                    backgroundColor: null,
+                    scale: 1,
+                    useCORS: true,
+                    allowTaint: false,
+                    logging: false,
+                    width: 1080,
+                    height: 1920
+                });
+
+                // Remove temporary container
+                document.body.removeChild(storyContainer);
+
+                // Convert to blob
+                return new Promise<Blob>((resolve, reject) => {
+                    canvas.toBlob((blob) => {
+                        if (blob) {
+                            resolve(blob);
+                        } else {
+                            reject(new Error('Failed to create blob'));
+                        }
+                    }, 'image/png', 1.0);
+                });
+            } finally {
+                // Restore share button
+                if (shareBtn) shareBtn.style.display = originalDisplay;
+            }
+        }
+    }
+
+    // Main RunnerCard class
+    class RunnerCardManager {
+        private toast: ToastManager;
+        private modal: HTMLElement;
+        private currentRunnerData: RunnerData | null = null;
+
+        constructor() {
+            this.toast = new ToastManager();
+            this.modal = document.getElementById('share-modal')!;
             this.init();
         }
-        
-        init() {
+
+        private init(): void {
             this.bindEvents();
         }
-        
-        bindEvents() {
-            // Add click handler for the card (excluding share button)
-            document.querySelectorAll('[data-runner-id]').forEach((card) => {
+
+        private bindEvents(): void {
+            // Card click events (excluding share button)
+            document.querySelectorAll('[data-runner-id]').forEach(card => {
                 card.addEventListener('click', (e) => {
-                    // Don't trigger card click if clicking on share button
-                    if (e.target.closest('[data-share-runner]')) {
-                        return;
+                    if (!(e.target as Element).closest('.runner-share-btn')) {
+                        this.handleCardClick(card as HTMLElement);
                     }
-                    e.preventDefault();
-                    this.handleCardClick(card);
                 });
             });
-            
-            // Add share button handlers
-            this.bindShareEvents();
-        }
-        
-        bindShareEvents() {
-            // Share button click
-            document.querySelectorAll('[data-share-runner]').forEach((button) => {
-                button.addEventListener('click', (e) => {
+
+            // Share button events
+            document.querySelectorAll('.runner-share-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log('Share button clicked');
-                    this.openShareModal(button);
+                    const card = btn.closest('[data-runner-id]') as HTMLElement;
+                    this.openShareModal(card);
                 });
             });
-            
-            // Modal close button
+
+            // Modal events
+            this.bindModalEvents();
+        }
+
+        private bindModalEvents(): void {
+            // Close button
             const closeBtn = document.getElementById('close-share-modal');
-            if (closeBtn) {
-                closeBtn.addEventListener('click', () => this.closeShareModal());
-            }
-            
-            // Close modal when clicking outside
-            const modal = document.getElementById('share-modal');
-            if (modal) {
-                modal.addEventListener('click', (e) => {
-                    if (e.target === modal) {
-                        this.closeShareModal();
-                    }
-                });
-            }
-            
+            closeBtn?.addEventListener('click', () => this.closeModal());
+
+            // Click outside to close
+            this.modal.addEventListener('click', (e) => {
+                if (e.target === this.modal) this.closeModal();
+            });
+
             // Share platform buttons
-            this.bindSharePlatformEvents();
-        }
-        
-        bindSharePlatformEvents() {
-            // Instagram Stories
-            const instagramBtn = document.getElementById('share-instagram');
-            if (instagramBtn) {
-                instagramBtn.addEventListener('click', () => {
-                    console.log('Instagram share clicked');
-                    this.shareToInstagram();
-                });
-            }
-            
-            // WhatsApp
-            const whatsappBtn = document.getElementById('share-whatsapp');
-            if (whatsappBtn) {
-                whatsappBtn.addEventListener('click', () => this.shareToWhatsApp());
-            }
-            
-            // Download Image
-            const downloadBtn = document.getElementById('download-image');
-            if (downloadBtn) {
-                downloadBtn.addEventListener('click', () => {
-                    console.log('Download image clicked');
-                    this.downloadStoryImage();
-                });
-            }
-        }
-        
-        openShareModal(button) {
-            const modal = document.getElementById('share-modal');
-            if (!modal) return;
-            
-            console.log('Opening share modal');
-            
-            // Get runner data from button
-            const runnerName = button.getAttribute('data-runner-name') || '';
-            const runnerDistance = button.getAttribute('data-runner-distance') || '';
-            const runnerLocation = button.getAttribute('data-runner-location') || '';
-            const runnerAvatar = button.getAttribute('data-runner-avatar') || '';
-            
-            // Store data for sharing
-            window.currentRunnerData = {
-                name: runnerName,
-                distance: runnerDistance,
-                location: runnerLocation,
-                avatar: runnerAvatar
-            };
-            
-            // Show modal with animation
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                modal.classList.remove('scale-95', 'opacity-0');
-            }, 10);
-        }
-        
-        closeShareModal() {
-            const modal = document.getElementById('share-modal');
-            if (!modal) return;
-            
-            modal.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 300);
-        }
-        
-        async shareToInstagram() {
-            const data = window.currentRunnerData;
-            if (!data) {
-                console.error('No runner data found');
-                return;
-            }
-            
-            this.showToast('Capturando imagen del corredor...');
-            
-            try {
-                const imageBlob = await this.captureRunnerCard(data);
-                console.log('Image captured successfully');
-                
-                // Try to share via Web Share API if available
-                if (navigator.share && navigator.canShare) {
-                    const file = new File([imageBlob], 'runner-card.png', { type: 'image/png' });
-                    if (navigator.canShare({ files: [file] })) {
-                        await navigator.share({
-                            title: `${data.name} - 15KURRAO`,
-                            text: `🏃‍♂️ ¡Mira este corredor! ${data.name} se inscribió para la carrera de ${data.distance} desde ${data.location}. ¡Únete a la 15KURRAO! 🏁`,
-                            files: [file]
-                        });
-                    } else {
-                        // Fallback: Download the image
-                        this.downloadImageBlob(imageBlob, `${data.name}-15kurrao-card.png`);
-                        this.showToast('Imagen descargada. Compártela en Instagram Stories manualmente.');
-                    }
-                } else {
-                    // Fallback: Download the image
-                    this.downloadImageBlob(imageBlob, `${data.name}-15kurrao-card.png`);
-                    this.showToast('Imagen descargada. Compártela en Instagram Stories manualmente.');
+            document.getElementById('share-instagram')?.addEventListener('click', () => this.shareToInstagram());
+            document.getElementById('share-whatsapp')?.addEventListener('click', () => this.shareToWhatsApp());
+            document.getElementById('download-image')?.addEventListener('click', () => this.downloadImage());
+
+            // ESC key to close
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && this.modal.classList.contains('show')) {
+                    this.closeModal();
                 }
+            });
+        }
+
+        private extractRunnerData(card: HTMLElement): RunnerData {
+            return {
+                id: parseInt(card.dataset.runnerId || '0'),
+                name: card.dataset.runnerName || '',
+                distance: card.dataset.runnerDistance || '',
+                location: card.dataset.runnerLocation || '',
+                avatar: card.dataset.runnerAvatar || ''
+            };
+        }
+
+        private updateModalPreview(data: RunnerData): void {
+            const avatar = document.getElementById('preview-avatar') as HTMLImageElement;
+            const name = document.getElementById('preview-name')!;
+            const info = document.getElementById('preview-info')!;
+
+            if (avatar) avatar.src = data.avatar;
+            name.textContent = data.name;
+            info.textContent = `${data.distance} • ${data.location}`;
+        }
+
+        private openShareModal(card: HTMLElement): void {
+            this.currentRunnerData = this.extractRunnerData(card);
+            this.updateModalPreview(this.currentRunnerData);
+            
+            this.modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        private closeModal(): void {
+            this.modal.classList.remove('show');
+            document.body.style.overflow = '';
+            this.currentRunnerData = null;
+        }
+
+        private async shareToInstagram(): Promise<void> {
+            if (!this.currentRunnerData) return;
+
+            try {
+                this.setLoadingState(true);
+                const card = document.querySelector(`[data-runner-id="${this.currentRunnerData.id}"]`) as HTMLElement;
+                const imageBlob = await ImageCaptureService.captureElement(card);
                 
-                this.closeShareModal();
+                await this.shareImageBlob(imageBlob, 'Instagram Stories');
+                this.closeModal();
             } catch (error) {
-                console.error('Error capturing runner card:', error);
-                this.showToast('Error al capturar la imagen. Inténtalo de nuevo.');
+                console.error('Instagram share error:', error);
+                this.toast.show('Error al compartir en Instagram', { type: 'error' });
+            } finally {
+                this.setLoadingState(false);
             }
         }
-        
-        shareToWhatsApp() {
-            const data = window.currentRunnerData;
-            if (!data) return;
-            
-            const text = `🏃‍♂️ ¡Mira este corredor!\n\n${data.name} se inscribió para la carrera de ${data.distance} desde ${data.location}.\n\n¡Únete a la 15KURRAO! 🏁`;
+
+        private shareToWhatsApp(): void {
+            if (!this.currentRunnerData) return;
+
+            const text = `🏃‍♂️ ¡Mira este corredor!\n\n${this.currentRunnerData.name} se inscribió para la carrera de ${this.currentRunnerData.distance} desde ${this.currentRunnerData.location}.\n\n¡Únete a la 15KURRAO! 🏁`;
             const url = encodeURIComponent(window.location.href);
             const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}%20${url}`;
             
             window.open(whatsappUrl, '_blank');
-            this.closeShareModal();
-            this.showToast('Compartiendo en WhatsApp...');
+            this.closeModal();
+            this.toast.show('Compartiendo en WhatsApp...', { type: 'success' });
         }
-        
-        async downloadStoryImage() {
-            const data = window.currentRunnerData;
-            if (!data) {
-                console.error('No runner data found');
-                return;
-            }
-            
-            this.showToast('Capturando imagen...');
-            
+
+        private async downloadImage(): Promise<void> {
+            if (!this.currentRunnerData) return;
+
             try {
-                const imageBlob = await this.captureRunnerCard(data);
-                this.downloadImageBlob(imageBlob, `${data.name}-15kurrao-card.png`);
-                this.showToast('¡Imagen descargada exitosamente!');
-                this.closeShareModal();
+                this.setLoadingState(true);
+                const card = document.querySelector(`[data-runner-id="${this.currentRunnerData.id}"]`) as HTMLElement;
+                const imageBlob = await ImageCaptureService.captureElement(card);
+                
+                this.downloadBlob(imageBlob, `${this.currentRunnerData.name}-15kurrao-card.png`);
+                this.toast.show('¡Imagen descargada exitosamente!', { type: 'success' });
+                this.closeModal();
             } catch (error) {
-                console.error('Error capturing runner card:', error);
-                this.showToast('Error al capturar la imagen. Inténtalo de nuevo.');
+                console.error('Download error:', error);
+                this.toast.show('Error al descargar la imagen', { type: 'error' });
+            } finally {
+                this.setLoadingState(false);
             }
         }
-        
-        downloadImageBlob(blob, filename) {
+
+        private async shareImageBlob(blob: Blob, platform: string): Promise<void> {
+            const file = new File([blob], 'runner-card.png', { type: 'image/png' });
+            
+            if (navigator.share && navigator.canShare?.({ files: [file] })) {
+                await navigator.share({
+                    title: `${this.currentRunnerData!.name} - 15KURRAO`,
+                    text: `🏃‍♂️ ¡Mira este corredor! ${this.currentRunnerData!.name} se inscribió para la carrera de ${this.currentRunnerData!.distance} desde ${this.currentRunnerData!.location}. ¡Únete a la 15KURRAO! 🏁`,
+                    files: [file]
+                });
+            } else {
+                this.downloadBlob(blob, `${this.currentRunnerData!.name}-15kurrao-card.png`);
+                this.toast.show(`Imagen descargada. Compártela en ${platform} manualmente.`, { type: 'info' });
+            }
+        }
+
+        private downloadBlob(blob: Blob, filename: string): void {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
@@ -388,153 +601,36 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location } = Astr
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }
-        
-        async captureRunnerCard(data) {
-            console.log('Starting capture process for:', data.name);
+
+        private setLoadingState(loading: boolean): void {
+            const loadingEl = document.getElementById('loading-state');
+            const buttons = this.modal.querySelectorAll('button:not(#close-share-modal)');
             
-            // Check if html2canvas is available
-            if (typeof html2canvas === 'undefined') {
-                throw new Error('html2canvas library not loaded');
-            }
-            
-            // Find the runner card element using the stored runner data
-            const runnerCards = document.querySelectorAll('[data-runner-id]');
-            let targetCard = null;
-            
-            // Find the card that matches the current runner data
-            for (const card of runnerCards) {
-                const cardName = card.querySelector('h3')?.textContent?.trim();
-                if (cardName === data.name) {
-                    targetCard = card;
-                    break;
-                }
-            }
-            
-            if (!targetCard) {
-                console.error('Runner card not found for:', data.name);
-                throw new Error('Runner card not found');
-            }
-            
-            console.log('Found target card:', targetCard);
-            
-            // Temporarily hide the share button to get a clean capture
-            const shareButton = targetCard.querySelector('[data-share-runner]');
-            const originalDisplay = shareButton ? shareButton.style.display : '';
-            if (shareButton) {
-                shareButton.style.display = 'none';
-            }
-            
-            try {
-                console.log('Capturing with html2canvas...');
-                
-                // Wait for images to load
-                const images = targetCard.querySelectorAll('img');
-                await Promise.all(Array.from(images).map(img => {
-                    if (img.complete) return Promise.resolve();
-                    return new Promise((resolve, reject) => {
-                        img.onload = resolve;
-                        img.onerror = reject;
-                        // Add timeout to prevent hanging
-                        setTimeout(reject, 5000);
-                    });
-                }));
-                
-                // Use html2canvas to capture the runner card
-                const canvas = await html2canvas(targetCard, {
-                    backgroundColor: null, // Transparent background
-                    scale: 2, // Higher resolution for better quality
-                    useCORS: true,
-                    allowTaint: false,
-                    logging: true, // Enable logging for debugging
-                    width: targetCard.offsetWidth,
-                    height: targetCard.offsetHeight,
-                    onclone: (clonedDoc) => {
-                        // Ensure styles are preserved in the cloned document
-                        const clonedCard = clonedDoc.querySelector(`[data-runner-id="${targetCard.getAttribute('data-runner-id')}"]`);
-                        if (clonedCard) {
-                            const clonedShareButton = clonedCard.querySelector('[data-share-runner]');
-                            if (clonedShareButton) {
-                                clonedShareButton.style.display = 'none';
-                            }
-                        }
-                    }
-                });
-                
-                console.log('Canvas created successfully:', canvas.width, 'x', canvas.height);
-                
-                // Convert canvas to blob
-                return new Promise((resolve, reject) => {
-                    canvas.toBlob((blob) => {
-                        if (blob) {
-                            console.log('Blob created successfully:', blob.size, 'bytes');
-                            resolve(blob);
-                        } else {
-                            reject(new Error('Failed to create blob from canvas'));
-                        }
-                    }, 'image/png', 0.95);
-                });
-                
-            } finally {
-                // Restore the share button
-                if (shareButton) {
-                    shareButton.style.display = originalDisplay;
-                }
+            if (loading) {
+                loadingEl?.classList.remove('hidden');
+                buttons.forEach(btn => btn.setAttribute('disabled', 'true'));
+            } else {
+                loadingEl?.classList.add('hidden');
+                buttons.forEach(btn => btn.removeAttribute('disabled'));
             }
         }
-        
-        handleCardClick(card) {
-            const runnerId = card.getAttribute('data-runner-id');
-            const runnerName = card.querySelector('h3')?.textContent || 'corredor';
-            
-            // You can implement a modal or navigation here
-            console.log(`Clicked runner ${runnerId}: ${runnerName}`);
-            
-            // Show a toast notification
-            this.showToast(`Ver detalles de ${runnerName}`);
-        }
-        
-        showToast(message) {
-            // Create a simple toast notification
-            const toast = document.createElement('div');
-            toast.className = 'fixed bottom-4 right-4 bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl px-4 py-3 text-white text-sm z-50 transform translate-y-full transition-transform duration-300';
-            toast.textContent = message;
-            
-            document.body.appendChild(toast);
-            
-            // Animate in
-            setTimeout(() => {
-                toast.classList.remove('translate-y-full');
-            }, 100);
-            
-            // Remove after 3 seconds
-            setTimeout(() => {
-                toast.classList.add('translate-y-full');
-                setTimeout(() => {
-                    if (document.body.contains(toast)) {
-                        document.body.removeChild(toast);
-                    }
-                }, 300);
-            }, 3000);
+
+        private handleCardClick(card: HTMLElement): void {
+            const data = this.extractRunnerData(card);
+            console.log('Card clicked:', data);
+            this.toast.show(`Ver detalles de ${data.name}`);
         }
     }
-    
-    // Initialize function
-    function initializeRunnerCard() {
-        console.log('Initializing RunnerCard...');
-        new RunnerCard();
+
+    // Initialize when DOM is ready
+    function initializeRunnerCards(): void {
+        new RunnerCardManager();
     }
-    
-    // Initialize when DOM is loaded (fallback if script is already executed)
+
+    // Auto-initialize
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            if (typeof html2canvas !== 'undefined') {
-                initializeRunnerCard();
-            }
-        });
+        document.addEventListener('DOMContentLoaded', initializeRunnerCards);
     } else {
-        // DOM is already loaded
-        if (typeof html2canvas !== 'undefined') {
-            initializeRunnerCard();
-        }
+        initializeRunnerCards();
     }
 </script>
