@@ -1,0 +1,226 @@
+WEB IMAGE OPTIMIZATION REPORT
+==================================================
+Generated: 2025-08-30 16:35:37
+
+Input Directory: /Users/orionmontoyacorrea/code/15kurrao/public/2024-edition
+Output Directory: web_images
+Target Format: WEBP
+Max Dimensions: 1920x1080
+
+SUCCESSFULLY PROCESSED FILES:
+------------------------------
+Original: ESM_2346-2.jpg
+Normalized: 15k_1.webp
+Size: 16.6 MB → 224.7 KB (98.7% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
+Original: ESM_2434-2.jpg
+Normalized: 15k_2.webp
+Size: 16.2 MB → 150.7 KB (99.1% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
+Original: ESM_2438-2 (1).jpg
+Normalized: 15k_3.webp
+Size: 14.9 MB → 112.8 KB (99.3% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
+Original: ESM_2438-2.jpg
+Normalized: 15k_4.webp
+Size: 14.9 MB → 112.8 KB (99.3% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
+Original: ESM_2447-2.jpg
+Normalized: 15k_5.webp
+Size: 15.3 MB → 98.5 KB (99.4% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
+Original: IMG_4206.jpg
+Normalized: 15k_6.webp
+Size: 24.1 MB → 284.2 KB (98.8% reduction)
+Dimensions: 1619x1080 → 1619x1080
+
+Original: IMG_4336.jpg
+Normalized: 15k_7.webp
+Size: 19.3 MB → 102.1 KB (99.5% reduction)
+Dimensions: 720x1080 → 720x1080
+
+Original: IMG_4413.jpg
+Normalized: 15k_8.webp
+Size: 15.2 MB → 91.7 KB (99.4% reduction)
+Dimensions: 719x1080 → 719x1080
+
+Original: IMG_4424.jpg
+Normalized: 15k_9.webp
+Size: 17.6 MB → 57.6 KB (99.7% reduction)
+Dimensions: 719x1080 → 719x1080
+
+Original: IMG_4541.jpg
+Normalized: 15k_10.webp
+Size: 10.6 MB → 113.0 KB (99.0% reduction)
+Dimensions: 719x1080 → 719x1080
+
+Original: IMG_4545.jpg
+Normalized: 15k_11.webp
+Size: 11.8 MB → 92.2 KB (99.2% reduction)
+Dimensions: 719x1080 → 719x1080
+
+Original: IMG_4589.jpg
+Normalized: 15k_12.webp
+Size: 15.5 MB → 61.8 KB (99.6% reduction)
+Dimensions: 719x1080 → 719x1080
+
+Original: IMG_4595.jpg
+Normalized: 15k_13.webp
+Size: 16.5 MB → 92.9 KB (99.5% reduction)
+Dimensions: 720x1080 → 720x1080
+
+Original: IMG_4603.jpg
+Normalized: 15k_14.webp
+Size: 13.9 MB → 108.9 KB (99.2% reduction)
+Dimensions: 719x1080 → 719x1080
+
+Original: IMG_4607.jpg
+Normalized: 15k_15.webp
+Size: 10.7 MB → 129.1 KB (98.8% reduction)
+Dimensions: 719x1080 → 719x1080
+
+Original: IMG_4641.jpg
+Normalized: 15k_16.webp
+Size: 18.4 MB → 93.2 KB (99.5% reduction)
+Dimensions: 720x1080 → 720x1080
+
+Original: IMG_4645.jpg
+Normalized: 15k_17.webp
+Size: 12.9 MB → 100.4 KB (99.2% reduction)
+Dimensions: 720x1080 → 720x1080
+
+Original: IMG_4653.jpg
+Normalized: 15k_18.webp
+Size: 19.7 MB → 126.9 KB (99.4% reduction)
+Dimensions: 720x1080 → 720x1080
+
+Original: edicion_2024_1.webp
+Normalized: 15k_19.webp
+Size: 226.4 KB → 210.1 KB (7.2% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
+Original: edicion_2024_10.webp
+Normalized: 15k_20.webp
+Size: 224.7 KB → 209.4 KB (6.8% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
+Original: edicion_2024_11.webp
+Normalized: 15k_21.webp
+Size: 180.4 KB → 165.5 KB (8.3% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
+Original: edicion_2024_13.webp
+Normalized: 15k_22.webp
+Size: 117.5 KB → 107.6 KB (8.4% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
+Original: edicion_2024_14.webp
+Normalized: 15k_23.webp
+Size: 147.7 KB → 136.1 KB (7.9% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
+Original: edicion_2024_16.webp
+Normalized: 15k_24.webp
+Size: 95.6 KB → 82.1 KB (14.1% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
+Original: edicion_2024_2.webp
+Normalized: 15k_25.webp
+Size: 203.4 KB → 187.4 KB (7.9% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
+Original: edicion_2024_20.webp
+Normalized: 15k_26.webp
+Size: 134.2 KB → 120.2 KB (10.4% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
+Original: edicion_2024_21.webp
+Normalized: 15k_27.webp
+Size: 173.3 KB → 158.3 KB (8.7% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
+Original: edicion_2024_23.webp
+Normalized: 15k_28.webp
+Size: 127.0 KB → 113.0 KB (11.0% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
+Original: edicion_2024_24.webp
+Normalized: 15k_29.webp
+Size: 130.5 KB → 115.5 KB (11.5% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
+Original: edicion_2024_25.webp
+Normalized: 15k_30.webp
+Size: 79.4 KB → 69.7 KB (12.3% reduction)
+Dimensions: 1272x1080 → 1272x1080
+
+Original: edicion_2024_26.webp
+Normalized: 15k_31.webp
+Size: 149.1 KB → 130.2 KB (12.7% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
+Original: edicion_2024_27.webp
+Normalized: 15k_32.webp
+Size: 112.9 KB → 98.4 KB (12.8% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
+Original: edicion_2024_31.webp
+Normalized: 15k_33.webp
+Size: 152.4 KB → 137.7 KB (9.7% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
+Original: edicion_2024_32.webp
+Normalized: 15k_34.webp
+Size: 134.8 KB → 120.5 KB (10.6% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
+Original: edicion_2024_33.webp
+Normalized: 15k_35.webp
+Size: 210.2 KB → 191.1 KB (9.1% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
+Original: edicion_2024_34.webp
+Normalized: 15k_36.webp
+Size: 101.9 KB → 90.6 KB (11.1% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
+Original: edicion_2024_35.webp
+Normalized: 15k_37.webp
+Size: 108.2 KB → 94.2 KB (12.9% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
+Original: edicion_2024_37.webp
+Normalized: 15k_38.webp
+Size: 127.0 KB → 113.1 KB (11.0% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
+Original: edicion_2024_38.webp
+Normalized: 15k_39.webp
+Size: 47.2 KB → 43.7 KB (7.3% reduction)
+Dimensions: 720x1080 → 720x1080
+
+Original: edicion_2024_4.webp
+Normalized: 15k_40.webp
+Size: 134.0 KB → 122.0 KB (9.0% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
+Original: edicion_2024_40.webp
+Normalized: 15k_41.webp
+Size: 52.3 KB → 47.8 KB (8.7% reduction)
+Dimensions: 720x1080 → 720x1080
+
+Original: edicion_2024_7.webp
+Normalized: 15k_42.webp
+Size: 177.6 KB → 167.2 KB (5.8% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
+Original: edicion_2024_9.webp
+Normalized: 15k_43.webp
+Size: 169.7 KB → 154.7 KB (8.8% reduction)
+Dimensions: 1620x1080 → 1620x1080
+
