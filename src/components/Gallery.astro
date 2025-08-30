@@ -4,7 +4,7 @@ import { Image } from "astro:assets";
 
 // Import all images from the 2024-edition folder using glob
 const imageFiles = await Astro.glob('/src/assets/images/2024-edition/*.{jpg,jpeg,png,webp}');
-
+console.log(imageFiles.length);
 // Create simplified image array with just the src
 const images = imageFiles.map((file, index) => ({
     src: file.default,
