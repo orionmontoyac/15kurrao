@@ -67,7 +67,8 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
     <!-- Content Section -->
     <div class="p-4">
         <!-- Runner Name -->
-        <h3 class="text-white font-semibold md:text-xl text-3xl leading-tight mb-2 group-hover:text-secondary-300 transition-colors duration-300">
+        <h3 id="runner-name"
+        class="text-white font-semibold md:text-xl text-3xl leading-tight mb-2 group-hover:text-secondary-300 transition-colors duration-300">
             {name}
         </h3>
         
@@ -405,9 +406,18 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
                     text-align: center;
                     color: white;
                 `;
+                // Get the runner's name and gender from the card
+                const runnerNameElement = cardClone.querySelector('#runner-name');
+                const runnerName = runnerNameElement ? runnerNameElement.textContent?.trim() || 'Runner' : 'Runner';
+                
+                // Get the gender from the original element to determine welcome message
+                const originalElement = element.closest('[data-runner-gender]') || element;
+                const gender = originalElement.getAttribute('data-runner-gender') || '';
+                const welcomeMessage = gender === 'Masculino' ? 'Bienvenido' : 'Bienvenida';
+                
                 welcomeTitleBackground.innerHTML = `
-                    <div style="font-size: 80px; font-family: nova, sans-serif; font-weight: bold; margin-bottom: 2px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">Bienvenido</div>
-                    <div style="font-size: 100px; font-family: nova, sans-serif; font-weight: bold; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">Carlos</div>
+                    <div style="font-size: 80px; font-family: nova, sans-serif; font-weight: bold; margin-bottom: 2px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">${welcomeMessage}</div>
+                    <div style="font-size: 100px; font-family: nova, sans-serif; font-weight: bold; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">${runnerName}</div>
                 `;
 
                 storyContainer.appendChild(welcomeTitleBackground);
