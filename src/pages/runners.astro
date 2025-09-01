@@ -5,6 +5,7 @@ import { loadTallySubmissions, getTallyStatistics } from '../lib/loaders/tallyLo
 import { tallyAPI } from '../lib/tally-cached';
 import Image from 'astro:assets';
 import defaultAvatar from '../assets/15.webp';
+import { Icon } from "astro-icon/components";
 
 // Load Tally data
 let submissions;
@@ -126,6 +127,27 @@ const runners = shuffleArray(runnersData);
             <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
               <div class="text-2xl font-bold text-white">{statistics?.byDistance?.['15K'] || 0}</div>
               <div class="text-base text-gray-100">Corredores 15K</div>
+            </div>
+          </div>
+          
+          <!-- Search Bar -->
+          <div class="max-w-md mx-auto mb-8">
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Icon name="tabler/search" class="w-5 h-5 text-gray-300" />   
+              </div>
+              <input
+                type="text"
+                id="runner-search"
+                class="w-full pl-10 pr-4 py-3 bg-white/10  border border-white/20 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:border-transparent transition-all duration-300"
+                placeholder="Buscar corredor por nombre..."
+                autocomplete="off"
+              />
+              <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                <div id="search-results-count" class="text-sm text-gray-300 hidden">
+                  <span id="results-number">0</span> resultados
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -280,5 +302,143 @@ const runners = shuffleArray(runnersData);
         }
       });
     }
+
+    // Search functionality
+    initializeSearchFeature();
   });
+
+  // Search functionality for filtering runner cards
+  function initializeSearchFeature() {
+    const searchInput = document.getElementById('runner-search') as HTMLInputElement;
+    const runnerCards = document.querySelectorAll('[data-runner-id]') as NodeListOf<HTMLElement>;
+    const runnerGrid = document.querySelector('.grid.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-3.xl\\:grid-cols-4') as HTMLElement;
+    const resultsCount = document.getElementById('search-results-count') as HTMLElement;
+    const resultsNumber = document.getElementById('results-number') as HTMLElement;
+    const emptyState = document.querySelector('.text-center.py-16') as HTMLElement;
+
+    if (!searchInput || !runnerCards.length) return;
+
+    // Debounce function for performance
+    function debounce(func: (...args: any[]) => void, wait: number): (...args: any[]) => void {
+      let timeout: NodeJS.Timeout;
+      return function executedFunction(...args: any[]) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
+
+    // Function to create "no results" message
+    function createNoResultsMessage(searchTerm: string): HTMLElement {
+      const noResultsDiv = document.createElement('div');
+      noResultsDiv.id = 'no-search-results';
+      noResultsDiv.className = 'text-center py-16 col-span-full';
+      noResultsDiv.innerHTML = `
+        <div class="bg-white/10 backdrop-blur-sm rounded-lg p-12 max-w-md mx-auto">
+          <div class="text-6xl mb-4">🔍</div>
+          <h3 class="text-xl font-semibold mb-2 text-white">No se encontraron resultados</h3>
+          <p class="text-gray-300 mb-6">
+            No hay corredores que coincidan con "<span class="font-medium text-white">${searchTerm}</span>"
+          </p>
+          <button 
+            id="clear-search-btn"
+            class="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-105"
+          >
+            Limpiar búsqueda
+          </button>
+        </div>
+      `;
+      return noResultsDiv;
+    }
+
+    // Function to filter runner cards
+    function filterRunners(searchTerm: string): void {
+      const normalizedSearchTerm = searchTerm.toLowerCase().trim();
+      let visibleCount = 0;
+
+      // Remove existing "no results" message
+      const existingNoResults = document.getElementById('no-search-results');
+      if (existingNoResults) {
+        existingNoResults.remove();
+      }
+
+      runnerCards.forEach(card => {
+        const runnerName = (card.dataset.runnerName || '').toLowerCase();
+        const isMatch = runnerName.includes(normalizedSearchTerm);
+        
+        if (isMatch || normalizedSearchTerm === '') {
+          card.style.display = '';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Update results count
+      if (normalizedSearchTerm) {
+        if (resultsNumber) {
+          resultsNumber.textContent = visibleCount.toString();
+        }
+        if (resultsCount) {
+          resultsCount.classList.remove('hidden');
+        }
+        
+        // Show "no results" message if no matches
+        if (visibleCount === 0 && runnerGrid) {
+          const noResultsMsg = createNoResultsMessage(searchTerm);
+          runnerGrid.appendChild(noResultsMsg);
+          
+          // Add event listener to clear search button
+          const clearSearchBtn = noResultsMsg.querySelector('#clear-search-btn') as HTMLButtonElement;
+          clearSearchBtn?.addEventListener('click', () => {
+            if (searchInput) {
+              searchInput.value = '';
+              filterRunners('');
+            }
+          });
+        }
+      } else {
+        if (resultsCount) {
+          resultsCount.classList.add('hidden');
+        }
+      }
+
+      // Hide/show empty state based on whether we have any runners
+      if (emptyState) {
+        if (runnerCards.length === 0) {
+          emptyState.style.display = '';
+        } else {
+          emptyState.style.display = 'none';
+        }
+      }
+    }
+
+    // Create debounced search function
+    const debouncedFilter = debounce(filterRunners, 300);
+
+    // Add event listeners
+    searchInput.addEventListener('input', (e) => {
+      const target = e.target as HTMLInputElement;
+      if (target) {
+        debouncedFilter(target.value);
+      }
+    });
+
+    // Clear search when escape is pressed
+    searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        searchInput.value = '';
+        filterRunners('');
+        searchInput.blur();
+      }
+    });
+
+    // Initial state - make sure results count is hidden
+    if (resultsCount) {
+      resultsCount.classList.add('hidden');
+    }
+  }
 </script>
