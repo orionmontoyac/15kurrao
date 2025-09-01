@@ -36,8 +36,18 @@ function getDefaultAvatar(gender: string): string {
   return defaultAvatar.src;
 }
 
+// Helper function to shuffle an array (Fisher-Yates algorithm)
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array]; // Create a copy to avoid mutating the original
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 // Process submissions into runner cards data
-const runners = submissions?.submissions.map((submission, index) => {
+const runnersData = submissions?.submissions.map((submission, index) => {
   // Extract field values using question IDs from the API response
   const name = submission.responses.find(r => r.questionId === '8LvzBA')?.answer || '';
   const lastName = submission.responses.find(r => r.questionId === '08279Z')?.answer || '';
@@ -50,6 +60,8 @@ const runners = submissions?.submissions.map((submission, index) => {
   if (photoUpload && photoUpload.url) {
     avatar = photoUpload.url;
   }
+
+  
   
   // Format registration time
   const registrationDate = new Date(submission.submittedAt);
@@ -77,6 +89,10 @@ const runners = submissions?.submissions.map((submission, index) => {
     gender,
   };
 }) || [];
+
+// Shuffle the runners list for random display order
+const runners = shuffleArray(runnersData);
+
 ---
 
 <Layout title="Corredores - 15K Urrao">
