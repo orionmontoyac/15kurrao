@@ -45,7 +45,6 @@ const runners = submissions?.submissions.map((submission, index) => {
   const distance = submission.responses.find(r => r.questionId === 'OXpl2K')?.answer?.[0] || '10K';
   const gender = submission.responses.find(r => r.questionId === 'VPRjea')?.answer?.[0] || 'Masculino';
   const photoUpload = submission.responses.find(r => r.questionId === 'N74EQB')?.answer?.[0];
-  console.log(gender);
   // Get photo URL if available, otherwise use default avatar
   let avatar = getDefaultAvatar(gender);
   if (photoUpload && photoUpload.url) {
