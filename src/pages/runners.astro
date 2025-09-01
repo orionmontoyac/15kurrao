@@ -1,0 +1,269 @@
+---
+import Layout from '../layouts/Layout.astro';
+import RunnerCard from '../components/RunnerCard.astro';
+import { loadTallySubmissions, getTallyStatistics } from '../lib/loaders/tallyLoader';
+import { tallyAPI } from '../lib/tally-cached';
+import Image from 'astro:assets';
+import defaultAvatar from '../assets/15.webp';
+
+// Load Tally data
+let submissions;
+let statistics;
+let error = null;
+
+try {
+  // Get all submissions to display as runner cards
+  submissions = await loadTallySubmissions({ getAll: true });
+  
+  // Get statistics for the header
+  statistics = await getTallyStatistics();
+} catch (err) {
+  error = err instanceof Error ? err.message : 'Unknown error occurred';
+  console.error('Error loading Tally data:', err);
+}
+
+// Helper function to get time ago in minutes
+function getTimeAgo(dateString: string): number {
+  const now = new Date();
+  const submissionDate = new Date(dateString);
+  const diffInMs = now.getTime() - submissionDate.getTime();
+  return Math.floor(diffInMs / (1000 * 60)); // Convert to minutes
+}
+
+// Helper function to get a default avatar using the 15.webp image
+function getDefaultAvatar(gender: string): string {
+  // Use the 15.webp image as default avatar for all users
+  return defaultAvatar.src;
+}
+
+// Process submissions into runner cards data
+const runners = submissions?.submissions.map((submission, index) => {
+  // Extract field values using question IDs from the API response
+  const name = submission.responses.find(r => r.questionId === '8LvzBA')?.answer || '';
+  const lastName = submission.responses.find(r => r.questionId === '08279Z')?.answer || '';
+  const secondLastName = submission.responses.find(r => r.questionId === 'RoXdNl')?.answer || '';
+  const distance = submission.responses.find(r => r.questionId === 'OXpl2K')?.answer?.[0] || '10K';
+  const gender = submission.responses.find(r => r.questionId === 'VPRjea')?.answer?.[0] || 'Masculino';
+  const photoUpload = submission.responses.find(r => r.questionId === 'N74EQB')?.answer?.[0];
+  console.log(gender);
+  // Get photo URL if available, otherwise use default avatar
+  let avatar = getDefaultAvatar(gender);
+  if (photoUpload && photoUpload.url) {
+    avatar = photoUpload.url;
+  }
+  
+  // Format registration time
+  const registrationDate = new Date(submission.submittedAt);
+  const registrationTime = registrationDate.toLocaleDateString('es-ES', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  });
+  
+  // Calculate time ago
+  const timeAgo = getTimeAgo(submission.submittedAt);
+  
+  // Full name
+  // const fullName = `${name} ${lastName} ${secondLastName}`.trim();
+  const fullName = `${name} `.trim();
+  
+  return {
+    id: index + 1,
+    name: fullName,
+    distance: distance as "10K" | "15K",
+    registrationTime,
+    timeAgo,
+    avatar,
+    location: "Urrao, Antioquia", // Default location since it's not in the form
+    gender,
+  };
+}) || [];
+---
+
+<Layout title="Corredores - 15K Urrao">
+  <main class="relative py-20 bg-gradient-to-bl from-secondary-500 via-primary-500 to-primary-900 overflow-hidden text-white">
+    <div class="container mx-auto px-4 py-8">
+      <!-- Header Section -->
+      <header class="text-center mb-12">
+        <h1 class="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+          Corredores 15K Urrao
+        </h1>
+        <p class="text-xl text-gray-100 mb-8">
+          Conoce a todos los participantes inscritos en la carrera
+        </p>
+        
+        {error ? (
+          <div class="bg-red-600/20 border border-red-500/50 rounded-lg p-6 max-w-2xl mx-auto">
+            <h2 class="text-xl font-semibold mb-2 text-red-200">Error al cargar datos</h2>
+            <p class="text-red-100">{error}</p>
+          </div>
+        ) : (
+          <!-- Statistics Cards -->
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-8">
+            <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
+              <div class="text-2xl font-bold text-white fong-nova">{statistics?.totalSubmissions || 0}</div>
+              <div class="text-base text-gray-100">Total Inscritos</div>
+            </div>
+            <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
+              <div class="text-2xl font-bold text-white">{statistics?.byDistance?.['10K'] || 0}</div>
+              <div class="text-base text-gray-100">Corredores 10K</div>
+            </div>
+            <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
+              <div class="text-2xl font-bold text-white">{statistics?.byDistance?.['15K'] || 0}</div>
+              <div class="text-base text-gray-100">Corredores 15K</div>
+            </div>
+          </div>
+        )}
+      </header>
+
+      <!-- Runners Grid -->
+      {runners.length > 0 ? (
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {runners.map((runner) => (
+            <RunnerCard
+              id={runner.id}
+              name={runner.name}
+              distance={runner.distance}
+              registrationTime={runner.registrationTime}
+              timeAgo={runner.timeAgo}
+              avatar={runner.avatar}
+              location={runner.location}
+              gender={runner.gender}
+            />
+          ))}
+        </div>
+      ) : (
+        <!-- Empty State -->
+        <div class="text-center py-16">
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-12 max-w-md mx-auto">
+            <div class="text-6xl mb-4">🏃‍♂️</div>
+            <h3 class="text-xl font-semibold mb-2">No hay corredores aún</h3>
+            <p class="text-gray-300 mb-6">
+              Sé el primero en inscribirte y aparecer en esta lista
+            </p>
+            <a 
+              href="/inscripciones" 
+              class="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-105"
+            >
+              Inscribirse Ahora
+            </a>
+          </div>
+        </div>
+      )}
+
+      <!-- Footer Info -->
+      {runners.length > 0 && (
+        <div class="text-center mt-12 text-gray-400">
+          <p class="text-sm">
+            Mostrando {runners.length} corredores de {statistics?.totalSubmissions || 0} inscritos
+          </p>
+          <p class="text-xs mt-2">
+            Los datos se actualizan automáticamente desde el formulario de inscripción
+          </p>
+          <div class="mt-4 flex justify-center gap-4">
+            {/* <button 
+              id="clear-cache-btn"
+              class="px-4 py-2 bg-red-600/20 border border-red-500/50 rounded-lg text-red-200 hover:bg-red-600/30 transition-colors text-sm"
+            >
+              Limpiar Cache
+            </button> */}
+            <button 
+              id="refresh-data-btn"
+              class="px-4 py-2 bg-blue-600/20 border border-blue-500/50 rounded-lg text-blue-200 hover:bg-blue-600/30 transition-colors text-sm"
+            >
+              Actualizar Datos
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  </main>
+</Layout>
+
+<style>
+  /* Custom styles for the runners page */
+  .bg-gradient-to-r {
+    background: linear-gradient(to right, var(--tw-gradient-stops));
+  }
+  
+  .bg-clip-text {
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+  
+  /* Smooth animations */
+  .grid > * {
+    animation: fadeInUp 0.6s ease-out;
+    animation-fill-mode: both;
+  }
+  
+  .grid > *:nth-child(1) { animation-delay: 0.1s; }
+  .grid > *:nth-child(2) { animation-delay: 0.2s; }
+  .grid > *:nth-child(3) { animation-delay: 0.3s; }
+  .grid > *:nth-child(4) { animation-delay: 0.4s; }
+  .grid > *:nth-child(5) { animation-delay: 0.5s; }
+  .grid > *:nth-child(6) { animation-delay: 0.6s; }
+  .grid > *:nth-child(7) { animation-delay: 0.7s; }
+  .grid > *:nth-child(8) { animation-delay: 0.8s; }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<script>
+  // Cache management functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const clearCacheBtn = document.getElementById('clear-cache-btn');
+    const refreshDataBtn = document.getElementById('refresh-data-btn');
+
+    if (clearCacheBtn) {
+      clearCacheBtn.addEventListener('click', async function() {
+        try {
+          // Call the API to clear cache
+          const response = await fetch('/api/tally.json?action=clearCache', {
+            method: 'POST'
+          });
+          
+          if (response.ok) {
+            alert('Cache limpiado exitosamente');
+            location.reload();
+          } else {
+            alert('Error al limpiar el cache');
+          }
+        } catch (error) {
+          console.error('Error clearing cache:', error);
+          alert('Error al limpiar el cache');
+        }
+      });
+    }
+
+    if (refreshDataBtn) {
+      refreshDataBtn.addEventListener('click', async function() {
+        try {
+          // Call the API to refresh data (bypass cache)
+          const response = await fetch('/api/tally.json?getAll=true&bypassCache=true', {
+            method: 'GET'
+          });
+          
+          if (response.ok) {
+            alert('Datos actualizados exitosamente');
+            location.reload();
+          } else {
+            alert('Error al actualizar los datos');
+          }
+        } catch (error) {
+          console.error('Error refreshing data:', error);
+          alert('Error al actualizar los datos');
+        }
+      });
+    }
+  });
+</script>

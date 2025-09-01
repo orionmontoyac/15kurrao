@@ -9,18 +9,21 @@ export interface Props {
     timeAgo: number; // minutes
     avatar: string;
     location: string;
+    gender: string;
 }
 
-const { id, name, distance, registrationTime, timeAgo, avatar, location } = Astro.props;
+const { id, name, distance, registrationTime, timeAgo, avatar, location, gender } = Astro.props;
+console.log(gender);
 ---
 
 <div 
-    class="group relative overflow-hidden rounded-2xl cursor-pointer transform transition-all duration-300 hover:scale-[1.02] bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-white/10 hover:border-secondary-500/30 hover:shadow-lg hover:shadow-secondary-500/10"
+    class="group relative overflow-hidden rounded-2xl cursor-pointer transform transition-all duration-300 hover:scale-[1.02] bg-gradient-to-br from-primary-800/80 to-primary-500/80 backdrop-blur-sm border-1 border-white/10 hover:border-secondary-500/30 hover:shadow-lg hover:shadow-secondary-500/10"
     data-runner-id={id}
     data-runner-name={name}
     data-runner-distance={distance}
     data-runner-location={location}
     data-runner-avatar={avatar}
+    data-runner-gender={gender}
 >
     <!-- Image Section -->
     <div class="relative aspect-square overflow-hidden">
@@ -65,14 +68,14 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location } = Astr
     <!-- Content Section -->
     <div class="p-4">
         <!-- Runner Name -->
-        <h3 class="text-white font-semibold md:text-lg text-3xl leading-tight mb-2 group-hover:text-secondary-300 transition-colors duration-300">
+        <h3 class="text-white font-semibold md:text-xl text-3xl leading-tight mb-2 group-hover:text-secondary-300 transition-colors duration-300">
             {name}
         </h3>
         
-        <!-- Location -->
-        <p class="text-slate-300 text-sm flex items-center mb-3">
-            <Icon name="tabler/map-pin" class="w-3 h-3 mr-1 flex-shrink-0" />
-            <span class="truncate">{location}</span>
+        <!-- Welcome Message -->
+        <p class="text-slate-300 text-lg flex items-center mb-3">
+            <!-- <Icon name="tabler/check" class="w-3 h-3 mr-1 flex-shrink-0" /> -->
+            <span class="truncate">{gender === 'Masculino' ? 'Bienvenido' : 'Bienvenida'} a la carrera</span>
         </p>
         
         <!-- Registration Status -->
@@ -80,7 +83,7 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location } = Astr
             <div class="flex items-center space-x-2">
                 <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                 <span class="text-green-400 text-sm font-medium">
-                    Inscrito
+                    {gender === 'Masculino' ? 'Inscrito' : 'Inscrita'} 
                 </span>
             </div>
             <span class="text-slate-300 text-sm">
@@ -466,7 +469,7 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location } = Astr
 
                 // Convert to blob
                 return new Promise<Blob>((resolve, reject) => {
-                    canvas.toBlob((blob) => {
+                    canvas.toBlob((blob: Blob | null) => {
                         if (blob) {
                             resolve(blob);
                         } else {

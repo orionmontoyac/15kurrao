@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <defs>
+    <!-- Male Avatar -->
+    <symbol id="male-avatar" viewBox="0 0 200 200">
+      <circle cx="100" cy="100" r="100" fill="url(#male-gradient)"/>
+      <!-- Head -->
+      <circle cx="100" cy="80" r="25" fill="#E5E7EB"/>
+      <!-- Body -->
+      <rect x="75" y="105" width="50" height="60" rx="25" fill="#E5E7EB"/>
+      <!-- Arms -->
+      <rect x="60" y="115" width="15" height="40" rx="7.5" fill="#E5E7EB"/>
+      <rect x="125" y="115" width="15" height="40" rx="7.5" fill="#E5E7EB"/>
+      <!-- Legs -->
+      <rect x="80" y="165" width="12" height="25" rx="6" fill="#E5E7EB"/>
+      <rect x="108" y="165" width="12" height="25" rx="6" fill="#E5E7EB"/>
+      <!-- Running icon -->
+      <path d="M85 70 L95 75 L85 80 M115 70 L105 75 L115 80" stroke="#6B7280" stroke-width="2" fill="none"/>
+    </symbol>
+    
+    <!-- Female Avatar -->
+    <symbol id="female-avatar" viewBox="0 0 200 200">
+      <circle cx="100" cy="100" r="100" fill="url(#female-gradient)"/>
+      <!-- Head -->
+      <circle cx="100" cy="80" r="25" fill="#F3E8FF"/>
+      <!-- Hair -->
+      <path d="M75 60 Q100 50 125 60 Q130 70 125 80 Q100 90 75 80 Q70 70 75 60" fill="#8B5CF6"/>
+      <!-- Body -->
+      <rect x="75" y="105" width="50" height="60" rx="25" fill="#F3E8FF"/>
+      <!-- Arms -->
+      <rect x="60" y="115" width="15" height="40" rx="7.5" fill="#F3E8FF"/>
+      <rect x="125" y="115" width="15" height="40" rx="7.5" fill="#F3E8FF"/>
+      <!-- Legs -->
+      <rect x="80" y="165" width="12" height="25" rx="6" fill="#F3E8FF"/>
+      <rect x="108" y="165" width="12" height="25" rx="6" fill="#F3E8FF"/>
+      <!-- Running icon -->
+      <path d="M85 70 L95 75 L85 80 M115 70 L105 75 L115 80" stroke="#8B5CF6" stroke-width="2" fill="none"/>
+    </symbol>
+    
+    <!-- Gradients -->
+    <linearGradient id="male-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1E40AF;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="female-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#5B21B6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Male Avatar -->
+  <use href="#male-avatar" x="0" y="0"/>
+  
+  <!-- Female Avatar -->
+  <use href="#female-avatar" x="220" y="0"/>
+</svg>

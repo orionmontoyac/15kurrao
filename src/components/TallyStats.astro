@@ -1,0 +1,88 @@
+---
+import { getTallyStatistics } from '../lib/loaders/tallyLoader';
+
+interface Props {
+  showDetails?: boolean;
+  className?: string;
+}
+
+const { showDetails = true, className = '' } = Astro.props;
+
+let statistics;
+let error = null;
+
+try {
+  statistics = await getTallyStatistics();
+} catch (err) {
+  error = err instanceof Error ? err.message : 'Unknown error occurred';
+  console.error('Error loading Tally statistics:', err);
+}
+---
+
+<div class={`tally-stats ${className}`}>
+  {error ? (
+    <div class="bg-red-600/20 border border-red-500/50 rounded-lg p-4 text-red-200">
+      <p class="text-sm">Error al cargar estadísticas: {error}</p>
+    </div>
+  ) : (
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
+        <div class="text-2xl font-bold text-yellow-400">{statistics?.totalSubmissions || 0}</div>
+        <div class="text-xs text-gray-300 mt-1">Total</div>
+      </div>
+      
+      <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
+        <div class="text-2xl font-bold text-blue-400">{statistics?.byDistance?.['10K'] || 0}</div>
+        <div class="text-xs text-gray-300 mt-1">10K</div>
+      </div>
+      
+      <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
+        <div class="text-2xl font-bold text-purple-400">{statistics?.byDistance?.['15K'] || 0}</div>
+        <div class="text-xs text-gray-300 mt-1">15K</div>
+      </div>
+      
+      <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
+        <div class="text-2xl font-bold text-green-400">{statistics?.completedSubmissions || 0}</div>
+        <div class="text-xs text-gray-300 mt-1">Completas</div>
+      </div>
+    </div>
+  )}
+  
+  {showDetails && statistics && (
+    <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-white/5 rounded-lg p-3">
+        <h4 class="text-sm font-semibold text-gray-300 mb-2">Por Género</h4>
+        <div class="space-y-1 text-xs">
+          <div class="flex justify-between">
+            <span>Masculino</span>
+            <span class="text-blue-400 font-medium">{statistics.byGender?.['Masculino'] || 0}</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Femenino</span>
+            <span class="text-pink-400 font-medium">{statistics.byGender?.['Femenino'] || 0}</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-white/5 rounded-lg p-3">
+        <h4 class="text-sm font-semibold text-gray-300 mb-2">Estado</h4>
+        <div class="space-y-1 text-xs">
+          <div class="flex justify-between">
+            <span>Completas</span>
+            <span class="text-green-400 font-medium">{statistics.completedSubmissions}</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Parciales</span>
+            <span class="text-yellow-400 font-medium">{statistics.partialSubmissions}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )}
+</div>
+
+<style>
+  .tally-stats {
+    font-family: inherit;
+  }
+</style>
