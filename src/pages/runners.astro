@@ -77,7 +77,7 @@ const runnersData = submissions?.submissions.map((submission, index) => {
   
   // Full name
   // const fullName = `${name} ${lastName} ${secondLastName}`.trim();
-  const fullName = `${name} `.trim();
+  const fullName = `${name} ${lastName ? lastName.charAt(0).toUpperCase() + '.' : ''}`.trim();
   
   return {
     id: index + 1,
