@@ -132,3 +132,4 @@ export const tallyAPI = new TallyAPI();
 
 // Export types for use in other files
 export type { TallySubmission, TallyResponse, TallyQuestion, TallyApiResponse };
+
