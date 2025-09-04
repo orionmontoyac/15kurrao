@@ -1,15 +1,12 @@
 ---
 // Inscripciones page for 15K URRAO 2025
 import Layout from "../layouts/Layout.astro";
-
+import { Icon } from "astro-icon/components";
 // SEO and metadata
 const pageTitle = "Inscripciones 15K URRAO 2025";
-const pageDescription = "Inscríbete a la carrera 15K URRAO 2025. Formulario oficial de inscripción para las distancias de 10K y 15K en Urrao, Antioquia.";
+const pageDescription =
+  "Inscríbete a la carrera 15K URRAO 2025. Formulario oficial de inscripción para las distancias de 10K y 15K en Urrao, Antioquia.";
 const canonicalUrl = "https://15kurrao.netlify.app/inscripciones";
-
-// Tally form configuration
-const TALLY_FORM_URL = "https://tally.so/embed/3lkGj6?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1";
-const TALLY_SCRIPT_URL = "https://tally.so/widgets/embed.js";
 ---
 
 <Layout title={pageTitle}>
@@ -17,89 +14,124 @@ const TALLY_SCRIPT_URL = "https://tally.so/widgets/embed.js";
   <meta name="description" content={pageDescription} />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href={canonicalUrl} />
-  
+
   <!-- Open Graph -->
   <meta property="og:title" content={pageTitle} />
   <meta property="og:description" content={pageDescription} />
   <meta property="og:url" content={canonicalUrl} />
   <meta property="og:type" content="website" />
-  
+
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={pageTitle} />
   <meta name="twitter:description" content={pageDescription} />
 
-  <!-- Preload critical resources -->
-  <link rel="preload" href={TALLY_SCRIPT_URL} as="script" />
-  
   <!-- Main Content -->
-  <main class="min-h-screen bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700">
+  <main
+    class="min-h-screen bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700"
+  >
     <!-- Hero Section -->
     <section class="relative overflow-hidden">
       <!-- Background Pattern -->
       <div class="absolute inset-0 opacity-10">
-        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22%23ffffff%22 fill-opacity=%220.1%22%3E%3Ccircle cx=%2230%22 cy=%2230%22 r=%222%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+        <div
+          class="absolute inset-0"
+          style="background-image: url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22%23ffffff%22 fill-opacity=%220.1%22%3E%3Ccircle cx=%2230%22 cy=%2230%22 r=%222%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"
+        >
+        </div>
       </div>
-      
+
       <!-- Content Container -->
       <div class="relative z-10 container mx-auto px-4 py-8 md:py-16">
         <!-- Page Header -->
         <header class="text-center mb-8 md:mb-12">
-          <h1 class="font-nova text-4xl md:text-6xl lg:text-7xl text-white mb-4 tracking-tight leading-tight">
-            <span class="bg-gradient-to-r from-white via-primary-100 to-white bg-clip-text text-transparent">
+          <h1
+            class="font-nova text-4xl md:text-6xl lg:text-7xl text-white mb-4 tracking-tight leading-tight"
+          >
+            <span
+              class="bg-gradient-to-r from-white via-primary-100 to-white bg-clip-text text-transparent"
+            >
               Inscripciones
             </span>
           </h1>
-          <p class="text-lg md:text-xl text-primary-100 max-w-2xl mx-auto leading-relaxed">
-            Completa el formulario oficial para inscribirte a la carrera 15K URRAO 2025
+          <p
+            class="text-lg md:text-xl text-primary-100 max-w-2xl mx-auto leading-relaxed"
+          >
+            Las inscripciones están temporalmente cerradas mientras completamos
+            los cupos disponibles
           </p>
         </header>
 
-        <!-- Form Container -->
+        <!-- Message Container -->
         <div class="max-w-4xl mx-auto">
-          <!-- Loading State -->
-          <div id="loading-state" class="flex flex-col items-center justify-center py-16">
-            <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-white mb-4"></div>
-            <p class="text-white text-lg">Cargando formulario...</p>
-          </div>
+          <div
+            class="bg-white/10 backdrop-blur-sm rounded-2xl shadow-2xl overflow-hidden border border-white/20"
+          >
+            <div class="p-8 md:p-12 text-center">
+              <!-- Icon -->
+              <div class="mb-6">
+                <svg
+                  class="w-16 h-16 text-white mx-auto"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
 
-          <!-- Error State -->
-          <div id="error-state" class="hidden flex flex-col items-center justify-center py-16">
-            <div class="bg-red-500/20 border border-red-500/50 rounded-lg p-6 max-w-md mx-auto text-center">
-              <svg class="w-12 h-12 text-red-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-              </svg>
-              <h3 class="text-white text-lg font-semibold mb-2">Error al cargar el formulario</h3>
-              <p class="text-red-200 mb-4">No se pudo cargar el formulario de inscripción. Por favor, intenta de nuevo.</p>
-              <button 
-                id="retry-button"
-                class="bg-white text-primary-700 px-6 py-2 rounded-lg font-medium hover:bg-primary-50 transition-colors duration-200"
+              <!-- Main Message -->
+              <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">
+                Formulario de inscripción cerrado.
+              </h2>
+
+              <p
+                class="text-lg md:text-xl text-primary-100 mb-6 leading-relaxed"
               >
-                Intentar de nuevo
-              </button>
-            </div>
-          </div>
+                Cupos llenos para carrera 15K URRAO 2025.
+              </p>
 
-          <!-- Form Container -->
-          <div id="form-container" class="hidden">
-            <div class="bg-white px-5 backdrop-blur-sm rounded-2xl shadow-2xl overflow-hidden">
+              <!-- Social Media Section -->
+              <div class="bg-white/5 rounded-xl p-6 border border-white/10">
+                <h3 class="text-xl font-semibold text-white mb-4">
+                  Síguenos en nuestras redes sociales
+                </h3>
 
-              
-              <!-- Tally Form -->
-              <div class="tally-form-wrapper">
-                <iframe
-                  id="tally-iframe"
-                  data-tally-src={TALLY_FORM_URL}
-                  loading="lazy"
-                  width="100%"
-                  height="600"
-                  frameborder="0"
-                  marginheight="0"
-                  marginwidth="0"
-                  title="Formulario de inscripción 15K URRAO 2025"
-                  class="w-full border-0"
-                  sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
-                />
+                <div
+                  class="flex flex-col sm:flex-row items-center justify-center gap-4"
+                >
+                  <!-- Instagram -->
+                  <a
+                    href="https://instagram.com/15kurrao"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="flex items-center gap-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:from-pink-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105"
+                  >
+                    <Icon
+                      name="tabler/instagram-logo"
+                      class="size-4 sm:size-5 text-white group-hover:scale-110 transition-transform duration-300"
+                    />
+                    <span>@15kurrao</span>
+                  </a>
+
+                  <!-- Logo -->
+                  <div class="flex items-center gap-2 text-white">
+                    <img
+                      src="/15KURRAO-icon.svg"
+                      alt="15K URRAO Logo"
+                      class="w-8 h-8"
+                    />
+                    <span class="font-semibold">15K URRAO</span>
+                  </div>
+                </div>
+
+                <p class="text-primary-200 text-sm mt-4">
+                  Pronto anunciaremos la reapertura de inscripciones
+                </p>
               </div>
             </div>
           </div>
@@ -114,200 +146,33 @@ const TALLY_SCRIPT_URL = "https://tally.so/widgets/embed.js";
       position: relative;
       min-height: 600px;
     }
-    
+
     /* Responsive adjustments */
     @media (max-width: 768px) {
       .tally-form-wrapper {
         min-height: 800px;
       }
     }
-    
+
     /* Smooth transitions */
     .animate-fade-in {
       animation: fadeIn 0.5s ease-in-out;
     }
-    
+
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-    
+
     /* Loading animation */
     .animate-pulse-slow {
       animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     }
   </style>
-
-  <script is:inline>
-    (function() {
-      'use strict';
-      
-      // Configuration
-      const config = {
-        tallyScriptUrl: 'https://tally.so/widgets/embed.js',
-        iframeSelector: '#tally-iframe',
-        loadingSelector: '#loading-state',
-        errorSelector: '#error-state',
-        formSelector: '#form-container',
-        retrySelector: '#retry-button',
-        timeout: 10000 // 10 seconds timeout
-      };
-      
-      // State management
-      let loadAttempts = 0;
-      const maxAttempts = 3;
-      let timeoutId;
-      
-      // DOM elements
-      const elements = {
-        iframe: null,
-        loading: null,
-        error: null,
-        form: null,
-        retry: null
-      };
-      
-      // Initialize when DOM is ready
-      function init() {
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', setupElements);
-        } else {
-          setupElements();
-        }
-      }
-      
-      // Setup DOM elements and event listeners
-      function setupElements() {
-        elements.iframe = document.querySelector(config.iframeSelector);
-        elements.loading = document.querySelector(config.loadingSelector);
-        elements.error = document.querySelector(config.errorSelector);
-        elements.form = document.querySelector(config.formSelector);
-        elements.retry = document.querySelector(config.retrySelector);
-        
-        if (elements.retry) {
-          elements.retry.addEventListener('click', retryLoad);
-        }
-        
-        loadTallyForm();
-      }
-      
-      // Load Tally form with error handling
-      function loadTallyForm() {
-        if (loadAttempts >= maxAttempts) {
-          showError('Se ha excedido el número máximo de intentos. Por favor, recarga la página.');
-          return;
-        }
-        
-        loadAttempts++;
-        showLoading();
-        
-        // Set timeout for loading
-        timeoutId = setTimeout(() => {
-          if (elements.loading && !elements.loading.classList.contains('hidden')) {
-            handleLoadError('Tiempo de espera agotado');
-          }
-        }, config.timeout);
-        
-        // Load Tally script
-        loadTallyScript()
-          .then(() => {
-            clearTimeout(timeoutId);
-            showForm();
-          })
-          .catch((error) => {
-            clearTimeout(timeoutId);
-            handleLoadError(error.message);
-          });
-      }
-      
-      // Load Tally script with Promise
-      function loadTallyScript() {
-        return new Promise((resolve, reject) => {
-          // Check if Tally is already loaded
-          if (typeof window.Tally !== 'undefined') {
-            window.Tally.loadEmbeds();
-            resolve();
-            return;
-          }
-          
-          // Check if script is already loading
-          if (document.querySelector('script[src="' + config.tallyScriptUrl + '"]')) {
-            // Wait for existing script to load
-            const checkTally = setInterval(() => {
-              if (typeof window.Tally !== 'undefined') {
-                clearInterval(checkTally);
-                window.Tally.loadEmbeds();
-                resolve();
-              }
-            }, 100);
-            return;
-          }
-          
-          // Create and load script
-          const script = document.createElement('script');
-          script.src = config.tallyScriptUrl;
-          script.async = true;
-          
-          script.onload = () => {
-            if (typeof window.Tally !== 'undefined') {
-              window.Tally.loadEmbeds();
-              resolve();
-            } else {
-              reject(new Error('Tally script loaded but Tally object not found'));
-            }
-          };
-          
-          script.onerror = () => {
-            reject(new Error('Failed to load Tally script'));
-          };
-          
-          document.head.appendChild(script);
-        });
-      }
-      
-      // Show loading state
-      function showLoading() {
-        if (elements.loading) elements.loading.classList.remove('hidden');
-        if (elements.error) elements.error.classList.add('hidden');
-        if (elements.form) elements.form.classList.add('hidden');
-      }
-      
-      // Show form
-      function showForm() {
-        if (elements.loading) elements.loading.classList.add('hidden');
-        if (elements.error) elements.error.classList.add('hidden');
-        if (elements.form) {
-          elements.form.classList.remove('hidden');
-          elements.form.classList.add('animate-fade-in');
-        }
-      }
-      
-      // Show error state
-      function showError(message) {
-        if (elements.loading) elements.loading.classList.add('hidden');
-        if (elements.form) elements.form.classList.add('hidden');
-        if (elements.error) {
-          elements.error.classList.remove('hidden');
-          const errorMessage = elements.error.querySelector('p');
-          if (errorMessage) {
-            errorMessage.textContent = message;
-          }
-        }
-      }
-      
-      // Handle load error
-      function handleLoadError(errorMessage) {
-        console.error('Tally form load error:', errorMessage);
-        showError(errorMessage);
-      }
-      
-      // Retry loading
-      function retryLoad() {
-        loadTallyForm();
-      }
-      
-      // Initialize
-      init();
-    })();
-  </script>
 </Layout>
