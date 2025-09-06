@@ -51,14 +51,18 @@ import Logo from "@images/logo.svg";
 
                 <!-- Buttons: Inscripciones, Corredores and Mas Informacion -->
                 <div class="flex flex-row gap-4">
-                    <button
-                        disabled
-                        class="before:ease relative h-12 w-40 rounded-md overflow-hidden bg-gradient-to-r from-gray-400 to-gray-500 font-bold transition-all before:absolute before:right-0 before:top-0 before:h-12 before:w-6 before:translate-x-12 before:rotate-6 before:bg-gray-600 before:opacity-10 before:duration-700 cursor-not-allowed flex items-center justify-center opacity-60"
+                    <!-- Countdown Timer for Registration Opening -->
+                    <div
+                        id="countdown-container"
+                        class="before:ease relative h-12 w-48 rounded-md overflow-hidden bg-gradient-to-r from-primary-500 to-primary-600 font-bold transition-all before:absolute before:right-0 before:top-0 before:h-12 before:w-6 before:translate-x-12 before:rotate-6 before:bg-orange-700 before:opacity-10 before:duration-700 flex items-center justify-center"
                     >
-                        <span class="relative z-10 text-xl text-white"
-                            >Inscribirse</span
+                        <span
+                            id="countdown-text"
+                            class="relative z-10 text-sm text-white text-center px-2"
                         >
-                    </button>
+                            Cargando...
+                        </span>
+                    </div>
 
                     <!-- <a
                         href="/runners"
@@ -87,3 +91,128 @@ import Logo from "@images/logo.svg";
         <RunningCloud />
     </div>
 </section>
+
+<script>
+    // Registration countdown timer
+    class RegistrationCountdown {
+        private countdownElement: HTMLElement | null;
+        private containerElement: HTMLElement | null;
+        private targetDate: Date;
+        private intervalId: number | null = null;
+
+        constructor() {
+            this.countdownElement = document.getElementById("countdown-text");
+            this.containerElement = document.getElementById(
+                "countdown-container",
+            );
+
+            // Set target date for registration opening: September 6th, 2025 at 5:00 PM Bogotá time (UTC-5)
+            // Bogotá time is UTC-5, so 5:00 PM Bogotá = 10:00 PM UTC
+            this.targetDate = new Date("2025-09-06T22:00:00.000Z"); // September 6th, 2025 at 10:00 PM UTC (5:00 PM Bogotá)
+
+            this.init();
+        }
+
+        private init(): void {
+            this.updateCountdown();
+            this.intervalId = window.setInterval(
+                () => this.updateCountdown(),
+                1000,
+            );
+        }
+
+        private updateCountdown(): void {
+            if (!this.countdownElement || !this.containerElement) return;
+
+            const now = new Date().getTime();
+            const target = this.targetDate.getTime();
+            const difference = target - now;
+
+            if (difference <= 0) {
+                // Registration is open!
+                this.showRegistrationOpen();
+                return;
+            }
+
+            const timeLeft = this.calculateTimeLeft(difference);
+            this.displayCountdown(timeLeft);
+        }
+
+        private calculateTimeLeft(difference: number) {
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor(
+                (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+            );
+            const minutes = Math.floor(
+                (difference % (1000 * 60 * 60)) / (1000 * 60),
+            );
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            return { days, hours, minutes, seconds };
+        }
+
+        private displayCountdown(timeLeft: {
+            days: number;
+            hours: number;
+            minutes: number;
+            seconds: number;
+        }): void {
+            if (!this.countdownElement) return;
+
+            // Calculate total hours including days
+            const totalHours = timeLeft.days * 24 + timeLeft.hours;
+
+            // Format with leading zeros and uppercase letters
+            const hoursStr = totalHours.toString().padStart(2, "0");
+            const minutesStr = timeLeft.minutes.toString().padStart(2, "0");
+            const secondsStr = timeLeft.seconds.toString().padStart(2, "0");
+
+            const displayText = `${hoursStr}H ${minutesStr}M ${secondsStr}S`;
+
+            this.countdownElement.textContent = displayText;
+        }
+
+        private showRegistrationOpen(): void {
+            if (!this.countdownElement || !this.containerElement) return;
+
+            // Clear the interval
+            if (this.intervalId) {
+                clearInterval(this.intervalId);
+                this.intervalId = null;
+            }
+
+            // Transform to registration button
+            this.containerElement.className =
+                "before:ease relative h-12 w-40 rounded-md overflow-hidden bg-gradient-to-r from-green-500 to-green-600 font-bold transition-all before:absolute before:right-0 before:top-0 before:h-12 before:w-6 before:translate-x-12 before:rotate-6 before:bg-green-700 before:opacity-10 before:duration-700 hover:shadow-green-500 hover:before:-translate-x-40 flex items-center justify-center cursor-pointer";
+
+            this.countdownElement.className =
+                "relative z-10 text-xl text-white";
+            this.countdownElement.textContent = "¡Inscribirse!";
+
+            // Add click functionality
+            this.containerElement.addEventListener("click", () => {
+                // Redirect to registration or open modal
+                window.location.href = "/inscripciones";
+            });
+        }
+
+        public destroy(): void {
+            if (this.intervalId) {
+                clearInterval(this.intervalId);
+                this.intervalId = null;
+            }
+        }
+    }
+
+    // Initialize countdown when DOM is ready
+    function initCountdown(): void {
+        new RegistrationCountdown();
+    }
+
+    // Auto-initialize
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initCountdown);
+    } else {
+        initCountdown();
+    }
+</script>

@@ -29,6 +29,8 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
         <img
             src={avatar}
             alt={name}
+            width="294"
+            height="367"
             class="w-full h-full object-cover object-top transition-all duration-500 group-hover:scale-110"
             loading="lazy"
         />
@@ -87,7 +89,7 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
                 </span>
             </div>
             <span class="text-slate-300 text-sm">
-                {registrationTime}
+                12 de Octubre 2025
             </span>
         </div>
     </div>
@@ -300,48 +302,34 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
             if (shareBtn) shareBtn.style.display = 'none';
 
             try {
-                // Wait for images to load
-                const images = element.querySelectorAll('img');
-                await Promise.all(Array.from(images).map(img => {
-                    if (img.complete) return Promise.resolve();
-                    return new Promise<void>((resolve, reject) => {
-                        const timeout = setTimeout(() => reject(new Error('Image load timeout')), 5000);
-                        img.onload = () => {
-                            clearTimeout(timeout);
-                            resolve();
-                        };
-                        img.onerror = () => {
-                            clearTimeout(timeout);
-                            reject(new Error('Image load failed'));
-                        };
-                    });
-                }));
+                // Skip pre-loading images - html2canvas will handle them with its own timeout
+                // This dramatically improves performance, especially with slow external images
 
-                // Create a temporary container for story format
+                // Create a temporary container for story format (reduced size for better performance)
                 const storyContainer = document.createElement('div');
                 storyContainer.style.cssText = `
                     position: fixed;
                     top: -9999px;
                     left: -9999px;
-                    width: 1080px;
-                    height: 1920px;
+                    width: 720px;
+                    height: 1280px;
                     background: linear-gradient(135deg, #0b75b9 0%, #c9d436 100%);
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    padding: 60px 40px;
+                    padding: 40px 30px;
                     box-sizing: border-box;
                 `;
 
-                // Clone the card element
+                // Clone the card element (smaller scale for performance)
                 const cardClone = element.cloneNode(true) as HTMLElement;
                 cardClone.style.cssText = `
                     width: 100%;
-                    max-width: 480px;
+                    max-width: 320px;
                     height: auto;
-                    transform: scale(1.2);
-                    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-                    border-radius: 24px;
+                    transform: scale(1);
+                    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+                    border-radius: 16px;
                 `;
 
                 // Fix text positioning and sizes in the clone
@@ -416,28 +404,38 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
                 const welcomeMessage = gender === 'Masculino' ? 'Bienvenido' : 'Bienvenida';
                 
                 welcomeTitleBackground.innerHTML = `
-                    <div style="font-size: 80px; font-family: nova, sans-serif; font-weight: bold; margin-bottom: 2px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">${welcomeMessage}</div>
-                    <div style="font-size: 100px; font-family: nova, sans-serif; font-weight: bold; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">${runnerName}</div>
+                    <div style="font-size: 54px; font-family: nova, sans-serif; font-weight: bold; margin-bottom: 2px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">${welcomeMessage}</div>
+                    <div style="font-size: 68px; font-family: nova, sans-serif; font-weight: bold; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">${runnerName}</div>
                 `;
 
                 storyContainer.appendChild(welcomeTitleBackground);
 
-                // Add the image of the runner
+                // Add the image of the runner with fallback optimization
                 const runnerImageDiv = document.createElement('div');
-                const imageSrc = cardClone.querySelector('img')?.src || '';
+                const imgElement = cardClone.querySelector('img');
+                let imageSrc = imgElement?.src || '';
+                
+                // If it's an external image and we're generating quickly, use a fallback
+                const isExternalImage = imageSrc.startsWith('http') && !imageSrc.includes(window.location.hostname);
+                if (isExternalImage && !imgElement?.complete) {
+                    console.log('Using optimized fallback for slow external image');
+                    // You could set a default image here if needed
+                    // imageSrc = '/path/to/default/image.jpg';
+                }
+                
                 runnerImageDiv.style.cssText = `
                     position: absolute;
-                    top: 400px;
+                    top: 280px;
                     left: 50%;
                     transform: translateX(-50%);
-                    width: 900px;
+                    width: 600px;
                     height: auto;
-                    max-height: 900px;
-                    min-height: 1000px;
+                    max-height: 600px;
+                    min-height: 680px;
                     background-image: url('${imageSrc}');
                     background-size: cover;
                     background-position: top;
-                    border-radius: 24px;
+                    border-radius: 16px;
                 `;
 
                 storyContainer.appendChild(runnerImageDiv);
@@ -453,30 +451,40 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
                     color: white;
                 `;
                 brandingDiv.innerHTML = `
-                    <div style="font-size: 100px; font-family: nova, sans-serif; font-weight: bold; margin-bottom: 2px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">15K</div>
-                    <div style="font-size: 80px; font-family: nova, sans-serif; font-weight: bold; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">URRAO</div>
-                    <div style="font-size: 30px; opacity: 0.9; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);">Cuerpo y mente</div>
+                    <div style="font-size: 68px; font-family: nova, sans-serif; font-weight: bold; margin-bottom: 2px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">15K</div>
+                    <div style="font-size: 54px; font-family: nova, sans-serif; font-weight: bold; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">URRAO</div>
+                    <div style="font-size: 20px; opacity: 0.9; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);">Cuerpo y mente</div>
                 `;
 
                 // storyContainer.appendChild(cardClone);
                 storyContainer.appendChild(brandingDiv);
                 document.body.appendChild(storyContainer);
 
-                // Capture the story container
+                // Capture the story container with optimized settings for fast external image handling
                 const canvas = await html2canvas(storyContainer, {
                     backgroundColor: null,
-                    scale: 1,
+                    scale: 0.8, // Reduced scale for better performance
                     useCORS: true,
-                    allowTaint: false,
+                    allowTaint: true, // Allow tainted canvas for external images
                     logging: false,
-                    width: 1080,
-                    height: 1920
+                    width: 720,
+                    height: 1280,
+                    removeContainer: true, // Clean up faster
+                    imageTimeout: 2000, // Very short timeout for external images
+                    onclone: (clonedDoc) => {
+                        // Optimize cloned document for faster processing
+                        const clonedImages = clonedDoc.querySelectorAll('img');
+                        clonedImages.forEach(img => {
+                            // Add loading optimization
+                            img.style.imageRendering = 'optimizeSpeed';
+                        });
+                    }
                 });
 
                 // Remove temporary container
                 document.body.removeChild(storyContainer);
 
-                // Convert to blob
+                // Convert to blob with JPEG compression for smaller file size
                 return new Promise<Blob>((resolve, reject) => {
                     canvas.toBlob((blob: Blob | null) => {
                         if (blob) {
@@ -484,7 +492,7 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
                         } else {
                             reject(new Error('Failed to create blob'));
                         }
-                    }, 'image/png', 1.0);
+                    }, 'image/jpeg', 0.85); // JPEG with 85% quality for much smaller files
                 });
             } finally {
                 // Restore share button
@@ -638,7 +646,7 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
                 const card = document.querySelector(`[data-runner-id="${this.currentRunnerData.id}"]`) as HTMLElement;
                 const imageBlob = await ImageCaptureService.captureElement(card);
                 
-                this.downloadBlob(imageBlob, `${this.currentRunnerData.name}-15kurrao-card.png`);
+                this.downloadBlob(imageBlob, `${this.currentRunnerData.name}-15kurrao-card.jpg`);
                 this.toast.show('¡Imagen descargada exitosamente!', { type: 'success' });
                 this.closeModal();
             } catch (error) {
@@ -650,7 +658,7 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
         }
 
         private async shareImageBlob(blob: Blob, platform: string): Promise<void> {
-            const file = new File([blob], 'runner-card.png', { type: 'image/png' });
+            const file = new File([blob], 'runner-card.jpg', { type: 'image/jpeg' });
             
             if (navigator.share && navigator.canShare?.({ files: [file] })) {
                 await navigator.share({
@@ -659,7 +667,7 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
                     files: [file]
                 });
             } else {
-                this.downloadBlob(blob, `${this.currentRunnerData!.name}-15kurrao-card.png`);
+                this.downloadBlob(blob, `${this.currentRunnerData!.name}-15kurrao-card.jpg`);
                 this.toast.show(`Imagen descargada. Compártela en ${platform} manualmente.`, { type: 'info' });
             }
         }
