@@ -1,12 +1,15 @@
 ---
 // Inscripciones page for 15K URRAO 2025
 import Layout from "../layouts/Layout.astro";
-import { Icon } from "astro-icon/components";
+
 // SEO and metadata
 const pageTitle = "Inscripciones 15K URRAO 2025";
-const pageDescription =
-  "Inscríbete a la carrera 15K URRAO 2025. Formulario oficial de inscripción para las distancias de 10K y 15K en Urrao, Antioquia.";
+const pageDescription = "Inscríbete a la carrera 15K URRAO 2025. Formulario oficial de inscripción para las distancias de 10K y 15K en Urrao, Antioquia.";
 const canonicalUrl = "https://15kurrao.netlify.app/inscripciones";
+
+// Tally form configuration
+const TALLY_FORM_URL = "https://tally.so/embed/3lkGj6?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1";
+const TALLY_SCRIPT_URL = "https://tally.so/widgets/embed.js";
 ---
 
 <Layout title={pageTitle}>
@@ -14,72 +17,52 @@ const canonicalUrl = "https://15kurrao.netlify.app/inscripciones";
   <meta name="description" content={pageDescription} />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href={canonicalUrl} />
-
+  
   <!-- Open Graph -->
   <meta property="og:title" content={pageTitle} />
   <meta property="og:description" content={pageDescription} />
   <meta property="og:url" content={canonicalUrl} />
   <meta property="og:type" content="website" />
-
+  
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={pageTitle} />
   <meta name="twitter:description" content={pageDescription} />
 
+  <!-- Preload critical resources -->
+  <link rel="preload" href={TALLY_SCRIPT_URL} as="script" />
+  
   <!-- Main Content -->
-  <main
-    class="min-h-screen bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700"
-  >
+  <main class="min-h-screen bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700">
     <!-- Hero Section -->
     <section class="relative overflow-hidden">
       <!-- Background Pattern -->
       <div class="absolute inset-0 opacity-10">
-        <div
-          class="absolute inset-0"
-          style="background-image: url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22%23ffffff%22 fill-opacity=%220.1%22%3E%3Ccircle cx=%2230%22 cy=%2230%22 r=%222%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"
-        >
-        </div>
+        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22%23ffffff%22 fill-opacity=%220.1%22%3E%3Ccircle cx=%2230%22 cy=%2230%22 r=%222%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
       </div>
-
+      
       <!-- Content Container -->
       <div class="relative z-10 container mx-auto px-4 py-8 md:py-16">
         <!-- Page Header -->
         <header class="text-center mb-8 md:mb-12">
-          <h1
-            class="font-nova text-4xl md:text-6xl lg:text-7xl text-white mb-4 tracking-tight leading-tight"
-          >
-            <span
-              class="bg-gradient-to-r from-white via-primary-100 to-white bg-clip-text text-transparent"
-            >
+          <h1 class="font-nova text-4xl md:text-6xl lg:text-7xl text-white mb-4 tracking-tight leading-tight">
+            <span class="bg-gradient-to-r from-white via-primary-100 to-white bg-clip-text text-transparent">
               Inscripciones
             </span>
           </h1>
-          <p
-            class="text-lg md:text-xl text-primary-100 max-w-2xl mx-auto leading-relaxed"
-          >
+          <p id="header-description" class="text-lg md:text-xl text-primary-100 max-w-2xl mx-auto leading-relaxed">
             Las inscripciones están cerradas.
           </p>
         </header>
 
-        <!-- Message Container -->
-        <div class="max-w-4xl mx-auto">
-          <div
-            class="bg-white/10 backdrop-blur-sm rounded-2xl shadow-2xl overflow-hidden border border-white/20"
-          >
+        <!-- Closed Form Message Container -->
+        <div id="closed-form-container" class="max-w-4xl mx-auto">
+          <div class="bg-white/10 backdrop-blur-sm rounded-2xl shadow-2xl overflow-hidden border border-white/20">
             <div class="p-8 md:p-12 text-center">
               <!-- Icon -->
               <div class="mb-6">
-                <svg
-                  class="w-16 h-16 text-white mx-auto"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                <svg class="w-16 h-16 text-white mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
               </div>
 
@@ -88,49 +71,86 @@ const canonicalUrl = "https://15kurrao.netlify.app/inscripciones";
                 Formulario de inscripción cerrado.
               </h2>
 
-              <p
-                class="text-lg md:text-xl text-primary-100 mb-6 leading-relaxed"
-              >
-                Cupos llenos para carrera 15K URRAO 2025.
+              <p class="text-lg md:text-xl text-primary-100 mb-6 leading-relaxed">
+                Las inscripciones abren a las <span id="activation-time-display" class="font-semibold text-white">5:00 PM</span> (hora de Bogotá).
               </p>
+
+              <!-- Countdown Display -->
+              <div id="countdown-display" class="mb-6">
+                <div class="bg-white/5 rounded-xl p-4 border border-white/10">
+                  <p class="text-white text-sm mb-2">Tiempo restante:</p>
+                  <div id="countdown-text" class="text-2xl font-bold text-yellow-400">--:--:--</div>
+                </div>
+              </div>
 
               <!-- Social Media Section -->
               <div class="bg-white/5 rounded-xl p-6 border border-white/10">
                 <h3 class="text-xl font-semibold text-white mb-4">
                   Síguenos en nuestras redes sociales
                 </h3>
-
-                <div
-                  class="flex flex-col sm:flex-row items-center justify-center gap-4"
-                >
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <!-- Instagram -->
-                  <a
-                    href="https://instagram.com/15kurrao"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="flex items-center gap-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:from-pink-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105"
-                  >
-                    <Icon
-                      name="tabler/instagram-logo"
-                      class="size-4 sm:size-5 text-white group-hover:scale-110 transition-transform duration-300"
-                    />
+                  <a href="https://instagram.com/15kurrao" target="_blank" rel="noopener noreferrer"
+                     class="flex items-center gap-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:from-pink-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
                     <span>@15kurrao</span>
                   </a>
-
+                  
                   <!-- Logo -->
                   <div class="flex items-center gap-2 text-white">
-                    <img
-                      src="/15KURRAO-icon.svg"
-                      alt="15K URRAO Logo"
-                      class="w-8 h-8"
-                    />
+                    <img src="/15KURRAO-icon.svg" alt="15K URRAO Logo" class="w-8 h-8" />
                     <span class="font-semibold">15K URRAO</span>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-                <p class="text-primary-200 text-sm mt-4">
-                  Pronto anunciaremos la reapertura de inscripciones
-                </p>
+        <!-- Active Form Container -->
+        <div id="active-form-container" class="max-w-4xl mx-auto hidden">
+          <!-- Loading State -->
+          <div id="loading-state" class="flex flex-col items-center justify-center py-16">
+            <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-white mb-4"></div>
+            <p class="text-white text-lg">Cargando formulario...</p>
+          </div>
+
+          <!-- Error State -->
+          <div id="error-state" class="hidden">
+            <div class="flex flex-col items-center justify-center py-16">
+              <div class="bg-red-500/20 border border-red-500/50 rounded-lg p-6 max-w-md mx-auto text-center">
+                <svg class="w-12 h-12 text-red-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                </svg>
+                <h3 class="text-white text-lg font-semibold mb-2">Error al cargar el formulario</h3>
+                <p class="text-red-200 mb-4">No se pudo cargar el formulario de inscripción. Por favor, intenta de nuevo.</p>
+                <button id="retry-button" class="bg-white text-primary-700 px-6 py-2 rounded-lg font-medium hover:bg-primary-50 transition-colors duration-200">
+                  Intentar de nuevo
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Container -->
+          <div id="form-container" class="hidden">
+            <div class="bg-white px-5 backdrop-blur-sm rounded-2xl shadow-2xl overflow-hidden">
+              <!-- Tally Form -->
+              <div class="tally-form-wrapper">
+                <iframe
+                  id="tally-iframe"
+                  data-tally-src={TALLY_FORM_URL}
+                  loading="lazy"
+                  width="100%"
+                  height="600"
+                  frameborder="0"
+                  marginheight="0"
+                  marginwidth="0"
+                  title="Formulario de inscripción 15K URRAO 2025"
+                  class="w-full border-0"
+                  sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
+                />
               </div>
             </div>
           </div>
@@ -145,33 +165,344 @@ const canonicalUrl = "https://15kurrao.netlify.app/inscripciones";
       position: relative;
       min-height: 600px;
     }
-
+    
     /* Responsive adjustments */
     @media (max-width: 768px) {
       .tally-form-wrapper {
         min-height: 800px;
       }
     }
-
+    
     /* Smooth transitions */
     .animate-fade-in {
       animation: fadeIn 0.5s ease-in-out;
     }
-
+    
     @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-
+    
     /* Loading animation */
     .animate-pulse-slow {
       animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     }
   </style>
+
+  <script is:inline>
+    (function() {
+      'use strict';
+      
+      // ⚙️ EASY CONFIGURATION - Change these values as needed
+      const ACTIVATION_HOUR = 17; // 🕐 Change this to modify activation time (24-hour format)
+      const ACTIVATION_MINUTE = 0; // Change this to modify activation minute
+      const BOGOTA_TIMEZONE_OFFSET = -5; // Bogotá is UTC-5
+      
+      // Configuration
+      const config = {
+        // Time settings
+        activationHour: ACTIVATION_HOUR,
+        activationMinute: ACTIVATION_MINUTE,
+        timezoneOffset: BOGOTA_TIMEZONE_OFFSET,
+        
+        // Tally form settings
+        tallyScriptUrl: 'https://tally.so/widgets/embed.js',
+        timeout: 10000, // 10 seconds timeout
+        
+        // DOM selectors
+        closedFormContainer: '#closed-form-container',
+        activeFormContainer: '#active-form-container',
+        headerDescription: '#header-description',
+        activationTimeDisplay: '#activation-time-display',
+        countdownDisplay: '#countdown-display',
+        countdownText: '#countdown-text',
+        iframe: '#tally-iframe',
+        loading: '#loading-state',
+        error: '#error-state',
+        form: '#form-container',
+        retry: '#retry-button'
+      };
+      
+      // State management
+      let loadAttempts = 0;
+      const maxAttempts = 3;
+      let timeoutId;
+      let checkInterval;
+      
+      // DOM elements
+      const elements = {};
+      
+      // Initialize when DOM is ready
+      function init() {
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', setupElements);
+        } else {
+          setupElements();
+        }
+      }
+      
+      // Setup DOM elements and event listeners
+      function setupElements() {
+        // Get all DOM elements
+        Object.keys(config).forEach(key => {
+          if (typeof config[key] === 'string' && config[key].startsWith('#')) {
+            elements[key] = document.querySelector(config[key]);
+          }
+        });
+        
+        if (elements.retry) {
+          elements.retry.addEventListener('click', retryLoad);
+        }
+        
+        // Update activation time display
+        updateActivationTimeDisplay();
+        
+        // Check activation time immediately and then every 30 seconds
+        checkActivationTime();
+        checkInterval = setInterval(checkActivationTime, 30000);
+      }
+      
+      // Update activation time display in the UI
+      function updateActivationTimeDisplay() {
+        if (elements.activationTimeDisplay) {
+          const hour12 = config.activationHour > 12 ? config.activationHour - 12 : config.activationHour;
+          const ampm = config.activationHour >= 12 ? 'PM' : 'AM';
+          const displayHour = hour12 === 0 ? 12 : hour12;
+          const displayMinute = config.activationMinute.toString().padStart(2, '0');
+          elements.activationTimeDisplay.textContent = `${displayHour}:${displayMinute} ${ampm}`;
+        }
+      }
+      
+      // Get current time in Bogotá timezone
+      function getBogotaTime() {
+        const now = new Date();
+        const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+        return new Date(utc + (config.timezoneOffset * 3600000));
+      }
+      
+      // Get today's activation time in Bogotá timezone
+      function getTodayActivationTime() {
+        const bogotaTime = getBogotaTime();
+        const activationTime = new Date(bogotaTime);
+        activationTime.setHours(config.activationHour, config.activationMinute, 0, 0);
+        return activationTime;
+      }
+      
+      // Check if current time is past activation time
+      function isFormActive() {
+        const bogotaTime = getBogotaTime();
+        const activationTime = getTodayActivationTime();
+        return bogotaTime >= activationTime;
+      }
+      
+      // Calculate time remaining until activation
+      function getTimeUntilActivation() {
+        const bogotaTime = getBogotaTime();
+        const activationTime = getTodayActivationTime();
+        
+        if (bogotaTime >= activationTime) {
+          return null; // Already active
+        }
+        
+        const diff = activationTime.getTime() - bogotaTime.getTime();
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        
+        return { hours, minutes, seconds };
+      }
+      
+      // Update countdown display
+      function updateCountdown() {
+        if (!elements.countdownText) return;
+        
+        const timeLeft = getTimeUntilActivation();
+        if (timeLeft === null) {
+          elements.countdownText.textContent = '¡Activo ahora!';
+          return;
+        }
+        
+        const { hours, minutes, seconds } = timeLeft;
+        elements.countdownText.textContent = 
+          `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      }
+      
+      // Check activation time and show appropriate content
+      function checkActivationTime() {
+        updateCountdown();
+        
+        if (isFormActive()) {
+          showActiveForm();
+          if (checkInterval) {
+            clearInterval(checkInterval);
+            checkInterval = null;
+          }
+        } else {
+          showClosedForm();
+        }
+      }
+      
+      // Show closed form message
+      function showClosedForm() {
+        if (elements.closedFormContainer) {
+          elements.closedFormContainer.classList.remove('hidden');
+        }
+        if (elements.activeFormContainer) {
+          elements.activeFormContainer.classList.add('hidden');
+        }
+        if (elements.headerDescription) {
+          elements.headerDescription.textContent = 'Las inscripciones están cerradas.';
+        }
+      }
+      
+      // Show active form
+      function showActiveForm() {
+        if (elements.closedFormContainer) {
+          elements.closedFormContainer.classList.add('hidden');
+        }
+        if (elements.activeFormContainer) {
+          elements.activeFormContainer.classList.remove('hidden');
+        }
+        if (elements.headerDescription) {
+          elements.headerDescription.textContent = 'Completa el formulario oficial para inscribirte a la carrera 15K URRAO 2025';
+        }
+        
+        // Load the Tally form
+        loadTallyForm();
+      }
+      
+      // Load Tally form with error handling
+      function loadTallyForm() {
+        if (loadAttempts >= maxAttempts) {
+          showError('Se ha excedido el número máximo de intentos. Por favor, recarga la página.');
+          return;
+        }
+        
+        loadAttempts++;
+        showLoading();
+        
+        // Set timeout for loading
+        timeoutId = setTimeout(() => {
+          if (elements.loading && !elements.loading.classList.contains('hidden')) {
+            handleLoadError('Tiempo de espera agotado');
+          }
+        }, config.timeout);
+        
+        // Load Tally script
+        loadTallyScript()
+          .then(() => {
+            clearTimeout(timeoutId);
+            showForm();
+          })
+          .catch((error) => {
+            clearTimeout(timeoutId);
+            handleLoadError(error.message);
+          });
+      }
+      
+      // Load Tally script with Promise
+      function loadTallyScript() {
+        return new Promise((resolve, reject) => {
+          // Check if Tally is already loaded
+          if (typeof window.Tally !== 'undefined') {
+            window.Tally.loadEmbeds();
+            resolve();
+            return;
+          }
+          
+          // Check if script is already loading
+          if (document.querySelector('script[src="' + config.tallyScriptUrl + '"]')) {
+            // Wait for existing script to load
+            const checkTally = setInterval(() => {
+              if (typeof window.Tally !== 'undefined') {
+                clearInterval(checkTally);
+                window.Tally.loadEmbeds();
+                resolve();
+              }
+            }, 100);
+            return;
+          }
+          
+          // Create and load script
+          const script = document.createElement('script');
+          script.src = config.tallyScriptUrl;
+          script.async = true;
+          
+          script.onload = () => {
+            if (typeof window.Tally !== 'undefined') {
+              window.Tally.loadEmbeds();
+              resolve();
+            } else {
+              reject(new Error('Tally script loaded but Tally object not found'));
+            }
+          };
+          
+          script.onerror = () => {
+            reject(new Error('Failed to load Tally script'));
+          };
+          
+          document.head.appendChild(script);
+        });
+      }
+      
+      // Show loading state
+      function showLoading() {
+        if (elements.loading) elements.loading.classList.remove('hidden');
+        if (elements.error) elements.error.classList.add('hidden');
+        if (elements.form) elements.form.classList.add('hidden');
+      }
+      
+      // Show form
+      function showForm() {
+        if (elements.loading) elements.loading.classList.add('hidden');
+        if (elements.error) elements.error.classList.add('hidden');
+        if (elements.form) {
+          elements.form.classList.remove('hidden');
+          elements.form.classList.add('animate-fade-in');
+        }
+      }
+      
+      // Show error state
+      function showError(message) {
+        if (elements.loading) elements.loading.classList.add('hidden');
+        if (elements.form) elements.form.classList.add('hidden');
+        if (elements.error) {
+          elements.error.classList.remove('hidden');
+          const errorMessage = elements.error.querySelector('p');
+          if (errorMessage) {
+            errorMessage.textContent = message;
+          }
+        }
+      }
+      
+      // Handle load error
+      function handleLoadError(errorMessage) {
+        console.error('Tally form load error:', errorMessage);
+        showError(errorMessage);
+      }
+      
+      // Retry loading
+      function retryLoad() {
+        loadTallyForm();
+      }
+      
+      // Cleanup function
+      function cleanup() {
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+          timeoutId = null;
+        }
+        if (checkInterval) {
+          clearInterval(checkInterval);
+          checkInterval = null;
+        }
+      }
+      
+      // Cleanup on page unload
+      window.addEventListener('beforeunload', cleanup);
+      
+      // Initialize
+      init();
+    })();
+  </script>
 </Layout>
