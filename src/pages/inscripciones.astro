@@ -72,14 +72,14 @@ const TALLY_SCRIPT_URL = "https://tally.so/widgets/embed.js";
               </h2>
 
               <p class="text-lg md:text-xl text-primary-100 mb-6 leading-relaxed">
-                Las inscripciones abren a las <span id="activation-time-display" class="font-semibold text-white">5:00 PM</span> (hora de Bogotá).
+                Gracias por tu interés en la carrera 15K URRAO 2025. Los esperamos en la siguiente edición.
               </p>
 
-              <!-- Countdown Display -->
+              <!-- Status Display -->
               <div id="countdown-display" class="mb-6">
                 <div class="bg-white/5 rounded-xl p-4 border border-white/10">
-                  <p class="text-white text-sm mb-2">Tiempo restante:</p>
-                  <div id="countdown-text" class="text-2xl font-bold text-yellow-400">--:--:--</div>
+                  <p class="text-white text-sm mb-2">Estado:</p>
+                  <div id="countdown-text" class="text-2xl font-bold text-red-400">Inscripciones Cerradas</div>
                 </div>
               </div>
 
@@ -197,6 +197,7 @@ const TALLY_SCRIPT_URL = "https://tally.so/widgets/embed.js";
       const ACTIVATION_HOUR = 17; // 🕐 Change this to modify activation time (24-hour format)
       const ACTIVATION_MINUTE = 0; // Change this to modify activation minute
       const BOGOTA_TIMEZONE_OFFSET = -5; // Bogotá is UTC-5
+      const FORCE_CLOSED = true; // 🔒 Set to true to force inscriptions closed regardless of time
       
       // Configuration
       const config = {
@@ -204,6 +205,7 @@ const TALLY_SCRIPT_URL = "https://tally.so/widgets/embed.js";
         activationHour: ACTIVATION_HOUR,
         activationMinute: ACTIVATION_MINUTE,
         timezoneOffset: BOGOTA_TIMEZONE_OFFSET,
+        forceClosed: FORCE_CLOSED,
         
         // Tally form settings
         tallyScriptUrl: 'https://tally.so/widgets/embed.js',
@@ -290,6 +292,11 @@ const TALLY_SCRIPT_URL = "https://tally.so/widgets/embed.js";
       
       // Check if current time is past activation time
       function isFormActive() {
+        // If force closed is enabled, always return false
+        if (config.forceClosed) {
+          return false;
+        }
+        
         const bogotaTime = getBogotaTime();
         const activationTime = getTodayActivationTime();
         return bogotaTime >= activationTime;
@@ -315,6 +322,12 @@ const TALLY_SCRIPT_URL = "https://tally.so/widgets/embed.js";
       // Update countdown display
       function updateCountdown() {
         if (!elements.countdownText) return;
+        
+        // If force closed is enabled, show closed message
+        if (config.forceClosed) {
+          elements.countdownText.textContent = 'Inscripciones Cerradas';
+          return;
+        }
         
         const timeLeft = getTimeUntilActivation();
         if (timeLeft === null) {
