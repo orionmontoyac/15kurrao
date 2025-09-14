@@ -313,7 +313,7 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
                     left: -9999px;
                     width: 720px;
                     height: 1280px;
-                    background: linear-gradient(135deg, #0b75b9 0%, #c9d436 100%);
+                    background: url('/welcome-runners.jpg') center/cover, linear-gradient(135deg, #0b75b9 0%, #c9d436 100%);
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -388,11 +388,12 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
                 const welcomeTitleBackground = document.createElement('div');
                 welcomeTitleBackground.style.cssText = `
                     position: absolute;
-                    top: 50px;
+                    top: 870px;
                     left: 50%;
                     transform: translateX(-50%);
                     text-align: center;
                     color: white;
+                    width: 80%;
                 `;
                 // Get the runner's name and gender from the card
                 const runnerNameElement = cardClone.querySelector('#runner-name');
@@ -404,8 +405,8 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
                 const welcomeMessage = gender === 'Masculino' ? 'Bienvenido' : 'Bienvenida';
                 
                 welcomeTitleBackground.innerHTML = `
-                    <div style="font-size: 54px; font-family: nova, sans-serif; font-weight: bold; margin-bottom: 2px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">${welcomeMessage}</div>
-                    <div style="font-size: 68px; font-family: nova, sans-serif; font-weight: bold; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">${runnerName}</div>
+                    <div style="font-size: 34px; font-family: nova, sans-serif; font-weight: bold; margin-bottom: 2px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">${welcomeMessage}</div>
+                    <div style="font-size: 40px; font-family: nova, sans-serif; font-weight: bold; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">${runnerName}</div>
                 `;
 
                 storyContainer.appendChild(welcomeTitleBackground);
@@ -425,17 +426,16 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
                 
                 runnerImageDiv.style.cssText = `
                     position: absolute;
-                    top: 280px;
+                    top: 200px;
                     left: 50%;
                     transform: translateX(-50%);
-                    width: 600px;
+                    width: 500px;
                     height: auto;
                     max-height: 600px;
-                    min-height: 680px;
+                    min-height: 590px;
                     background-image: url('${imageSrc}');
                     background-size: cover;
                     background-position: top;
-                    border-radius: 16px;
                 `;
 
                 storyContainer.appendChild(runnerImageDiv);
@@ -457,7 +457,7 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
                 `;
 
                 // storyContainer.appendChild(cardClone);
-                storyContainer.appendChild(brandingDiv);
+                // storyContainer.appendChild(brandingDiv);
                 document.body.appendChild(storyContainer);
 
                 // Capture the story container with optimized settings for fast external image handling
@@ -476,7 +476,7 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
                         const clonedImages = clonedDoc.querySelectorAll('img');
                         clonedImages.forEach(img => {
                             // Add loading optimization
-                            img.style.imageRendering = 'optimizeSpeed';
+                            // img.style.imageRendering = 'optimizeSpeed';
                         });
                     }
                 });
