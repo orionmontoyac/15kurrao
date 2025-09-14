@@ -476,7 +476,7 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
                         const clonedImages = clonedDoc.querySelectorAll('img');
                         clonedImages.forEach(img => {
                             // Add loading optimization
-                            // img.style.imageRendering = 'optimizeSpeed';
+                            img.style.imageRendering = 'optimizeSpeed';
                         });
                     }
                 });
