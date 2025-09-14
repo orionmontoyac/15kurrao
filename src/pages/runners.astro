@@ -106,8 +106,23 @@ const runnersData = submissions?.submissions.map((submission, index) => {
   };
 }) || [];
 
-// Shuffle the runners list for random display order
-const runners = shuffleArray(runnersData);
+// Sort runners: first those with custom avatars, then those with default avatars
+// Within each group, shuffle for random display order
+const runnersWithCustomAvatars = runnersData.filter(runner => {
+  // Check if the avatar is not the default one by comparing with the default avatar URL
+  return runner.avatar !== getDefaultAvatar(runner.gender);
+});
+
+const runnersWithDefaultAvatars = runnersData.filter(runner => {
+  // Check if the avatar is the default one
+  return runner.avatar === getDefaultAvatar(runner.gender);
+});
+
+// Shuffle each group separately and combine them
+const runners = [
+  ...shuffleArray(runnersWithCustomAvatars),
+  ...shuffleArray(runnersWithDefaultAvatars)
+];
 
 ---
 
