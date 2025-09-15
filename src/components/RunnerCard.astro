@@ -122,12 +122,12 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
         
         <!-- Generated Image Preview -->
         <div id="image-preview-container" class="hidden mb-6">
-            <h4 class="text-white font-medium text-sm mb-3 text-center">Vista previa de la imagen generada:</h4>
+            <h4 class="text-white font-medium text-sm mb-3 text-center">Imagen generada para compartir:</h4>
             <div class="bg-white/5 rounded-xl p-4 border border-white/10">
-                <div id="image-preview" class="w-32 h-60 mx-auto overflow-hidden rounded-lg  flex items-center justify-center">
+                <div id="image-preview" class="w-32 h-60 mx-auto overflow-hidden rounded-lg flex items-center justify-center">
                     <div class="text-center text-white/60">
                         <Icon name="tabler/medal" class="w-8 h-8 mx-auto mb-2 opacity-50" />
-                        <p class="text-xs">La imagen se generará aquí</p>
+                        <p class="text-xs">Cargando imagen generada...</p>
                     </div>
                 </div>
             </div>
@@ -150,7 +150,7 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
             <!-- Download Image -->
             <button id="download-image" class="w-full flex items-center space-x-3 p-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl text-white font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed" type="button">
                 <Icon name="tabler/download" class="w-5 h-5" />
-                <span>Descargar Imagen</span>
+                <span>Descargar Imagen Generada</span>
             </button>
         </div>
         
@@ -228,6 +228,32 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
         duration?: number;
     }
 
+    // Image Capture Service using html2canvas
+    class ImageCaptureService {
+        static async captureElement(element: HTMLElement): Promise<Blob> {
+            // Dynamic import of html2canvas
+            const html2canvas = (await import('html2canvas')).default;
+            
+            const canvas = await html2canvas(element, {
+                backgroundColor: null,
+                scale: 2,
+                useCORS: true,
+                allowTaint: true,
+                logging: false
+            });
+            
+            return new Promise((resolve) => {
+                canvas.toBlob((blob) => {
+                    if (blob) {
+                        resolve(blob);
+                    } else {
+                        throw new Error('Failed to capture element');
+                    }
+                }, 'image/jpeg', 0.9);
+            });
+        }
+    }
+
     // Toast utility
     class ToastManager {
         private container: HTMLElement;
@@ -267,254 +293,38 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
             }, duration);
         }
     }
-
-    // Image capture utility
-    class ImageCaptureService {
-        private static async loadHtml2Canvas(): Promise<void> {
-            if (typeof (window as any).html2canvas !== 'undefined') return;
-            
-            return new Promise((resolve, reject) => {
-                const script = document.createElement('script');
-                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-                script.onload = () => resolve();
-                script.onerror = () => reject(new Error('Failed to load html2canvas'));
-                document.head.appendChild(script);
-            });
-        }
-
-        static async captureElement(element: HTMLElement): Promise<Blob> {
-            await this.loadHtml2Canvas();
-            
-            const html2canvas = (window as any).html2canvas;
-            if (!html2canvas) {
-                throw new Error('html2canvas not available');
-            }
-
-            return this.createStoryCanvas(element);
-        }
-
-        private static async createStoryCanvas(element: HTMLElement): Promise<Blob> {
-            const html2canvas = (window as any).html2canvas;
-            
-            // Hide share button during capture
-            const shareBtn = element.querySelector('.runner-share-btn') as HTMLElement;
-            const originalDisplay = shareBtn?.style.display || '';
-            if (shareBtn) shareBtn.style.display = 'none';
-
-            try {
-                // Skip pre-loading images - html2canvas will handle them with its own timeout
-                // This dramatically improves performance, especially with slow external images
-
-                // Create a temporary container for story format (reduced size for better performance)
-                const storyContainer = document.createElement('div');
-                storyContainer.style.cssText = `
-                    position: fixed;
-                    top: -9999px;
-                    left: -9999px;
-                    width: 720px;
-                    height: 1280px;
-                    background: url('/welcome-runners.jpg') center/cover, linear-gradient(135deg, #0b75b9 0%, #c9d436 100%);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    padding: 40px 30px;
-                    box-sizing: border-box;
-                `;
-
-                // Clone the card element (smaller scale for performance)
-                const cardClone = element.cloneNode(true) as HTMLElement;
-                cardClone.style.cssText = `
-                    width: 100%;
-                    max-width: 320px;
-                    height: auto;
-                    transform: scale(1);
-                    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-                    border-radius: 16px;
-                `;
-
-                // Fix text positioning and sizes in the clone
-                const nameElement = cardClone.querySelector('h3');
-                if (nameElement) {
-                    nameElement.style.cssText = `
-                        color: white;
-                        font-weight: 600;
-                        font-size: 28px;
-                        line-height: 1.2;
-                        margin-bottom: 12px;
-                        text-align: left;
-                        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-                    `;
-                }
-
-                const locationElement = cardClone.querySelector('p');
-                if (locationElement) {
-                    locationElement.style.cssText = `
-                        color: rgb(203, 213, 225);
-                        font-size: 16px;
-                        display: flex;
-                        align-items: center;
-                        margin-bottom: 16px;
-                        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-                    `;
-                }
-
-                const statusContainer = cardClone.querySelector('.flex.items-center.justify-between');
-                if (statusContainer) {
-                    (statusContainer as HTMLElement).style.cssText = `
-                        display: flex;
-                        align-items: center;
-                        justify-content: space-between;
-                        font-size: 16px;
-                    `;
-                    
-                    const statusText = statusContainer.querySelector('.text-green-400');
-                    if (statusText) {
-                        (statusText as HTMLElement).style.textShadow = '0 1px 2px rgba(0, 0, 0, 0.3)';
-                    }
-                    
-                    const timeText = statusContainer.querySelector('.text-slate-300');
-                    if (timeText) {
-                        (timeText as HTMLElement).style.textShadow = '0 1px 2px rgba(0, 0, 0, 0.3)';
-                    }
-                }
-
-                // Remove the share button from clone
-                const clonedShareBtn = cardClone.querySelector('.runner-share-btn');
-                if (clonedShareBtn) {
-                    clonedShareBtn.remove();
-                }
-
-                // Welcome title background
-                const welcomeTitleBackground = document.createElement('div');
-                welcomeTitleBackground.style.cssText = `
-                    position: absolute;
-                    top: 870px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    text-align: center;
-                    color: white;
-                    width: 80%;
-                `;
-                // Get the runner's name and gender from the card
-                const runnerNameElement = cardClone.querySelector('#runner-name');
-                const runnerName = runnerNameElement ? runnerNameElement.textContent?.trim() || 'Runner' : 'Runner';
-                
-                // Get the gender from the original element to determine welcome message
-                const originalElement = element.closest('[data-runner-gender]') || element;
-                const gender = originalElement.getAttribute('data-runner-gender') || '';
-                const welcomeMessage = gender === 'Masculino' ? 'Bienvenido' : 'Bienvenida';
-                
-                welcomeTitleBackground.innerHTML = `
-                    <div style="font-size: 34px; font-family: nova, sans-serif; font-weight: bold; margin-bottom: 2px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">${welcomeMessage}</div>
-                    <div style="font-size: 40px; font-family: nova, sans-serif; font-weight: bold; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">${runnerName}</div>
-                `;
-
-                storyContainer.appendChild(welcomeTitleBackground);
-
-                // Add the image of the runner with fallback optimization
-                const runnerImageDiv = document.createElement('div');
-                const imgElement = cardClone.querySelector('img');
-                let imageSrc = imgElement?.src || '';
-                
-                // If it's an external image and we're generating quickly, use a fallback
-                const isExternalImage = imageSrc.startsWith('http') && !imageSrc.includes(window.location.hostname);
-                if (isExternalImage && !imgElement?.complete) {
-                    console.log('Using optimized fallback for slow external image');
-                    // You could set a default image here if needed
-                    // imageSrc = '/path/to/default/image.jpg';
-                }
-                
-                runnerImageDiv.style.cssText = `
-                    position: absolute;
-                    top: 200px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    width: 500px;
-                    height: auto;
-                    max-height: 600px;
-                    min-height: 590px;
-                    background-image: url('${imageSrc}');
-                    background-size: cover;
-                    background-position: top;
-                `;
-
-                storyContainer.appendChild(runnerImageDiv);
-
-                // Add branding
-                const brandingDiv = document.createElement('div');
-                brandingDiv.style.cssText = `
-                    position: absolute;
-                    bottom: 100px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    text-align: center;
-                    color: white;
-                `;
-                brandingDiv.innerHTML = `
-                    <div style="font-size: 68px; font-family: nova, sans-serif; font-weight: bold; margin-bottom: 2px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">15K</div>
-                    <div style="font-size: 54px; font-family: nova, sans-serif; font-weight: bold; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">URRAO</div>
-                    <div style="font-size: 20px; opacity: 0.9; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);">Cuerpo y mente</div>
-                `;
-
-                // storyContainer.appendChild(cardClone);
-                // storyContainer.appendChild(brandingDiv);
-                document.body.appendChild(storyContainer);
-
-                // Capture the story container with optimized settings for fast external image handling
-                const canvas = await html2canvas(storyContainer, {
-                    backgroundColor: null,
-                    scale: 0.8, // Reduced scale for better performance
-                    useCORS: true,
-                    allowTaint: true, // Allow tainted canvas for external images
-                    logging: false,
-                    width: 720,
-                    height: 1280,
-                    removeContainer: true, // Clean up faster
-                    imageTimeout: 2000, // Very short timeout for external images
-                    onclone: (clonedDoc) => {
-                        // Optimize cloned document for faster processing
-                        const clonedImages = clonedDoc.querySelectorAll('img');
-                        clonedImages.forEach(img => {
-                            // Add loading optimization
-                            img.style.imageRendering = 'optimizeSpeed';
-                        });
-                    }
-                });
-
-                // Remove temporary container
-                document.body.removeChild(storyContainer);
-
-                // Convert to blob with JPEG compression for smaller file size
-                return new Promise<Blob>((resolve, reject) => {
-                    canvas.toBlob((blob: Blob | null) => {
-                        if (blob) {
-                            resolve(blob);
-                        } else {
-                            reject(new Error('Failed to create blob'));
-                        }
-                    }, 'image/jpeg', 0.85); // JPEG with 85% quality for much smaller files
-                });
-            } finally {
-                // Restore share button
-                if (shareBtn) shareBtn.style.display = originalDisplay;
-            }
-        }
-    }
-
     // Main RunnerCard class
     class RunnerCardManager {
         private toast: ToastManager;
         private modal: HTMLElement;
         private currentRunnerData: RunnerData | null = null;
+        private storyMapping: any = null;
 
         constructor() {
             this.toast = new ToastManager();
             this.modal = document.getElementById('share-modal')!;
+            this.loadStoryMapping();
             this.init();
         }
 
         private init(): void {
             this.bindEvents();
+        }
+
+        private async loadStoryMapping(): Promise<void> {
+            try {
+                const response = await fetch('/generated-images/story-mapping.json');
+                this.storyMapping = await response.json();
+            } catch (error) {
+                console.error('Error loading story mapping:', error);
+            }
+        }
+
+        private getRunnerStoryImage(runnerId: number): string | null {
+            if (!this.storyMapping?.results) return null;
+            
+            const runnerData = this.storyMapping.results.find((r: any) => r.runnerId === runnerId);
+            return runnerData?.filename || null;
         }
 
         private bindEvents(): void {
@@ -613,10 +423,22 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
 
             try {
                 this.setLoadingState(true);
-                const card = document.querySelector(`[data-runner-id="${this.currentRunnerData.id}"]`) as HTMLElement;
-                const imageBlob = await ImageCaptureService.captureElement(card);
+                const storyImageFilename = this.getRunnerStoryImage(this.currentRunnerData.id);
                 
-                await this.shareImageBlob(imageBlob, 'Instagram Stories');
+                if (storyImageFilename) {
+                    // Use the generated story image
+                    const imageUrl = `/generated-images/${storyImageFilename}`;
+                    const response = await fetch(imageUrl);
+                    const imageBlob = await response.blob();
+                    
+                    await this.shareImageBlob(imageBlob, 'Instagram Stories');
+                } else {
+                    // Fallback to card capture
+                    const card = document.querySelector(`[data-runner-id="${this.currentRunnerData.id}"]`) as HTMLElement;
+                    const imageBlob = await ImageCaptureService.captureElement(card);
+                    await this.shareImageBlob(imageBlob, 'Instagram Stories');
+                }
+                
                 this.closeModal();
             } catch (error) {
                 console.error('Instagram share error:', error);
@@ -643,10 +465,22 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
 
             try {
                 this.setLoadingState(true);
-                const card = document.querySelector(`[data-runner-id="${this.currentRunnerData.id}"]`) as HTMLElement;
-                const imageBlob = await ImageCaptureService.captureElement(card);
+                const storyImageFilename = this.getRunnerStoryImage(this.currentRunnerData.id);
                 
-                this.downloadBlob(imageBlob, `${this.currentRunnerData.name}-15kurrao-card.jpg`);
+                if (storyImageFilename) {
+                    // Use the generated story image
+                    const imageUrl = `/generated-images/${storyImageFilename}`;
+                    const response = await fetch(imageUrl);
+                    const imageBlob = await response.blob();
+                    
+                    this.downloadBlob(imageBlob, `${this.currentRunnerData.name}-15kurrao-story.jpg`);
+                } else {
+                    // Fallback to card capture
+                    const card = document.querySelector(`[data-runner-id="${this.currentRunnerData.id}"]`) as HTMLElement;
+                    const imageBlob = await ImageCaptureService.captureElement(card);
+                    this.downloadBlob(imageBlob, `${this.currentRunnerData.name}-15kurrao-card.jpg`);
+                }
+                
                 this.toast.show('¡Imagen descargada exitosamente!', { type: 'success' });
                 this.closeModal();
             } catch (error) {
@@ -707,27 +541,40 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
                     imagePreview.innerHTML = `
                         <div class="text-center text-white/60">
                             <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto mb-2"></div>
-                            <p class="text-sm">Generando vista previa...</p>
+                            <p class="text-sm">Cargando imagen generada...</p>
                         </div>
                     `;
                 }
 
-                // Generate the image
-                const imageBlob = await ImageCaptureService.captureElement(card);
+                // Get runner ID and find the corresponding story image
+                const runnerId = parseInt(card.dataset.runnerId || '0');
+                const storyImageFilename = this.getRunnerStoryImage(runnerId);
                 
-                // Create preview image
-                const previewUrl = URL.createObjectURL(imageBlob);
-                
-                if (imagePreview) {
-                    imagePreview.innerHTML = `
-                        <img src="${previewUrl}" alt="Vista previa de la imagen generada" class="w-full h-full object-contain rounded-lg" />
-                    `;
+                if (storyImageFilename) {
+                    // Use the generated story image
+                    const imageUrl = `/generated-images/${storyImageFilename}`;
+                    
+                    if (imagePreview) {
+                        imagePreview.innerHTML = `
+                            <img src="${imageUrl}" alt="Imagen generada para ${this.currentRunnerData?.name}" class="w-full h-full object-contain rounded-lg" />
+                        `;
+                    }
+                } else {
+                    // Fallback to card capture if no story image found
+                    const imageBlob = await ImageCaptureService.captureElement(card);
+                    const previewUrl = URL.createObjectURL(imageBlob);
+                    
+                    if (imagePreview) {
+                        imagePreview.innerHTML = `
+                            <img src="${previewUrl}" alt="Vista previa de la imagen generada" class="w-full h-full object-contain rounded-lg" />
+                        `;
+                    }
+                    
+                    // Clean up the URL after a delay to ensure the image loads
+                    setTimeout(() => {
+                        URL.revokeObjectURL(previewUrl);
+                    }, 5000);
                 }
-                
-                // Clean up the URL after a delay to ensure the image loads
-                setTimeout(() => {
-                    URL.revokeObjectURL(previewUrl);
-                }, 5000);
                 
             } catch (error) {
                 console.error('Error generating preview:', error);
@@ -736,7 +583,7 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
                     imagePreview.innerHTML = `
                         <div class="text-center text-white/60">
                             <Icon name="tabler/alert-triangle" class="w-8 h-8 mx-auto mb-2 text-yellow-400" />
-                            <p class="text-sm">Error al generar la vista previa</p>
+                            <p class="text-sm">Error al cargar la imagen generada</p>
                         </div>
                     `;
                 }
