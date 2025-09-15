@@ -99,11 +99,11 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
 </div>
 
 <!-- Share Modal -->
-<div id="share-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 invisible transition-all duration-300">
-    <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 max-w-sm w-full transform scale-95 transition-all duration-300">
+<div id="share-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 invisible transition-all duration-300">
+    <div class="bg-white/30 backdrop-blur-lg border border-white/20 rounded-2xl p-6 max-w-sm w-full transform scale-95 transition-all duration-300">
         <!-- Modal Header -->
         <div class="flex items-center justify-between mb-6">
-            <h3 class="text-white font-semibold text-lg">Compartir corredor</h3>
+            <h3 class="text-white font-semibold text-lg">Compartir imagen generada</h3>
             <button id="close-share-modal" class="text-white/70 hover:text-white transition-colors p-1" type="button">
                 <Icon name="tabler/x" class="w-5 h-5" />
             </button>
@@ -135,22 +135,16 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
         
         <!-- Share Options -->
         <div class="space-y-3">
-            <!-- Instagram Stories -->
-            <button id="share-instagram" class="w-full flex items-center space-x-3 p-3 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl text-white font-medium hover:shadow-lg hover:shadow-pink-500/25 transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed" type="button">
-                <Icon name="tabler/instagram-logo" class="w-5 h-5" />
-                <span>Instagram Stories</span>
-            </button>
-            
-            <!-- WhatsApp -->
-            <button id="share-whatsapp" class="w-full flex items-center space-x-3 p-3 bg-gradient-to-r from-green-500 to-green-600 rounded-xl text-white font-medium hover:shadow-lg hover:shadow-green-500/25 transition-all duration-300 transform hover:scale-[1.02]" type="button">
-                <Icon name="tabler/whatsapp-logo" class="w-5 h-5" />
-                <span>WhatsApp</span>
+            <!-- Mobile Share Button - Hidden for now -->
+            <button id="share-mobile" class="hidden w-full flex items-center space-x-3 p-4 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl text-white font-medium hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed" type="button">
+                <Icon name="tabler/share" class="w-5 h-5" />
+                <span>Compartir en Redes Sociales</span>
             </button>
             
             <!-- Download Image -->
-            <button id="download-image" class="w-full flex items-center space-x-3 p-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl text-white font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed" type="button">
+            <button id="download-image" class="w-full flex items-center space-x-3 p-4 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl text-white font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed" type="button">
                 <Icon name="tabler/download" class="w-5 h-5" />
-                <span>Descargar Imagen Generada</span>
+                <span>Descargar Imagen</span>
             </button>
         </div>
         
@@ -327,6 +321,12 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
             return runnerData?.filename || null;
         }
 
+        private isMobileDevice(): boolean {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                   ('ontouchstart' in window) || 
+                   (navigator.maxTouchPoints > 0);
+        }
+
         private bindEvents(): void {
             // Card click events (excluding share button)
             document.querySelectorAll('[data-runner-id]').forEach(card => {
@@ -362,8 +362,7 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
             });
 
             // Share platform buttons
-            document.getElementById('share-instagram')?.addEventListener('click', () => this.shareToInstagram());
-            document.getElementById('share-whatsapp')?.addEventListener('click', () => this.shareToWhatsApp());
+            document.getElementById('share-mobile')?.addEventListener('click', () => this.shareToMobile());
             document.getElementById('download-image')?.addEventListener('click', () => this.downloadImage());
 
             // ESC key to close
@@ -418,46 +417,98 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
             }
         }
 
-        private async shareToInstagram(): Promise<void> {
+        private async shareToMobile(): Promise<void> {
             if (!this.currentRunnerData) return;
 
             try {
                 this.setLoadingState(true);
                 const storyImageFilename = this.getRunnerStoryImage(this.currentRunnerData.id);
                 
+                let imageBlob: Blob;
+                
                 if (storyImageFilename) {
                     // Use the generated story image
                     const imageUrl = `/generated-images/${storyImageFilename}`;
                     const response = await fetch(imageUrl);
-                    const imageBlob = await response.blob();
-                    
-                    await this.shareImageBlob(imageBlob, 'Instagram Stories');
+                    imageBlob = await response.blob();
                 } else {
                     // Fallback to card capture
                     const card = document.querySelector(`[data-runner-id="${this.currentRunnerData.id}"]`) as HTMLElement;
-                    const imageBlob = await ImageCaptureService.captureElement(card);
-                    await this.shareImageBlob(imageBlob, 'Instagram Stories');
+                    imageBlob = await ImageCaptureService.captureElement(card);
                 }
                 
+                // Create file for sharing
+                const file = new File([imageBlob], `${this.currentRunnerData.name}-15kurrao-story.jpg`, { 
+                    type: 'image/jpeg' 
+                });
+                
+                // Debug information
+                console.log('Share API available:', !!navigator.share);
+                console.log('Can share files:', navigator.canShare?.({ files: [file] }));
+                console.log('Is HTTPS:', location.protocol === 'https:');
+                console.log('Is localhost:', location.hostname === 'localhost');
+                console.log('Is mobile device:', this.isMobileDevice());
+                
+                // Check if native share is supported and we're on HTTPS or localhost
+                const isSecureContext = location.protocol === 'https:' || location.hostname === 'localhost';
+                const canShareFiles = navigator.canShare?.({ files: [file] });
+                const isMobile = this.isMobileDevice();
+                
+                if (navigator.share && canShareFiles && isSecureContext) {
+                    try {
+                        await navigator.share({
+                            title: `${this.currentRunnerData.name} - 15KURRAO`,
+                            text: `🏃‍♂️ ¡Mira este corredor! ${this.currentRunnerData.name} se inscribió para la carrera de ${this.currentRunnerData.distance} desde ${this.currentRunnerData.location}. ¡Únete a la 15KURRAO! 🏁`,
+                            files: [file]
+                        });
+                        this.toast.show('¡Compartido exitosamente!', { type: 'success' });
+                        this.closeModal();
+                        return;
+                    } catch (shareError: any) {
+                        console.error('Share API error:', shareError);
+                        // If user cancels, don't show error
+                        if (shareError.name === 'AbortError') {
+                            this.closeModal();
+                            return;
+                        }
+                        throw shareError;
+                    }
+                } else {
+                    // Show why native share is not available
+                    let reason = '';
+                    if (!isSecureContext) {
+                        reason = 'Se requiere HTTPS para compartir archivos';
+                    } else if (!canShareFiles) {
+                        reason = 'Tu navegador no soporta compartir archivos';
+                    } else if (!navigator.share) {
+                        reason = 'Tu navegador no soporta la función de compartir';
+                    }
+                    
+                    console.warn('Native share not available:', reason);
+                    
+                    if (isMobile) {
+                        this.toast.show(`En móvil se requiere HTTPS. ${reason}`, { type: 'info' });
+                    } else {
+                        this.toast.show(`Función de compartir no disponible: ${reason}`, { type: 'info' });
+                    }
+                }
+                
+                // Fallback: download the image
+                this.downloadBlob(imageBlob, `${this.currentRunnerData.name}-15kurrao-story.jpg`);
+                
+                if (isMobile) {
+                    this.toast.show('Imagen descargada. Ábrela en tu galería y compártela desde ahí.', { type: 'info' });
+                } else {
+                    this.toast.show('Imagen descargada. Compártela manualmente en tus redes sociales.', { type: 'info' });
+                }
                 this.closeModal();
+                
             } catch (error) {
-                console.error('Instagram share error:', error);
-                this.toast.show('Error al compartir en Instagram', { type: 'error' });
+                console.error('Mobile share error:', error);
+                this.toast.show('Error al compartir la imagen', { type: 'error' });
             } finally {
                 this.setLoadingState(false);
             }
-        }
-
-        private shareToWhatsApp(): void {
-            if (!this.currentRunnerData) return;
-
-            const text = `🏃‍♂️ ¡Mira este corredor!\n\n${this.currentRunnerData.name} se inscribió para la carrera de ${this.currentRunnerData.distance} desde ${this.currentRunnerData.location}.\n\n¡Únete a la 15KURRAO! 🏁`;
-            const url = encodeURIComponent(window.location.href);
-            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}%20${url}`;
-            
-            window.open(whatsappUrl, '_blank');
-            this.closeModal();
-            this.toast.show('Compartiendo en WhatsApp...', { type: 'success' });
         }
 
         private async downloadImage(): Promise<void> {
@@ -491,20 +542,6 @@ const { id, name, distance, registrationTime, timeAgo, avatar, location, gender 
             }
         }
 
-        private async shareImageBlob(blob: Blob, platform: string): Promise<void> {
-            const file = new File([blob], 'runner-card.jpg', { type: 'image/jpeg' });
-            
-            if (navigator.share && navigator.canShare?.({ files: [file] })) {
-                await navigator.share({
-                    title: `${this.currentRunnerData!.name} - 15KURRAO`,
-                    text: `🏃‍♂️ ¡Mira este corredor! ${this.currentRunnerData!.name} se inscribió para la carrera de ${this.currentRunnerData!.distance} desde ${this.currentRunnerData!.location}. ¡Únete a la 15KURRAO! 🏁`,
-                    files: [file]
-                });
-            } else {
-                this.downloadBlob(blob, `${this.currentRunnerData!.name}-15kurrao-card.jpg`);
-                this.toast.show(`Imagen descargada. Compártela en ${platform} manualmente.`, { type: 'info' });
-            }
-        }
 
         private downloadBlob(blob: Blob, filename: string): void {
             const url = URL.createObjectURL(blob);
