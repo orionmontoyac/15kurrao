@@ -43,7 +43,16 @@ async function downloadImageAsBase64(imageUrl) {
 
     // Handle local file paths (starting with /)
     if (imageUrl.startsWith('/') && !imageUrl.startsWith('http')) {
-        const localPath = path.join(__dirname, '..', 'public', imageUrl.substring(1));
+        let localPath;
+        
+        // Check if it's an absolute path (starts with /Users, /home, etc.)
+        if (imageUrl.startsWith('/Users') || imageUrl.startsWith('/home') || imageUrl.startsWith('/tmp') || imageUrl.startsWith('/var')) {
+            localPath = imageUrl; // Use absolute path as-is
+        } else {
+            // Relative path from public directory
+            localPath = path.join(__dirname, '..', 'public', imageUrl.substring(1));
+        }
+        
         try {
             const fileBuffer = await fs.readFile(localPath);
             const base64 = fileBuffer.toString('base64');
@@ -473,8 +482,110 @@ async function generateStoryImage(browser, runner, index, total, backgroundImage
     }
 }
 
+// Generate single image with custom parameters
+async function generateSingleImage(imagePath, name, gender, distance = '15K') {
+    console.log('🚀 Starting single runner story generation...');
+    console.log(`📸 Image: ${imagePath}`);
+    console.log(`👤 Name: ${name}`);
+    console.log(`⚧ Gender: ${gender}`);
+    console.log(`🏃 Distance: ${distance}`);
+
+    try {
+        // Ensure output directory exists
+        await ensureOutputDir();
+
+        // Validate required parameters
+        if (!imagePath || !name || !gender) {
+            throw new Error('Missing required parameters: --image, --name, and --gender are required');
+        }
+
+        // Validate gender
+        const validGenders = ['male', 'female', 'masculino', 'femenino'];
+        const normalizedGender = gender.toLowerCase();
+        if (!validGenders.includes(normalizedGender)) {
+            throw new Error('Invalid gender. Use: male, female, masculino, or femenino');
+        }
+
+        // Validate distance
+        const validDistances = ['15K', '10K'];
+        if (!validDistances.includes(distance)) {
+            throw new Error('Invalid distance. Use: 15K or 10K');
+        }
+
+        // Create runner object
+        const runner = {
+            id: Date.now(), // Use timestamp as unique ID
+            name: toTitleCase(name),
+            distance: distance,
+            location: 'Urrao, Antioquia',
+            gender: normalizedGender === 'male' || normalizedGender === 'masculino' ? 'Masculino' : 'Femenino',
+            avatar: imagePath,
+            registrationTime: new Date().toISOString()
+        };
+
+        // Load background image
+        console.log('🖼️  Loading background image...');
+        const backgroundImage = await getBackgroundImageBase64();
+        if (backgroundImage) {
+            console.log('✅ Background image loaded successfully');
+        } else {
+            console.log('⚠️  Background image not found, using gradient only');
+        }
+
+        // Load font
+        console.log('🔤 Loading nova font...');
+        const fontBase64 = await getFontBase64();
+        if (fontBase64) {
+            console.log('✅ Nova font loaded successfully');
+        } else {
+            console.log('⚠️  Nova font not found, using fallback');
+        }
+
+        // Launch browser
+        console.log('🌐 Launching browser...');
+        const browser = await puppeteer.launch({
+            headless: true,
+            args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage',
+                '--disable-web-security',
+                '--allow-running-insecure-content'
+            ]
+        });
+
+        // Generate single image
+        const result = await generateStoryImage(browser, runner, 0, 1, backgroundImage, fontBase64);
+        
+        await browser.close();
+
+        if (result.error) {
+            console.error('❌ Failed to generate image:', result.error);
+            return { success: false, error: result.error };
+        }
+
+        console.log('\n📈 Single Image Generation Summary:');
+        console.log(`✅ Generated: ${result.filename}`);
+        console.log(`📁 Saved to: ${result.filepath}`);
+        console.log(`👤 Runner: ${runner.name}`);
+
+        return { success: true, result };
+
+    } catch (error) {
+        console.error('💥 Fatal error:', error);
+        return { success: false, error: error.message };
+    }
+}
+
 // Main function
 async function main() {
+    // Check if we're in single image mode
+    if (options.image && options.name && options.gender) {
+        const result = await generateSingleImage(options.image, options.name, options.gender, options.distance);
+        process.exit(result.success ? 0 : 1);
+    }
+
+    // Original batch mode
     console.log('🚀 Starting runner story generation...');
 
     try {
@@ -575,22 +686,72 @@ async function main() {
     }
 }
 
+// Parse command line arguments
+function parseArgs() {
+    const args = process.argv.slice(2);
+    const options = {
+        help: false,
+        image: null,
+        name: null,
+        gender: null,
+        distance: '15K'
+    };
+
+    for (let i = 0; i < args.length; i++) {
+        const arg = args[i];
+        switch (arg) {
+            case '--help':
+            case '-h':
+                options.help = true;
+                break;
+            case '--image':
+                options.image = args[i + 1];
+                i++;
+                break;
+            case '--name':
+                options.name = args[i + 1];
+                i++;
+                break;
+            case '--gender':
+                options.gender = args[i + 1];
+                i++;
+                break;
+            case '--distance':
+                options.distance = args[i + 1];
+                i++;
+                break;
+        }
+    }
+
+    return options;
+}
+
 // Handle command line arguments
-const args = process.argv.slice(2);
-if (args.includes('--help') || args.includes('-h')) {
+const options = parseArgs();
+if (options.help) {
     console.log(`
 Usage: node generate-runner-stories.js [options]
 
 Options:
-  --help, -h     Show this help message
+  --help, -h           Show this help message
+  --image <path>       Path to local image file for single generation
+  --name <name>        Runner name for single generation
+  --gender <gender>    Runner gender (male/female) for single generation
+  --distance <dist>    Distance (15K/10K) for single generation (default: 15K)
 
 Environment Variables:
-  TALLY_API_KEY  Your Tally API key (default: tly-2Q4ohp3cje3Hpnaq9afWFQDUGPFTDcz3)
-  TALLY_FORM_ID  Your Tally form ID (default: 3lkGj6)
+  TALLY_API_KEY        Your Tally API key (default: tly-2Q4ohp3cje3Hpnaq9afWFQDUGPFTDcz3)
+  TALLY_FORM_ID        Your Tally form ID (default: 3lkGj6)
 
 Examples:
+  # Generate images for all runners from Tally
   node generate-runner-stories.js
-  TALLY_API_KEY=your-key node generate-runner-stories.js
+  
+  # Generate single image with custom parameters
+  node generate-runner-stories.js --image '/path/to/image.jpg' --name 'Samir' --gender male
+  
+  # Generate single image with all parameters
+  node generate-runner-stories.js --image '/path/to/image.jpg' --name 'Maria' --gender female --distance 10K
 `);
     process.exit(0);
 }
@@ -600,4 +761,4 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     main();
 }
 
-export { main, generateStoryHTML, fetchAllRunners, getBackgroundImageBase64, downloadImageAsBase64, getFontBase64 };
+export { main, generateStoryHTML, fetchAllRunners, getBackgroundImageBase64, downloadImageAsBase64, getFontBase64, generateSingleImage };
